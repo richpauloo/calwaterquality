@@ -29,6 +29,7 @@
 - GITHUB_TOKEN pushes don't trigger other workflows — refresh-data.yml explicitly dispatches deploy.yml after committing
 - Product is feature-complete for v1 and deployed — future features should be driven by real user feedback, not assumptions
 - Site deployed at richpauloo/calwaterquality via GitHub Actions — live at https://richpauloo.github.io/calwaterquality/
-- Custom domain calwaterquality.com still claimed by caccr/caccr.github.io — needs user-level domain verification in GitHub Settings > Pages to release it
+- Custom domain calwaterquality.com still claimed by caccr/caccr.github.io — CNAME file removed from site/, needs user-level domain verification in GitHub Settings > Pages before re-adding
 - Feedback issue links now point to richpauloo/calwaterquality (updated from caccr/caccr.github.io)
 - Site is at a subdirectory (`/calwaterquality/`) — all asset paths must be relative (no leading `/`), OG meta tags need full absolute URL
+- Two remotes: `origin` (caccr/caccr.github.io, read-only) and `deploy` (richpauloo/calwaterquality, pushable) — always push to `deploy`
