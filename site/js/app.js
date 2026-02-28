@@ -7,6 +7,7 @@
   let systems = [];       // all systems from summary JSON
   let contaminantDict = {};  // plain-language contaminant info
   let unitLabels = {};       // raw unit → readable unit
+  let meta = null;           // data freshness metadata
   let map = null;
   let activePopup = null;
   let panelState = 'closed';  // closed | peek | open
@@ -92,6 +93,22 @@
       contaminantDict = data;
     } catch (err) {
       console.warn('Contaminant dictionary not loaded:', err);
+    }
+  }
+
+  function fmtDate(isoStr) {
+    if (!isoStr) return '';
+    var parts = isoStr.split('-');
+    var d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+    return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  }
+
+  async function loadMeta() {
+    try {
+      var resp = await fetch('data/meta.json');
+      meta = await resp.json();
+    } catch (err) {
+      console.warn('meta.json not loaded:', err);
     }
   }
 
@@ -401,8 +418,12 @@
     // Footer
     html += '<div class="panel-footer">';
     html += 'System ID: ' + d.system_id + '<br>';
-    html += 'Data from <a href="https://www.waterboards.ca.gov/drinking_water/certlic/drinkingwater/EDTlibrary.html" target="_blank">CA Water Boards</a>. ';
-    html += 'Last 2 years of testing results.';
+    html += 'Data from <a href="https://www.waterboards.ca.gov/drinking_water/certlic/drinkingwater/EDTlibrary.html" target="_blank">CA Water Boards</a>.';
+    if (meta && meta.updated) {
+      html += ' Updated ' + fmtDate(meta.updated) + '.';
+    } else {
+      html += ' Last 2 years of testing results.';
+    }
     html += '</div>';
 
     panelContent.innerHTML = html;
@@ -722,16 +743,29 @@
     }
   }
 
+  // --- Data freshness ---
+  function showDataFreshness() {
+    if (!meta || !meta.updated) return;
+    var el = document.getElementById('data-freshness');
+    if (el) {
+      el.textContent = 'Data updated ' + fmtDate(meta.updated);
+      el.classList.remove('hidden');
+    }
+  }
+
   // --- Init ---
   async function init() {
     initMap();
 
     map.on('load', async function () {
       try {
-        // Load dictionary and systems in parallel
-        await Promise.all([loadContaminantDict(), loadSystems()]);
+        // Load dictionary, systems, and meta in parallel
+        await Promise.all([loadContaminantDict(), loadSystems(), loadMeta()]);
         var geojson = systemsToGeoJSON(systems);
         addSystemsLayer(geojson);
+
+        // Show data freshness in legend
+        showDataFreshness();
 
         // Hide loading overlay
         hideLoading();

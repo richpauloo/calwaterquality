@@ -208,6 +208,15 @@ html, body {
 .dot-failing    { background: var(--red); }
 .dot-unknown    { background: var(--gray); }
 
+.data-freshness {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
 /* === Panel (bottom sheet) === */
 .panel {
   position: fixed;

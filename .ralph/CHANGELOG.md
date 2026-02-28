@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 11 — 2026-02-28
+- What: Added "data last updated" indicator to the UI. Fetches meta.json (produced by the R pipeline) and displays the processing date in two places: the map legend (subtle text below the color dots) and the system detail panel footer (replaces generic "last 2 years" text with the actual date). Graceful fallback — if meta.json is missing, original text displays. Added placeholder meta.json for local development.
+- Why: The #1 gap from the Iteration 10 reflection: without a "last updated" date, users can't tell if the data is current. For a product built on trust ("is my water safe?"), data freshness is a critical signal. This was flagged as the quickest win with the highest trust impact.
+- Result: JS syntax valid, all files serve correctly. Legend shows "Data updated February 15, 2026" (from meta.json). Panel footer shows "Updated February 15, 2026" per system. Falls back gracefully if meta.json is absent.
+
 ## Reflection — Iteration 10 — 2026-02-28
 - Trajectory: **On track — approaching v1 completeness.** The Iteration 5 reflection course-corrected toward consumer comprehensibility; iterations 6-8 delivered on that well (contaminant dictionary, loading states, geolocation). Iteration 9 closed the automation gap. The product is now functional end-to-end: pipeline → data → deployment → consumer-friendly UI.
 - Working:
