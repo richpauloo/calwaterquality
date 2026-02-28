@@ -621,6 +621,32 @@
     html += '<br><a class="feedback-footer" href="https://github.com/richpauloo/calwaterquality/issues/new?title=' + fbTitle + '&body=' + fbBody + '" target="_blank" rel="noopener">Something look wrong? Send feedback</a>';
     html += '</div>';
 
+    // Nearby water systems
+    if (d.lat && d.lon) {
+      var nearby = findNearbySystems(d.system_id, d.lat, d.lon, 5);
+      if (nearby.length > 0) {
+        html += '<div class="nearby-section">';
+        html += '<div class="section-title">Nearby Water Systems</div>';
+        html += '<ul class="nearby-list">';
+        nearby.forEach(function (n) {
+          var ns = n.system;
+          var nStatus = deriveStatus(ns.status || 'Not Assessed', ns.n_exceed || 0, ns.n_tested || 0);
+          var dist = n.miles < 1 ? '<1 mi' : Math.round(n.miles) + ' mi';
+          html += '<li class="nearby-item" data-id="' + ns.id + '" data-lat="' + ns.lat + '" data-lon="' + ns.lon + '">';
+          html += '<span class="nearby-dot" style="background:' + statusColor(nStatus) + '"></span>';
+          html += '<span class="nearby-info">';
+          html += '<span class="nearby-name">' + titleCase(ns.name) + '</span>';
+          html += '<span class="nearby-meta">' + dist;
+          if (ns.pop) html += ' · ' + fmtPop(ns.pop) + ' served';
+          html += '</span>';
+          html += '</span>';
+          html += '</li>';
+        });
+        html += '</ul>';
+        html += '</div>';
+      }
+    }
+
     panelContent.innerHTML = html;
 
     // Update page title for sharing
@@ -670,6 +696,19 @@
         });
       });
     }
+
+    // Nearby system click handlers
+    panelContent.querySelectorAll('.nearby-item').forEach(function (item) {
+      item.addEventListener('click', function () {
+        var id = this.dataset.id;
+        var lat = parseFloat(this.dataset.lat);
+        var lon = parseFloat(this.dataset.lon);
+        if (lat && lon) {
+          map.flyTo({ center: [lon, lat], zoom: 12, duration: 1200 });
+        }
+        showSystem(id);
+      });
+    });
   }
 
   function fmtVal(v) {
@@ -868,25 +907,39 @@
     searchResults.classList.remove('hidden');
   }
 
+  // --- Haversine distance (miles) ---
+  function haversine(lat1, lon1, lat2, lon2) {
+    var dLat = (lat2 - lat1) * Math.PI / 180;
+    var dLon = (lon2 - lon1) * Math.PI / 180;
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    return 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)) * 3959;
+  }
+
   // --- Find My Water System (geolocation) ---
   function findNearestSystem(lat, lon) {
     var nearest = null;
     var minDist = Infinity;
     systems.forEach(function (s) {
       if (!s.lat || !s.lon) return;
-      // Haversine approximation (good enough for nearest-neighbor)
-      var dLat = (s.lat - lat) * Math.PI / 180;
-      var dLon = (s.lon - lon) * Math.PI / 180;
-      var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-              Math.cos(lat * Math.PI / 180) * Math.cos(s.lat * Math.PI / 180) *
-              Math.sin(dLon / 2) * Math.sin(dLon / 2);
-      var dist = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)) * 3959; // miles
+      var dist = haversine(lat, lon, s.lat, s.lon);
       if (dist < minDist) {
         minDist = dist;
         nearest = s;
       }
     });
     return { system: nearest, miles: minDist };
+  }
+
+  function findNearbySystems(systemId, lat, lon, count) {
+    var results = [];
+    systems.forEach(function (s) {
+      if (!s.lat || !s.lon || s.id === systemId) return;
+      results.push({ system: s, miles: haversine(lat, lon, s.lat, s.lon) });
+    });
+    results.sort(function (a, b) { return a.miles - b.miles; });
+    return results.slice(0, count);
   }
 
   // --- Map hint for first-time visitors ---
