@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 86 — 2026-02-28
+- What: **Added first-visit map hint.** A floating card appears above the "Find My Water System" button after data loads, reading "Each dot is a community water system. Tap one to check its water quality." Auto-dismisses after 8 seconds or on first interaction (map click, search focus, Find button press). Skipped for deep-link arrivals.
+- Why: First-time visitors landed on a map of colored dots with zero guidance — no explanation of what the dots represent or that they're tappable. The instruction text existed but was hidden in the off-screen panel. This bridges the gap between landing and first interaction.
+- Result: JS syntax valid. Three files changed: `index.html` (hint element), `css/style.css` (hint positioning/styling), `js/app.js` (initMapHint + dismissal logic). Pushed to deploy.
+
 ## Reflection — Iteration 85 — 2026-02-28
 - Trajectory: **On track. Best run of productive iterations since the v1 launch.**
 - Working: Iterations 81–84 each delivered a focused, user-facing UX improvement — truncation indicator (81), peak values & last-tested dates (82), severity badges (83), named exceedances in summary text (84). Every change directly answers the core question "is my water safe?" more clearly. All were pushed to deploy. The detail panel is now genuinely interpretable: a user sees which contaminants exceed limits by name, how severely (2.5x badge), what the peak was, and when it was last tested. This is the product's core value proposition, and it's working.
