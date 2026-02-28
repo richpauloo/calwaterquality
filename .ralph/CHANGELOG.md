@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 21 — 2026-02-28
+- What: Production deployment verification. Confirmed DNS for calwaterquality.com resolves correctly to GitHub Pages IPs (185.199.x.x) and returns HTTP 200. However, discovered two critical blockers: (1) All 16 commits from iterations 1-20 exist only locally — none have been pushed because `richpauloo` has read-only access to `caccr/caccr.github.io` (push: false). (2) GitHub Pages is configured in legacy mode (branch root `/`), not GitHub Actions deployment, so even after pushing, Pages config must be switched to use `deploy.yml`. HTTPS enforcement is also disabled.
+- Why: Priority #1 from the iteration 20 reflection. Without verifying deployment, all prior work is inaccessible to users. This was the most critical gap.
+- Result: Identified clear blockers. The site is feature-complete locally but not deployed. Next step: resolve push access (get org admin to grant write access, or fork and PR), then reconfigure GitHub Pages to Actions-based deployment.
+
 ## Reflection — Iteration 20 — 2026-02-28
 - Trajectory: **On track — the product is feature-complete for v1.** All 5 priorities from the iteration 15 reflection were addressed: favicon/branding (16), reset-view button (17), unit abbreviations (18), performance optimization (19). The only remaining item — real-world validation — is the natural next focus.
 - Working:
