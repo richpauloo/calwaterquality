@@ -203,6 +203,9 @@
       cluster: true,
       clusterMaxZoom: 11,
       clusterRadius: 50,
+      clusterProperties: {
+        fail_count: ['+', ['case', ['==', ['get', 'status'], 'Failing'], 1, 0]],
+      },
     });
 
     // Clustered circles — group nearby systems at low zoom
@@ -213,11 +216,12 @@
       filter: ['has', 'point_count'],
       paint: {
         'circle-color': [
-          'step', ['get', 'point_count'],
-          '#64b5f6',
-          10, '#42a5f5',
-          50, '#1e88e5',
-          200, '#1565c0',
+          'step',
+          ['/', ['get', 'fail_count'], ['get', 'point_count']],
+          '#1a8c3f',       // <10% failing → green
+          0.1, '#d4a017',  // 10–24% → amber
+          0.25, '#d45317', // 25–44% → orange
+          0.45, '#c62828', // 45%+ → red
         ],
         'circle-radius': [
           'step', ['get', 'point_count'],
