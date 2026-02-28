@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 23 — 2026-02-28
+- What: Added data staleness warning. When `meta.json` shows data older than 45 days, the legend freshness indicator and system detail panel footer display an orange "⚠ Data may be outdated" warning instead of the normal "Data updated" text. New `daysSinceUpdate()` helper computes age from the ISO date in meta.json. Added `.data-freshness-stale` and `.stale-warning` CSS classes using the existing `--orange` color variable.
+- Why: Priority #4 from the iteration 20 reflection. If the automated GitHub Actions pipeline fails silently, users would see stale data with no indication it's outdated. For a trust-critical product ("is my water safe?"), surfacing data age is essential. The 45-day threshold gives a 15-day buffer beyond the monthly refresh schedule.
+- Result: JS syntax valid, CSS balanced (157/157 braces). Two display locations updated (legend, panel footer). No new dependencies. Warning appears in both places when data age exceeds 45 days; normal display otherwise.
+
 ## Iteration 22 — 2026-02-28
 - What: Added PWA manifest for "Add to Home Screen" support. Created `manifest.json` with app name, theme color, and icons. Generated 192x192 and 512x512 PNG icons from the existing SVG favicon using ImageMagick. Added `<link rel="manifest">` and Apple web app meta tags to `index.html`.
 - Why: Priority #3 from the iteration 20 reflection. The "weather app for water quality" metaphor is best realized when users can install it to their home screen like a native app. The manifest enables this on both Android (Chrome install prompt) and iOS (Safari "Add to Home Screen"), giving the app a standalone appearance with the blue theme bar.
