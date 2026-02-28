@@ -1,0 +1,31 @@
+{
+  "name": "California Water Quality",
+  "short_name": "CA Water",
+  "description": "Check drinking water quality for any community water system in California. Free, open-source, updated monthly.",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#1565c0",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "type": "image/png",
+      "sizes": "180x180"
+    }
+  ]
+}

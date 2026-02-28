@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 22 — 2026-02-28
+- What: Added PWA manifest for "Add to Home Screen" support. Created `manifest.json` with app name, theme color, and icons. Generated 192x192 and 512x512 PNG icons from the existing SVG favicon using ImageMagick. Added `<link rel="manifest">` and Apple web app meta tags to `index.html`.
+- Why: Priority #3 from the iteration 20 reflection. The "weather app for water quality" metaphor is best realized when users can install it to their home screen like a native app. The manifest enables this on both Android (Chrome install prompt) and iOS (Safari "Add to Home Screen"), giving the app a standalone appearance with the blue theme bar.
+- Result: manifest.json valid, 3 new files (manifest.json, icon-192.png, icon-512.png — total ~35 KB). HTML valid, 3 new tags added. Site structure intact.
+
 ## Iteration 21 — 2026-02-28
 - What: Production deployment verification. Confirmed DNS for calwaterquality.com resolves correctly to GitHub Pages IPs (185.199.x.x) and returns HTTP 200. However, discovered two critical blockers: (1) All 16 commits from iterations 1-20 exist only locally — none have been pushed because `richpauloo` has read-only access to `caccr/caccr.github.io` (push: false). (2) GitHub Pages is configured in legacy mode (branch root `/`), not GitHub Actions deployment, so even after pushing, Pages config must be switched to use `deploy.yml`. HTTPS enforcement is also disabled.
 - Why: Priority #1 from the iteration 20 reflection. Without verifying deployment, all prior work is inaccessible to users. This was the most critical gap.
