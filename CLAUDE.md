@@ -33,3 +33,5 @@
 - Feedback issue links now point to richpauloo/calwaterquality (updated from caccr/caccr.github.io)
 - Site is at a subdirectory (`/calwaterquality/`) — all asset paths must be relative (no leading `/`), OG meta tags need full absolute URL
 - Two remotes: `origin` (caccr/caccr.github.io, read-only) and `deploy` (richpauloo/calwaterquality, pushable) — always push to `deploy`
+- GoatCounter analytics at calwaterquality.goatcounter.com — free for open-source, privacy-friendly, no cookie banner needed. Requires one-time signup at goatcounter.com to activate.
+- SEO files: robots.txt, sitemap.xml, and JSON-LD (WebApplication schema) in site/ — all deployed automatically via the site/ directory upload

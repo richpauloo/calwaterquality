@@ -33,6 +33,26 @@
   <meta name="twitter:title" content="California Water Quality">
   <meta name="twitter:description" content="Is your drinking water safe? Check any community water system in California.">
   <meta name="twitter:image" content="https://richpauloo.github.io/calwaterquality/og-image.png">
+  <!-- JSON-LD structured data for search engines -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "California Water Quality",
+    "url": "https://richpauloo.github.io/calwaterquality/",
+    "description": "Check drinking water quality for any community water system in California. Free, open-source, updated monthly.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Person", "name": "Rich Pauloo", "url": "https://richpauloo.com" },
+    "license": "https://opensource.org/licenses/MIT",
+    "about": {
+      "@type": "Thing",
+      "name": "California drinking water quality",
+      "description": "Water quality test results for 2,816 community water systems in California"
+    }
+  }
+  </script>
   <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -107,5 +127,7 @@
 
   <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
   <script src="js/app.js"></script>
+  <script data-goatcounter="https://calwaterquality.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>

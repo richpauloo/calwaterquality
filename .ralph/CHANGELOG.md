@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 36 — 2026-02-28
+- What: **Added analytics and SEO discoverability.** Added GoatCounter privacy-friendly analytics (free for open-source), robots.txt, sitemap.xml, and JSON-LD structured data (WebApplication schema) to the site.
+- Why: The iteration 35 reflection identified these as the two remaining high-value code changes. Analytics provides signal on whether anyone visits (currently zero visibility). SEO basics (sitemap, robots.txt, structured data) let search engines discover and index the site — organic search is the primary discovery channel for a free public utility.
+- Result: 4 files changed — index.html (GoatCounter script + JSON-LD), robots.txt (new), sitemap.xml (new). All deployed via the existing `site/` directory upload in deploy.yml. **Note:** GoatCounter requires a one-time account creation at goatcounter.com (subdomain: calwaterquality) to start recording pageviews.
+
 ## Reflection — Iteration 35 — 2026-02-28
 - Trajectory: **On track, at a natural plateau.** The site is deployed, operationally sound, and pipeline-validated. Iterations 31–33 completed the operational TODO list from the iteration 30 reflection efficiently: pipeline fix → asset path fix → push to prod. The product is in a good state. But the remaining high-impact work (user feedback, domain transfer) requires human action, not code.
 - Working:
