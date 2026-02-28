@@ -26,3 +26,5 @@
 - All unit abbreviations mapped in contaminant_dict.json `_units`: μg/L, mg/L, ng/L, pCi/L, MFL, NTU, pH, μmhos/cm, °C. Unitless indices (AGGR, LANG, TON) display with no unit suffix. fmtUnits() uses `in` check to respect empty-string mappings.
 - Accessibility: ARIA landmarks (banner/search/complementary/region/application), keyboard nav (Escape closes panel, Enter/Space on drag handle), focus management, `:focus-visible` outlines
 - GitHub Actions `refresh-data.yml` runs on 1st and 15th for data refresh — hasn't been validated in production yet
+- After 20 iterations the product is feature-complete for v1 — next priority is production validation (DNS, deployment, pipeline), not new features
+- CNAME is set to calwaterquality.com — verify DNS and GitHub Pages settings are configured before assuming site is live

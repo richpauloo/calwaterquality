@@ -1,5 +1,31 @@
 # Ralph Changelog
 
+## Reflection — Iteration 20 — 2026-02-28
+- Trajectory: **On track — the product is feature-complete for v1.** All 5 priorities from the iteration 15 reflection were addressed: favicon/branding (16), reset-view button (17), unit abbreviations (18), performance optimization (19). The only remaining item — real-world validation — is the natural next focus.
+- Working:
+  - **Reflection-driven planning continues to be effective**: The 5 priorities set at iteration 15 were executed cleanly across 4 iterations with zero wasted effort. Each iteration touched a different concern (branding, navigation, display, performance). No file was over-modified.
+  - **Product completeness is high**: The site covers 2,816 community water systems, has a full data pipeline with automated refresh, consumer-friendly UI with geolocation/search/detail panels, educational content, accessibility, branding, social cards, performance optimizations, and shareable deep links. This is a functional product.
+  - **Architecture remains simple and proven**: 3 core files (HTML/CSS/JS), ~36 KB code, ~29 MB data (452 KB initial load), no build step, GitHub Pages. Nothing to break.
+- Not working:
+  - **Zero production validation**: All 20 iterations happened in a single development session. The GitHub Actions pipeline has never run. We don't know if calwaterquality.com resolves, if the CNAME is configured, or if the deployment actually works. The product is feature-complete but not verified to be live.
+  - **No real user feedback**: The product has been designed and built without any external validation. We're making assumptions about what consumers find useful and comprehensible. The "weather app for water quality" metaphor hasn't been tested with actual weather-app users.
+  - **Data may be stale**: The processed JSON was generated during this session. The automated refresh hasn't run yet. If the pipeline breaks in production (missing R packages, download timeout, changed data format), users won't see it until someone checks.
+- Missing:
+  - Production deployment verification (is the site live? does DNS resolve?)
+  - GitHub Actions pipeline validation (trigger a manual run, verify it completes)
+  - PWA manifest for "add to home screen" on mobile
+  - Error monitoring / alerting if the pipeline fails
+  - Real user testing and feedback collection
+- Spiraling? **No.** The last 5 iterations have been well-focused and each made a distinct contribution. But we're approaching a natural inflection point where continued local development has diminishing returns. The highest-impact work now is shipping, validating, and getting real user feedback — not adding more features.
+- User impact: **A real person visiting calwaterquality.com today would find this genuinely useful — IF the site is actually deployed.** The product answers the core question ("is my water safe?") clearly and accessibly. The biggest risk is that it's not actually live, or the data pipeline silently fails and shows stale data.
+- Next 5 iterations should focus on:
+  1. **Verify production deployment** — check if calwaterquality.com resolves, if GitHub Pages is configured correctly, if the CNAME/DNS works. Fix any deployment issues. This is prerequisite to everything else.
+  2. **Validate the GitHub Actions pipeline** — trigger a manual workflow_dispatch run, verify it downloads data, processes it, commits, and deploys. Fix any failures.
+  3. **Add a PWA manifest** — enable "Add to Home Screen" on mobile for the weather-app experience. Include the existing favicon and branding.
+  4. **Lightweight error monitoring** — add a simple check (even just a scheduled GitHub Action) that verifies the site is responding and data isn't older than 45 days. Surface staleness warnings in the UI.
+  5. **User feedback mechanism** — add a minimal "feedback" link or form so early visitors can report issues or confusion. Could be as simple as a mailto: link or a Google Form.
+- Adjustments: **Shift from building to shipping.** The product has been in "build" mode for 20 iterations. Further feature work without production validation is speculative. The next cycle must prioritize: (1) verify it's live, (2) verify the pipeline works, (3) then iterate based on real data. If the site isn't deployed, nothing else matters.
+
 ## Iteration 19 — 2026-02-28
 - What: Performance optimization — added `<link rel="preload">` for systems_summary.json and contaminant_dict.json so they download in parallel with MapLibre GL (instead of waiting until after map loads). Added `<link rel="preconnect">` for unpkg.com and CARTO tile CDN. Compacted systems_summary.json by dropping unused `owner` field and reducing coordinate precision from 6 to 4 decimal places (11m resolution, more than enough for map dots). Updated R pipeline to match.
 - Why: Priority #4 from iteration 15 reflection. The critical path was: download MapLibre → init map → THEN fetch data JSONs. Preloading lets data download in parallel, saving 1-3 seconds on slow connections. The JSON compaction saves ~60 KB raw (12% smaller) and ~10 KB gzipped.
@@ -66,46 +92,4 @@
 - Why: The #1 gap from the Iteration 10 reflection: without a "last updated" date, users can't tell if the data is current. For a product built on trust ("is my water safe?"), data freshness is a critical signal. This was flagged as the quickest win with the highest trust impact.
 - Result: JS syntax valid, all files serve correctly. Legend shows "Data updated February 15, 2026" (from meta.json). Panel footer shows "Updated February 15, 2026" per system. Falls back gracefully if meta.json is absent.
 
-## Reflection — Iteration 10 — 2026-02-28
-- Trajectory: **On track — approaching v1 completeness.** The Iteration 5 reflection course-corrected toward consumer comprehensibility; iterations 6-8 delivered on that well (contaminant dictionary, loading states, geolocation). Iteration 9 closed the automation gap. The product is now functional end-to-end: pipeline → data → deployment → consumer-friendly UI.
-- Working:
-  - **Architecture is proven**: 3 static files (HTML/CSS/JS), no build step, ~36 KB code + ~23 MB data. GitHub Pages deployment with automated refresh. Simple and maintainable.
-  - **Core UX flow is strong**: "Find My Water System" one-tap → geolocation → nearest system → detail panel. Search works with population ranking. Deep links and sharing functional.
-  - **Consumer comprehensibility improved dramatically**: 148-entry contaminant dictionary with plain-language names, health effects, and sources. Unit abbreviations cleaned up. Status badges with clear language ("Meets safety standards" instead of "In Compliance").
-  - **Data coverage is excellent**: 2,816 community water systems, 2+ years of testing data, LADWP system alone has 140+ contaminants tested.
-  - **Iteration 5 reflection was high-value**: It successfully redirected effort from plumbing (deep links, deployment) to user-facing comprehensibility. Reflection works.
-- Not working:
-  - **No data freshness indicator**: `meta.json` is produced by the pipeline but never displayed. Users can't see when data was last updated. For a product built on trust ("is my water safe?"), this is a critical gap.
-  - **148 systems (5.3%) show "Not Assessed"** including LADWP (7.7M people served). The SAFER risk assessment dataset doesn't cover every system. For systems with MCL data, we could compute a derived status instead of showing "Not Assessed."
-  - **No educational context**: Users see MCL bars and status badges but don't learn what an MCL is, what "At Risk" means practically, or what to do if their water fails. No FAQ, no "about" content.
-  - **Accessibility gaps**: No `<h1>` heading, minimal ARIA roles, no skip-to-content, no keyboard-accessible panel close, no focus management when panels open.
-  - **Some unit abbreviations still unmapped**: AGGR, TON, LANG, UMHO/CM, NTU, PH, C show as raw strings.
-- Missing:
-  - Favicon and basic PWA manifest (for "add to home screen" on mobile)
-  - Reset-view button to zoom back to statewide view after navigating
-  - OG image / social card for link previews when sharing
-- Spiraling? **No.** Each iteration has been focused and distinct. No file was modified 3+ times in a row. The product trajectory has been linear: data pipeline → frontend → deployment → comprehensibility → automation. Good discipline.
-- User impact: **A real person visiting today would find this useful.** They can find their water system, see whether it meets safety standards, understand which contaminants were found and at what levels, and share results. The biggest gap is trust: without a "last updated" date, users don't know if the data is current. Second biggest gap is the "now what?" question — there's no guidance on what to do if your water is failing.
-- Next 5 iterations should focus on:
-  1. **Show "data last updated" date** from meta.json in the UI footer and panel footer. Quick win, major trust signal.
-  2. **Compute derived status for "Not Assessed" systems** — if a system has MCL exceedances in its data, show it as "At Risk" or "Failing" rather than "Not Assessed." This fixes the LADWP problem and covers 148 systems.
-  3. **Add educational "What does this mean?" content** — expandable section or modal explaining MCLs, what the status categories mean, and what to do if your water system is failing (link to SWRCB resources, suggest bottled water, etc.).
-  4. **Accessibility pass** — h1 heading, ARIA roles, focus management, keyboard navigation, skip-to-content link.
-  5. **Visual polish** — reset-view button, favicon, remaining unit abbreviation mappings.
-- Adjustments: The product is past the "build core features" phase and entering "build trust and polish." Every iteration should pass the test: "Does this make a user more confident in the information they're seeing?"
-
-## Iteration 9 — 2026-02-28
-- What: Added automated monthly data refresh via GitHub Actions. New `refresh-data.yml` workflow runs on the 1st and 15th of each month (matching SDWIS update cadence), installs R + packages, downloads fresh data, processes it, and commits updated JSON files. The existing deploy workflow then auto-deploys. Also added `meta.json` to the R pipeline output with processing date, record counts, and date range — enabling future "data last updated" UI indicators.
-- Why: Success criterion #1 is "Automated monthly data refresh." Until now the pipeline ran manually. Without automation, data goes stale and users lose trust. The workflow also supports manual triggering via workflow_dispatch for ad-hoc refreshes.
-- Result: Workflow YAML passes syntax validation. Pipeline integration verified — correct paths, git-tracked output directory, deploy chain intact (data refresh → commit → push → deploy workflow triggers). Timeout set to 30 min to handle the ~700 MB SDWIS download. No-op if data hasn't changed (skips empty commits).
-
-## Iteration 8 — 2026-02-28
-- What: Added prominent "Find My Water System" geolocation button. Floating pill-shaped CTA on the map that uses the browser Geolocation API to find the nearest community water system, fly the map there, and open its detail panel. Uses Haversine distance to search all 2,816 systems. Shows loading spinner while locating, handles permission denied and timeout errors gracefully with toast messages. Button auto-hides when a system detail panel is open, reappears when closed. Hidden until data loads to prevent empty-state clicks.
-- Why: The biggest user-experience gap: most people don't know their water system's name. Without this, users had to search (requiring knowledge of the system name) or browse the map manually. This is the core "weather app for water quality" interaction — open the site, tap one button, see your water quality.
-- Result: JS syntax valid, all files serve correctly. Button appears centered at bottom of map after data loads. Geolocation flow: tap → "Locating..." spinner → fly to nearest system → toast shows system name + distance. Graceful degradation for denied permissions or unsupported browsers.
-
-## Iteration 7 — 2026-02-28
-- What: Added loading overlay and error states for initial data load. Users now see a spinner with "Loading water quality data..." while the 512 KB summary JSON loads, and a clear error message with retry button if the fetch fails. Sorted search results by population (largest systems first) so common searches like "Los Angeles" return the major water systems at top instead of small HOAs. Added population count to search result metadata for context.
-- Why: First-time visitors saw a blank map with zero feedback while data loaded — a terrible first impression that made the site feel broken. Unsorted search buried large systems (serving millions) below tiny ones. These are the highest-impact UX gaps after the contaminant dictionary.
-- Result: JS syntax valid, all files serve correctly. Loading overlay fades out smoothly after data loads. Error state shows if fetch fails with a retry button. Search results now show "Los Angeles County · 3.3M served" style metadata.
 
