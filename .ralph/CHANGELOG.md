@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 13 — 2026-02-28
+- What: Added collapsible "What does this mean?" educational section to every system detail panel. Uses the native `<details>` element. Includes plain-language explanations of MCLs (safety limits), what each status category means (with matching color dots), and what contaminants with no limit means. Context-aware: failing systems get a prominent "What should I do?" action block with 5 concrete steps (don't panic, check mail, consider a filter, contact provider, CA Water Board hotline). Compliant systems get a reassuring "Good news" block.
+- Why: Priority #3 from the iteration 10 reflection. Users saw status badges and contaminant bars but had no way to understand what an MCL is, what "Failing" means practically, or what to do about it. This is the biggest remaining comprehensibility gap — the difference between showing data and making it useful.
+- Result: JS syntax valid, all files serve correctly. Educational section is collapsed by default (doesn't clutter the view), uses standard `<details>/<summary>` for accessibility, and adds ~60 lines of JS + ~130 lines of CSS with no external dependencies.
+
 ## Iteration 12 — 2026-02-28
 - What: Derive compliance status from MCL data for 148 systems previously marked "Not Assessed" (including LADWP, serving 7.7M people). Added `deriveStatus()` to frontend JS that overrides "Not Assessed" using existing n_exceed/n_tested data — 87 systems now show as "Failing", 58 as "In Compliance", only 3 truly unassessed remain. Also fixed the R pipeline so future data refreshes compute this server-side.
 - Why: The biggest data quality gap: LADWP and 147 other systems showed "Not yet assessed" even though we had full MCL test data. Users seeing gray dots for the largest water system in California erodes trust.

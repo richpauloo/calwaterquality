@@ -332,6 +332,58 @@
     }
   }
 
+  function buildEducationalSection(status, exceedCount) {
+    var html = '<details class="edu-section">';
+    html += '<summary class="edu-toggle">What does this mean?</summary>';
+    html += '<div class="edu-content">';
+
+    // Context-aware action guidance — show first for failing systems
+    if (status === 'Failing') {
+      html += '<div class="edu-action edu-action-failing">';
+      html += '<div class="edu-action-title">What should I do?</div>';
+      html += '<ul class="edu-action-list">';
+      html += '<li><strong>Don\'t panic.</strong> Water systems that exceed a safety limit are required to notify customers and take corrective action.</li>';
+      html += '<li><strong>Check your mail.</strong> Your water provider must send you a notice explaining the violation and what they\'re doing about it.</li>';
+      html += '<li><strong>Consider a filter.</strong> A certified point-of-use filter can reduce many contaminants. Look for NSF/ANSI certified filters for the specific contaminant.</li>';
+      html += '<li><strong>Contact your water provider</strong> to ask about their corrective action plan and timeline.</li>';
+      html += '<li><strong>Get more info</strong> from the <a href="https://www.waterboards.ca.gov/drinking_water/" target="_blank" rel="noopener">CA State Water Board</a> or call the Safe Drinking Water Hotline: <a href="tel:+18004264791">1-800-426-4791</a>.</li>';
+      html += '</ul>';
+      html += '</div>';
+    } else if (status === 'In Compliance') {
+      html += '<div class="edu-action edu-action-good">';
+      html += '<div class="edu-action-title">Good news</div>';
+      html += '<p>All detected contaminants are within California\'s safety limits. Your water provider regularly tests the water and reports results to the state.</p>';
+      html += '</div>';
+    }
+
+    // What are safety limits?
+    html += '<div class="edu-block">';
+    html += '<div class="edu-block-title">What are safety limits (MCLs)?</div>';
+    html += '<p>A <strong>Maximum Contaminant Level (MCL)</strong> is the highest amount of a contaminant allowed in drinking water. California sets these limits to protect public health, often stricter than federal standards. The bars above show how each contaminant compares to its legal limit.</p>';
+    html += '</div>';
+
+    // What do the statuses mean?
+    html += '<div class="edu-block">';
+    html += '<div class="edu-block-title">What do the statuses mean?</div>';
+    html += '<div class="edu-status-list">';
+    html += '<div class="edu-status-item"><span class="dot dot-compliance"></span><strong>Meets standards</strong> — All tested contaminants are within California safety limits.</div>';
+    html += '<div class="edu-status-item"><span class="dot dot-at-risk"></span><strong>At risk</strong> — The system has risk factors identified by the state that could affect water quality.</div>';
+    html += '<div class="edu-status-item"><span class="dot dot-failing"></span><strong>Failing</strong> — One or more contaminants exceed California safety limits in recent testing.</div>';
+    html += '<div class="edu-status-item"><span class="dot dot-unknown"></span><strong>Not assessed</strong> — Not enough data to determine compliance status.</div>';
+    html += '</div>';
+    html += '</div>';
+
+    // What about contaminants with no limit?
+    html += '<div class="edu-block">';
+    html += '<div class="edu-block-title">What about contaminants with no safety limit?</div>';
+    html += '<p>Some detected chemicals don\'t have a legal limit yet. This doesn\'t mean they\'re dangerous — it means California is still studying them or hasn\'t set an enforceable standard. Many are being monitored under the state\'s Unregulated Contaminant Monitoring program.</p>';
+    html += '</div>';
+
+    html += '</div>'; // edu-content
+    html += '</details>';
+    return html;
+  }
+
   function renderSystemDetail(d) {
     var detected = (d.contaminants || []).filter(function (c) { return c.n_detects > 0; });
     var nExceed = detected.filter(function (c) { return c.exceeds_mcl; }).length;
@@ -379,6 +431,9 @@
 
     // Summary
     html += '<p class="summary-text">' + summaryText + '</p>';
+
+    // Educational "What does this mean?" collapsible
+    html += buildEducationalSection(status, exceedCount);
 
     // Stats
     html += '<div class="stat-row">';
