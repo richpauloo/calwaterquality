@@ -24,3 +24,5 @@
 - Panel states: closed (default) → peek (summary visible) → open (full scroll) — driven by setPanel()
 - deriveStatus() in frontend + pipeline overrides "Not Assessed" using MCL exceedance data — only 3 of 2,816 systems truly unassessed
 - Unit abbreviations still unmapped: AGGR, TON, LANG, UMHO/CM, NTU, PH, C — add to _units in contaminant_dict.json
+- Accessibility: ARIA landmarks (banner/search/complementary/region/application), keyboard nav (Escape closes panel, Enter/Space on drag handle), focus management, `:focus-visible` outlines
+- GitHub Actions `refresh-data.yml` runs on 1st and 15th for data refresh — hasn't been validated in production yet
