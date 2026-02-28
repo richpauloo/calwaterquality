@@ -37,4 +37,5 @@
 - SEO files: robots.txt, sitemap.xml, and JSON-LD (WebApplication schema) in site/ — all deployed automatically via the site/ directory upload
 - "No MCL" contaminant chips are now tappable `<button>` elements with tap-to-expand detail (iteration 65) — `title` tooltips don't work on mobile touch devices
 - Detail panel now shows: named exceedances in summary, severity badges (Nx above limit / % of limit), peak values, last-tested dates — all added in iterations 81-84
+- Map uses clustering with `clusterProperties` to aggregate `fail_count` → fail ratio determines cluster color (green/amber/orange/red). Nearby systems section shows 5 closest systems with status dots, tappable to navigate.
 - Human actions still pending: activate GoatCounter, share site, verify custom domain, submit to Google Search Console
