@@ -1026,10 +1026,29 @@
   // --- Share ---
   window.shareSystem = function (systemId, name) {
     var url = location.origin + location.pathname + '#system/' + systemId;
+    // Build a contextual share message with the system's status
+    var text = name + ' — ';
+    var sys = systems.find(function (s) { return s.id === systemId; });
+    if (sys) {
+      var status = deriveStatus(sys.status || 'Not Assessed', sys.n_exceed || 0, sys.n_tested || 0);
+      if (status === 'Failing') {
+        var n = sys.n_exceed || 0;
+        text += n + ' contaminant' + (n !== 1 ? 's' : '') + ' exceed' + (n === 1 ? 's' : '') + ' California safety limits.';
+      } else if (status === 'At-Risk' || status === 'Potentially At-Risk') {
+        text += 'water quality at risk.';
+      } else if (status === 'In Compliance') {
+        text += 'water meets all safety standards.';
+      } else {
+        text += 'water quality info.';
+      }
+    } else {
+      text += 'water quality info.';
+    }
+    text += ' Check yours:';
     if (navigator.share) {
-      navigator.share({ title: name + ' — Water Quality', url: url });
+      navigator.share({ title: name + ' — Water Quality', text: text, url: url });
     } else if (navigator.clipboard) {
-      navigator.clipboard.writeText(url).then(function () {
+      navigator.clipboard.writeText(text + ' ' + url).then(function () {
         showToast('Link copied!');
       });
     }
