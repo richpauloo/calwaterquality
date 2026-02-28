@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 16 — 2026-02-28
+- What: Added favicon (SVG + ICO + apple-touch-icon), OG social card image (1200x630), and complete meta tags (Open Graph, Twitter Card, theme-color). Water drop icon in site blue (#1565c0). Social card shows site name, tagline, and URL.
+- Why: Priority #1 from the iteration 15 reflection. The site had no favicon (shows generic browser icon) and no social card (sharing links on Twitter/iMessage/Slack shows a plain text link instead of a rich preview with image). These are quick wins for professional appearance and shareability.
+- Result: 4 new files (favicon.svg, favicon.ico, apple-touch-icon.png, og-image.png — total ~36 KB). 13 new meta tags in index.html. HTML valid, all assets verified.
+
 ## Reflection — Iteration 15 — 2026-02-28
 - Trajectory: **On track — v1 is effectively complete.** All 4 priorities from the iteration 10 reflection were shipped in sequence (data freshness → derived status → educational content → accessibility). The product now covers the full loop: automated data pipeline → consumer-friendly UI → accessibility → educational context. A real person visiting today can find their water system, understand what the results mean, and know what to do if something is wrong.
 - Working:
@@ -88,41 +93,4 @@
 - What: Added loading overlay and error states for initial data load. Users now see a spinner with "Loading water quality data..." while the 512 KB summary JSON loads, and a clear error message with retry button if the fetch fails. Sorted search results by population (largest systems first) so common searches like "Los Angeles" return the major water systems at top instead of small HOAs. Added population count to search result metadata for context.
 - Why: First-time visitors saw a blank map with zero feedback while data loaded — a terrible first impression that made the site feel broken. Unsorted search buried large systems (serving millions) below tiny ones. These are the highest-impact UX gaps after the contaminant dictionary.
 - Result: JS syntax valid, all files serve correctly. Loading overlay fades out smoothly after data loads. Error state shows if fetch fails with a retry button. Search results now show "Los Angeles County · 3.3M served" style metadata.
-
-## Iteration 6 — 2026-02-28
-- What: Added contaminant dictionary (148 entries) mapping raw chemical names to plain-language display names, health effect descriptions, and common sources. Replaced raw unit abbreviations (UG/L→μg/L, PCI/L→pCi/L, etc.) with readable versions. Each contaminant card now shows what the chemical is, why it matters, and where it comes from. Fixed titleCase to preserve abbreviations (DWP, EBMUD, PFOS stay uppercase). Renamed "Other Detected (No Limit Set)" to "Detected — No Safety Limit Set."
-- Why: The #1 gap identified in the Iteration 5 reflection: raw technical chemical names and unit abbreviations made the site incomprehensible to regular consumers. "PERFLUOROCTANOIC ACID (PFOA)" now shows as "PFOA ('Forever Chemical')" with a plain-language health description. This is the highest-impact change for the core product goal.
-- Result: JS syntax valid, all files serve correctly, dictionary covers 100% of top-20 most frequent contaminants. Dictionary is 34 KB (loaded in parallel with system data — no impact on initial load time). Fallback: unknown contaminants still get titleCase display.
-
-## Reflection — Iteration 5 — 2026-02-28
-- Trajectory: **On track** — strong foundation built in 4 iterations. Pipeline works, frontend is functional, deployment is configured, deep links are in. But the core value proposition ("understandable to a regular person") has a significant gap.
-- Working: Architecture is sound (36 KB code, static JSON, GitHub Pages). Map + search + detail panels all function correctly. Mobile-first responsive design is solid. Data pipeline produces clean, compact output.
-- Not working: **Consumer comprehensibility is the #1 gap.** Chemical names are raw technical strings (1,2-Dibromo-3-Chloropropane, Pfos). Units are abbreviations (UG/L, PCI/L, MFL). No health effect descriptions. No plain-language explanations of what contaminants mean. The "Other Detected (No Limit Set)" section is confusing. titleCase() mangles abbreviations (PFOS→Pfos, DWP→Dwp). No loading state — empty map on slow connections. No error state if data fails. Search results unsorted (not ranked by population/relevance).
-- Next 5 iterations should focus on:
-  1. **Contaminant dictionary** — a lookup table mapping chemical codes to plain names, health effects, common sources, and human-readable units. This is the single highest-impact change for consumer friendliness. Can be a static JSON file.
-  2. **Loading & error states** — spinner while data loads, clear error message if it fails. Quick win.
-  3. **Search ranking** — sort results by population (biggest systems first) so common searches return useful results first.
-  4. **Visual polish** — reset-view button, fix titleCase for abbreviations, accessibility basics (ARIA roles on search, h1 heading).
-  5. **"What does this mean?" context** — use the contaminant dictionary to show plain-language health info in the detail panel alongside the MCL bars.
-- Adjustments: Stop building plumbing features (deep links, deployment) and pivot fully to consumer comprehensibility. Every iteration should pass the test: "Would my neighbor understand this page better after this change?"
-
-## Iteration 4 — 2026-02-28
-- What: Added URL deep-linking and sharing for water systems. Visiting `#system/CA0110001` now opens that system's detail panel directly, with map flyTo. Share button on each system copies link (or uses native share on mobile). Browser back/forward works. Page title updates to show the system name.
-- Why: Without shareable links, users couldn't send water quality results to family, neighbors, or share on social media. A parent who discovers their school's water system is failing has no way to alert others. This makes every system view a shareable, bookmarkable URL.
-- Result: JS syntax valid, all static assets serve correctly. Hash routing works for direct links, search→select, map click, and back/forward navigation. Share button uses Web Share API on mobile, clipboard fallback on desktop with toast confirmation.
-
-## Iteration 3 — 2026-02-28
-- What: Set up GitHub Pages deployment via GitHub Actions. The workflow deploys the `site/` directory (not root) on every push to master. Added CNAME for calwaterquality.com, .nojekyll to skip Jekyll, and un-gitignored site/data/ so the 2,816 system JSON files are committed and deployable.
-- Why: The new frontend existed but was invisible — no one could access it. The root was still serving a 7.8 MB legacy HTML file. This change makes the new water quality app the live site at calwaterquality.com.
-- Result: Commit includes deploy workflow, CNAME, .nojekyll, and all data files (29 MB). After push, GitHub Actions will deploy site/ as the Pages root. Requires enabling "GitHub Actions" as Pages source in repo settings.
-
-## Iteration 2 — 2026-02-28
-- What: Built the consumer-facing frontend — a mobile-first single-page app with MapLibre GL JS map, search, and system detail panel. 2,816 water systems displayed as color-coded dots (green=compliance, orange=at-risk, red=failing, gray=not assessed). Search by system name, county, or ID. Click a system to see plain-language compliance status, contaminant counts, and visual bars showing each contaminant's level vs the safety limit (MCL). Bottom-sheet panel on mobile, side panel on desktop.
-- Why: The data pipeline (Iteration 1) produced clean JSON but there was no way for a user to see it. This is the core product — making water quality data understandable to regular people. Replaced the legacy 7.5 MB Pandoc-generated index.html with 36 KB of clean HTML/CSS/JS.
-- Result: Three files (site/index.html, site/css/style.css, site/js/app.js). All assets load, JS passes syntax check, data renders correctly. Map shows all systems, search works with autocomplete, detail panel shows detected contaminants with MCL comparison bars. No build step needed — pure static files.
-
-## Iteration 1 — 2026-02-28
-- What: Built complete R data pipeline (download + process) for California water quality data. Downloads SDWIS4 water quality results from EDT Library, SAFER risk assessment from data.ca.gov, and reference tables. Processes 6.4M records, filters to 3.7M for 2,816 community water systems, computes per-system contaminant averages vs MCLs, and exports compact JSON (512 KB summary + 23 MB per-system detail files).
-- Why: Foundation for the entire product. Without data, there's no "weather app for water quality." Verified all data sources are live and accessible. Replaced the old FTP-based approach with direct HTTP downloads.
-- Result: Pipeline runs in ~3 minutes locally. Outputs: systems_summary.json (2,816 systems with lat/lon, compliance status, exceedance counts) and per-system JSON files with detected contaminants, MCL comparisons, and sample counts. 1,278 systems have at least one MCL exceedance. Output is 23 MB total vs ~9 GB for the legacy per-system HTML approach.
 
