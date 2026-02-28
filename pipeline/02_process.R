@@ -39,7 +39,7 @@ safer <- fread(file.path(RAW_DIR, "safer_risk.csv"),
     "PRIMARY_MCL_VIOLATION", "SECONDARY_MCL_VIOLATION",
     "E_COLI_VIOLATION", "TREATMENT_TECHNIQUE_VIOLATION",
     "WATER_QUALITY_RISK_LEVEL", "PRIMARY_ANALYTES",
-    "OWNER_TYPE"
+    "OWNER_TYPE", "PL_ADDRESS_CITY_NAME"
   ),
   col.names = c(
     "system_id", "system_name", "county",
@@ -49,7 +49,7 @@ safer <- fread(file.path(RAW_DIR, "safer_risk.csv"),
     "primary_mcl_violation", "secondary_mcl_violation",
     "ecoli_violation", "treatment_technique_violation",
     "water_quality_risk", "primary_analytes",
-    "owner_type"
+    "owner_type", "city"
   )
 )
 
@@ -183,6 +183,7 @@ summary_list <- lapply(seq_len(nrow(map_data)), function(i) {
     lat  = round(row$lat, 4),
     lon  = round(row$lon, 4),
     county    = row$county,
+    city      = row$city,
     pop       = row$population,
     status    = row$display_status,
     n_exceed  = row$n_exceedances,
@@ -233,6 +234,7 @@ for (sid in system_ids) {
     system_id    = sys_info$system_id,
     system_name  = sys_info$system_name,
     county       = sys_info$county,
+    city         = sys_info$city,
     population   = sys_info$population,
     connections  = sys_info$connections,
     owner_type   = sys_info$owner_type,

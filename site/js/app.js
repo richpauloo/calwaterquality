@@ -553,7 +553,8 @@
     html += '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>';
     html += '</button>';
     html += '</div>';
-    html += '<div class="system-meta">' + titleCase(d.county) + ' County';
+    var locationMeta = d.city ? titleCase(d.city) + ', ' + titleCase(d.county) + ' County' : titleCase(d.county) + ' County';
+    html += '<div class="system-meta">' + locationMeta;
     if (d.population) html += ' &middot; Serves ' + fmtPop(d.population) + ' people';
     html += '</div>';
     html += '<div class="status-badge ' + sClass + '"><span class="status-dot"></span>' + statusLabel(status) + '</div>';
@@ -847,6 +848,7 @@
     var q = query.toLowerCase();
     var allMatches = systems.filter(function (s) {
       return (s.name && s.name.toLowerCase().indexOf(q) !== -1) ||
+             (s.city && s.city.toLowerCase().indexOf(q) !== -1) ||
              (s.county && s.county.toLowerCase().indexOf(q) !== -1) ||
              (s.id && s.id.toLowerCase().indexOf(q) !== -1);
     }).sort(function (a, b) {
@@ -869,7 +871,7 @@
 
     searchResults.innerHTML = matches.map(function (s, idx) {
       var st = deriveStatus(s.status || 'Not Assessed', s.n_exceed || 0, s.n_tested || 0);
-      var meta = titleCase(s.county);
+      var meta = s.city ? titleCase(s.city) + ', ' + titleCase(s.county) : titleCase(s.county);
       if (s.pop) meta += ' · ' + fmtPop(s.pop) + ' served';
       return '<li id="search-opt-' + idx + '" role="option" aria-selected="false" data-id="' + s.id + '" data-lat="' + s.lat + '" data-lon="' + s.lon + '">' +
         '<span class="result-status-dot" style="background:' + statusColor(st) + '" title="' + statusLabel(st) + '"></span>' +
