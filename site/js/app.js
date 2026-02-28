@@ -814,6 +814,31 @@
     return { system: nearest, miles: minDist };
   }
 
+  // --- Map hint for first-time visitors ---
+  function initMapHint() {
+    var hint = document.getElementById('map-hint');
+    if (!hint) return;
+
+    var dismissed = false;
+    function dismiss() {
+      if (dismissed) return;
+      dismissed = true;
+      hint.classList.add('hidden');
+    }
+
+    // Show hint
+    hint.classList.remove('hidden');
+
+    // Auto-dismiss after 8 seconds
+    setTimeout(dismiss, 8000);
+
+    // Dismiss on any meaningful interaction
+    map.once('click', dismiss);
+    document.getElementById('search').addEventListener('focus', dismiss, { once: true });
+    var findBtn = document.getElementById('find-my-water');
+    if (findBtn) findBtn.addEventListener('click', dismiss, { once: true });
+  }
+
   function initFindMyWater() {
     var wrap = document.getElementById('find-my-water-wrap');
     var btn = document.getElementById('find-my-water');
@@ -1026,6 +1051,9 @@
 
         // Hide loading overlay
         hideLoading();
+
+        // Show first-visit hint (skip if deep link will open a system)
+        if (!getSystemIdFromHash()) initMapHint();
 
         // Initialize "Find My Water" button now that systems are loaded
         initFindMyWater();
