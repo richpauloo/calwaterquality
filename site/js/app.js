@@ -724,9 +724,11 @@
     }
 
     searchResults.innerHTML = matches.map(function (s, idx) {
+      var st = deriveStatus(s.status || 'Not Assessed', s.n_exceed || 0, s.n_tested || 0);
       var meta = titleCase(s.county);
       if (s.pop) meta += ' · ' + fmtPop(s.pop) + ' served';
       return '<li id="search-opt-' + idx + '" role="option" aria-selected="false" data-id="' + s.id + '" data-lat="' + s.lat + '" data-lon="' + s.lon + '">' +
+        '<span class="result-status-dot" style="background:' + statusColor(st) + '" title="' + statusLabel(st) + '"></span>' +
         '<span class="result-name">' + titleCase(s.name) + '</span>' +
         '<span class="result-meta">' + meta + '</span>' +
         '</li>';

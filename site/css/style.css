@@ -172,7 +172,16 @@ html, body {
   background: #f0f5ff;
 }
 
+.result-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
 .result-name {
+  flex: 1;
+  min-width: 0;
   font-weight: 500;
   font-size: 14px;
   overflow: hidden;

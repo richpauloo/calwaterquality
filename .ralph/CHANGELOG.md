@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 79 — 2026-02-28
+- What: **Added status dots to search results.** Each search result now shows a colored dot (green/orange/red/gray) indicating the system's compliance status, so users can instantly see which systems are failing without clicking each one.
+- Why: When searching a county or city, users saw 10-20 results with only name and population — no way to tell which systems were failing. Now a red dot immediately signals "this system exceeds safety limits," making the search far more scannable and useful.
+- Result: JS syntax valid. Two files changed: `js/app.js` (status dot in search result rendering), `css/style.css` (result-status-dot styling, result-name flex layout). Status derived from same `deriveStatus()` function used everywhere else.
+
 ## Iteration 78 — 2026-02-28
 - What: **Added system status counts to map legend.** The legend now shows how many systems are in each category (e.g., "Meets standards 1,409", "Failing 450") so first-time visitors immediately understand the big picture.
 - Why: Without counts, the map was a wall of colored dots with no context. A user landing on the site had to click around to understand scale. Now they instantly see that 450 of 2,816 systems are failing — that's the story.
