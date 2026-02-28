@@ -188,6 +188,14 @@
     if (state === 'open') panel.classList.add('open');
     panelState = state;
 
+    // Clear URL hash and reset title when panel is closed
+    if (state === 'closed') {
+      if (location.hash.indexOf('#system/') === 0) {
+        history.pushState(null, '', location.pathname + location.search);
+      }
+      document.title = 'California Water Quality';
+    }
+
     // Move legend out of the way when panel is visible on mobile
     var legend = document.getElementById('legend');
     if (window.innerWidth < 768) {
@@ -231,10 +239,15 @@
   })();
 
   // --- Show system detail ---
-  async function showSystem(systemId) {
+  async function showSystem(systemId, skipHash) {
     // Set panel to peek and show loading
     panelContent.innerHTML = '<div class="spinner"></div>';
     setPanel('peek');
+
+    // Update URL hash for sharing/bookmarking
+    if (!skipHash) {
+      history.pushState(null, '', '#system/' + systemId);
+    }
 
     try {
       var detail = await loadSystemDetail(systemId);
@@ -273,11 +286,16 @@
     var html = '';
 
     // Close button
-    html += '<button class="panel-close" onclick="document.getElementById(\'panel\').classList.remove(\'peek\',\'open\')" aria-label="Close">&times;</button>';
+    html += '<button class="panel-close" id="panel-close-btn" aria-label="Close">&times;</button>';
 
     // Header
     html += '<div class="system-header">';
+    html += '<div class="system-title-row">';
     html += '<h2 class="system-name">' + titleCase(d.system_name) + '</h2>';
+    html += '<button class="share-btn" onclick="shareSystem(\'' + d.system_id + '\', \'' + titleCase(d.system_name).replace(/'/g, "\\'") + '\')" aria-label="Share" title="Copy link">';
+    html += '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>';
+    html += '</button>';
+    html += '</div>';
     html += '<div class="system-meta">' + titleCase(d.county) + ' County';
     if (d.population) html += ' &middot; Serves ' + fmtPop(d.population) + ' people';
     html += '</div>';
@@ -338,6 +356,14 @@
     html += '</div>';
 
     panelContent.innerHTML = html;
+
+    // Update page title for sharing
+    document.title = titleCase(d.system_name) + ' — CA Water Quality';
+
+    var closeBtn = document.getElementById('panel-close-btn');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function () { setPanel('closed'); });
+    }
   }
 
   function fmtVal(v) {
@@ -483,6 +509,53 @@
     searchResults.classList.remove('hidden');
   }
 
+  // --- Share ---
+  window.shareSystem = function (systemId, name) {
+    var url = location.origin + location.pathname + '#system/' + systemId;
+    if (navigator.share) {
+      navigator.share({ title: name + ' — Water Quality', url: url });
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(function () {
+        showToast('Link copied!');
+      });
+    }
+  };
+
+  function showToast(msg) {
+    var existing = document.querySelector('.toast');
+    if (existing) existing.remove();
+    var toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    setTimeout(function () { toast.classList.add('show'); }, 10);
+    setTimeout(function () {
+      toast.classList.remove('show');
+      setTimeout(function () { toast.remove(); }, 300);
+    }, 2000);
+  }
+
+  // --- Deep link helpers ---
+  function getSystemIdFromHash() {
+    var hash = location.hash;
+    if (hash.indexOf('#system/') === 0) {
+      return hash.substring(8); // strip '#system/'
+    }
+    return null;
+  }
+
+  function openDeepLink() {
+    var id = getSystemIdFromHash();
+    if (!id) return;
+
+    // Find the system in our data to fly to its location
+    var sys = systems.find(function (s) { return s.id === id; });
+    if (sys && sys.lat && sys.lon) {
+      map.flyTo({ center: [sys.lon, sys.lat], zoom: 12, duration: 1200 });
+    }
+    showSystem(id, true); // skipHash=true since hash is already set
+  }
+
   // --- Init ---
   async function init() {
     initMap();
@@ -492,8 +565,21 @@
         await loadSystems();
         var geojson = systemsToGeoJSON(systems);
         addSystemsLayer(geojson);
+
+        // Check for deep link after data is loaded
+        openDeepLink();
       } catch (err) {
         console.error('Failed to load water system data:', err);
+      }
+    });
+
+    // Handle browser back/forward navigation
+    window.addEventListener('popstate', function () {
+      var id = getSystemIdFromHash();
+      if (id) {
+        showSystem(id, true);
+      } else {
+        setPanel('closed');
       }
     });
 
