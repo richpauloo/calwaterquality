@@ -1,5 +1,46 @@
 # Ralph Changelog — Archive
 
+## Reflection — Iteration 25 — 2026-02-28
+- Trajectory: **Drifting.** The product is locally excellent but publicly invisible. All 25 iterations happened in a single development session with zero deployments and zero users. The iteration 20 reflection correctly called for "shift from building to shipping," but iterations 22–24 went back to building (PWA manifest, staleness warnings, feedback links) — polish features for an undeployed product.
+- Working:
+  - **Product quality is genuinely high.** The code is clean (3 files, ~1060 lines total), well-structured, accessible, and consumer-friendly. A real person using this site would find it useful.
+  - **Reflection-driven planning works.** Every priority set in reflections at iterations 10, 15, and 20 was executed. Zero wasted iterations.
+  - **Architecture is robust and simple.** No framework, no build step, no dependencies beyond MapLibre GL. Nothing to break in deployment.
+- Not working:
+  - **The deployment blocker has not been resolved.** Identified in iteration 21, acknowledged in iterations 22–24, but never fixed. Four iterations of feature work happened after we knew the site couldn't be deployed.
+  - **Continued local feature development after "feature complete" declaration.** The iteration 20 reflection said "shift from building to shipping." Iterations 22–24 added more features anyway. This is the main anti-pattern.
+  - **No external validation of any kind.** No push, no deployment, no pipeline run, no real user, no feedback. The product exists only on one developer's laptop.
+- Missing:
+  - **Resolution of the push access blocker** — this is the #1 prerequisite for everything else. The developer (richpauloo) needs to either: (a) get write access from the caccr org admin, or (b) fork the repo and push there, or (c) create a new repo under their own account.
+  - **Production deployment and pipeline validation** — the GitHub Actions workflows look correct but have never executed.
+  - **Real user testing** — all design decisions are assumptions until validated by actual users.
+- Spiraling? **Yes, mildly.** We're adding features to a product nobody can see. The PWA manifest, staleness warnings, and feedback links are all good ideas — but they have zero impact until the site is live. Every iteration spent on local polish while the deployment blocker exists is an iteration wasted.
+- User impact: **Zero.** No one has ever visited this site. The product is invisible. This is the only metric that matters right now.
+- Next 5 iterations should focus on:
+  1. **STOP adding features.** The product is done. No more local development until deployment is resolved.
+  2. **Resolve the push/deployment blocker.** This requires human action: fork the repo, push to a personal account, or get org admin access. If this can't be resolved, nothing else matters.
+  3. **Push all 25 iterations of work and validate deployment.** Once push access exists, push to remote and verify the site loads at calwaterquality.com (or whatever domain is configured).
+  4. **Trigger the data refresh pipeline manually** via workflow_dispatch and verify it completes — downloads data, runs R scripts, commits, deploys.
+  5. **Get the site in front of 1–3 real people** and collect feedback. The feedback links in iteration 24 only work if anyone visits the site.
+- Adjustments:
+  - **Hard rule: no more feature iterations until the site is deployed and live.** Any code changes should be deployment fixes only.
+  - **The deployment blocker is a human problem, not a code problem.** If this iteration can't resolve it programmatically, surface it clearly to the product owner and wait for resolution.
+
+## Iteration 24 — 2026-02-28
+- What: Added user feedback links in two locations: the default panel intro ("Send feedback or report an issue") and each system detail panel footer ("Something look wrong? Send feedback"). Both link to GitHub Issues (`caccr/caccr.github.io`) with pre-filled title and body. The system detail link includes the system name and ID so maintainers immediately know what the user was looking at.
+- Why: Priority #5 from the iteration 20 reflection. Without a feedback channel, there's no way for early visitors to report confusing data, broken features, or wrong information. This closes the loop between users and maintainers. GitHub Issues is free, requires no backend, and keeps feedback alongside the code.
+- Result: JS syntax valid, CSS balanced (160/160), HTML tags balanced. No new dependencies. Two new CSS classes for styling. Completes all 5 priorities from the iteration 20 plan.
+
+## Iteration 23 — 2026-02-28
+- What: Added data staleness warning. When `meta.json` shows data older than 45 days, the legend freshness indicator and system detail panel footer display an orange "⚠ Data may be outdated" warning instead of the normal "Data updated" text. New `daysSinceUpdate()` helper computes age from the ISO date in meta.json. Added `.data-freshness-stale` and `.stale-warning` CSS classes using the existing `--orange` color variable.
+- Why: Priority #4 from the iteration 20 reflection. If the automated GitHub Actions pipeline fails silently, users would see stale data with no indication it's outdated. For a trust-critical product ("is my water safe?"), surfacing data age is essential. The 45-day threshold gives a 15-day buffer beyond the monthly refresh schedule.
+- Result: JS syntax valid, CSS balanced (157/157 braces). Two display locations updated (legend, panel footer). No new dependencies. Warning appears in both places when data age exceeds 45 days; normal display otherwise.
+
+## Iteration 22 — 2026-02-28
+- What: Added PWA manifest for "Add to Home Screen" support. Created `manifest.json` with app name, theme color, and icons. Generated 192x192 and 512x512 PNG icons from the existing SVG favicon using ImageMagick. Added `<link rel="manifest">` and Apple web app meta tags to `index.html`.
+- Why: Priority #3 from the iteration 20 reflection. The "weather app for water quality" metaphor is best realized when users can install it to their home screen like a native app. The manifest enables this on both Android (Chrome install prompt) and iOS (Safari "Add to Home Screen"), giving the app a standalone appearance with the blue theme bar.
+- Result: manifest.json valid, 3 new files (manifest.json, icon-192.png, icon-512.png — total ~35 KB). HTML valid, 3 new tags added. Site structure intact.
+
 ## Iteration 21 — 2026-02-28
 - What: Production deployment verification. Confirmed DNS for calwaterquality.com resolves correctly to GitHub Pages IPs (185.199.x.x) and returns HTTP 200. However, discovered two critical blockers: (1) All 16 commits from iterations 1-20 exist only locally — none have been pushed because `richpauloo` has read-only access to `caccr/caccr.github.io` (push: false). (2) GitHub Pages is configured in legacy mode (branch root `/`), not GitHub Actions deployment, so even after pushing, Pages config must be switched to use `deploy.yml`. HTTPS enforcement is also disabled.
 - Why: Priority #1 from the iteration 20 reflection. Without verifying deployment, all prior work is inaccessible to users. This was the most critical gap.
