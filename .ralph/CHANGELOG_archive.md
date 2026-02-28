@@ -1,5 +1,15 @@
 # Ralph Changelog — Archive
 
+## Iteration 32 — 2026-02-28
+- What: **Fixed broken asset paths for subdirectory deployment and polished repo for discoverability.** Changed all absolute `/` paths in index.html and manifest.json to relative paths (favicon, apple-touch-icon, manifest, logo link, PWA icons/start_url). Updated OG/Twitter meta image URLs from non-functional `calwaterquality.com` to the actual live URL `richpauloo.github.io/calwaterquality/`. Set repo homepage URL and topics (water-quality, california, open-data, public-health). Replaced the outdated 2019 Jekyll README with an accurate description of the current project.
+- Why: The site is deployed at `richpauloo.github.io/calwaterquality/` (a subdirectory), so absolute `/favicon.svg` paths resolved to `richpauloo.github.io/favicon.svg` (404). This meant no favicon in the browser tab, broken PWA install, and broken social sharing previews. The old README described a completely different (Jekyll-based, 2019) project. These are all user-facing issues that hurt first impressions when someone visits or shares the site.
+- Result: All asset paths now resolve correctly at the subdirectory URL. Social sharing previews will show the correct image. Repo page shows homepage link and discoverable topics. README accurately describes the project.
+
+## Iteration 31 — 2026-02-28
+- What: **Validated and fixed the automated data refresh pipeline.** Fixed 3 issues: (1) workflow not registered by GitHub — pushed a change to force re-registration; (2) repo workflow permissions set to read-only — updated to read-write so the bot can commit; (3) R `curl` package failed to compile — added `libcurl4-openssl-dev` system dependency; (4) GITHUB_TOKEN pushes don't trigger other workflows — added explicit `gh workflow run deploy.yml` step after data commit. Ran the full pipeline 3 times: first failed (missing libcurl), second succeeded (downloaded 1.8 GB SDWIS data, processed 2,816 systems, committed fresh data), third correctly detected no changes and skipped commit/deploy.
+- Why: Data freshness is the core value prop. The scheduled pipeline (1st and 15th of each month) had never been validated in production. Without this fix, the first scheduled run on March 1st would have silently failed, and the site's data would have gone stale without warning.
+- Result: Pipeline runs successfully in ~6 minutes. Downloads data from CA Water Boards, processes it in R, commits changes, and triggers deploy. Correctly skips commit/deploy when data is unchanged. Scheduled cron runs will now work on March 1st and 15th.
+
 ## Reflection — Iteration 30 — 2026-02-28
 - Trajectory: **Unblocked.** The deployment blocker that consumed iterations 21–28 was resolved at iteration 29. The site is live at https://richpauloo.github.io/calwaterquality/ — HTTP 200, data files accessible, 2,816 systems loaded, deploy workflow running. After 28 iterations of local-only development and zero users, the product is finally publicly visible. This is a genuine inflection point.
 - Working:
