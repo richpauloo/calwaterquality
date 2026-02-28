@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 24 — 2026-02-28
+- What: Added user feedback links in two locations: the default panel intro ("Send feedback or report an issue") and each system detail panel footer ("Something look wrong? Send feedback"). Both link to GitHub Issues (`caccr/caccr.github.io`) with pre-filled title and body. The system detail link includes the system name and ID so maintainers immediately know what the user was looking at.
+- Why: Priority #5 from the iteration 20 reflection. Without a feedback channel, there's no way for early visitors to report confusing data, broken features, or wrong information. This closes the loop between users and maintainers. GitHub Issues is free, requires no backend, and keeps feedback alongside the code.
+- Result: JS syntax valid, CSS balanced (160/160), HTML tags balanced. No new dependencies. Two new CSS classes for styling. Completes all 5 priorities from the iteration 20 plan.
+
 ## Iteration 23 — 2026-02-28
 - What: Added data staleness warning. When `meta.json` shows data older than 45 days, the legend freshness indicator and system detail panel footer display an orange "⚠ Data may be outdated" warning instead of the normal "Data updated" text. New `daysSinceUpdate()` helper computes age from the ISO date in meta.json. Added `.data-freshness-stale` and `.stale-warning` CSS classes using the existing `--orange` color variable.
 - Why: Priority #4 from the iteration 20 reflection. If the automated GitHub Actions pipeline fails silently, users would see stale data with no indication it's outdated. For a trust-critical product ("is my water safe?"), surfacing data age is essential. The 45-day threshold gives a 15-day buffer beyond the monthly refresh schedule.
