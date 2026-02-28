@@ -36,4 +36,5 @@
 - GoatCounter analytics at calwaterquality.goatcounter.com — free for open-source, privacy-friendly, no cookie banner needed. Requires one-time signup at goatcounter.com to activate.
 - SEO files: robots.txt, sitemap.xml, and JSON-LD (WebApplication schema) in site/ — all deployed automatically via the site/ directory upload
 - "No MCL" contaminant chips are now tappable `<button>` elements with tap-to-expand detail (iteration 65) — `title` tooltips don't work on mobile touch devices
+- Detail panel now shows: named exceedances in summary, severity badges (Nx above limit / % of limit), peak values, last-tested dates — all added in iterations 81-84
 - Human actions still pending: activate GoatCounter, share site, verify custom domain, submit to Google Search Console

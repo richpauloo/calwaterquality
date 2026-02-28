@@ -1,5 +1,14 @@
 # Ralph Changelog
 
+## Reflection — Iteration 85 — 2026-02-28
+- Trajectory: **On track. Best run of productive iterations since the v1 launch.**
+- Working: Iterations 81–84 each delivered a focused, user-facing UX improvement — truncation indicator (81), peak values & last-tested dates (82), severity badges (83), named exceedances in summary text (84). Every change directly answers the core question "is my water safe?" more clearly. All were pushed to deploy. The detail panel is now genuinely interpretable: a user sees which contaminants exceed limits by name, how severely (2.5x badge), what the peak was, and when it was last tested. This is the product's core value proposition, and it's working.
+- Not working: The four human actions remain pending (GoatCounter, share site, custom domain, Search Console). Zero confirmed users. The scheduled pipeline's first run (March 1) hasn't happened yet — that will be the first real test of automated data freshness.
+- Spiraling? **No.** The last 5 coding iterations were all distinct, impactful, and shipped. No meta-work, no health checks, no repeated reflections. This is the right mode.
+- User impact: Significantly improved since iteration 80. A person viewing a failing system now gets: named contaminants in the summary, severity badges on each card, peak values, and last-tested dates. The information density and clarity are dramatically better than 5 iterations ago.
+- Next 5 iterations should focus on: **(1) Monitor the March 1 pipeline run** — if it fails, fix it immediately (data freshness is critical). **(2) Continue targeted UX improvements if high-impact ones exist**, but don't force them — the detail panel is in good shape. **(3) Consider broader UX areas**: the map experience, first-visit onboarding, or "Find My Water System" flow could use attention. **(4) Human actions remain the distribution bottleneck** — code can't fix that.
+- Adjustments: The "commit AND push" discipline from iteration 80's reflection is working — keep it. Shift focus from the detail panel (well-refined now) to other user touchpoints if high-impact work exists.
+
 ## Iteration 84 — 2026-02-28
 - What: **Named exceeding contaminants in summary text.** When a system has failing contaminants, the summary now says e.g. "Manganese exceeds California safety limits" instead of the generic "1 contaminant exceeds..." Names are sorted by severity (worst first), showing up to 3 for systems with many exceedances.
 - Why: The summary is the first thing users read in the detail panel. Naming the contaminant answers "what's wrong?" without requiring the user to scroll to the contaminant cards below. For Alameda County Water District (3 exceedances), it now reads "3 contaminants — Manganese, Color, Odor — exceed California safety limits."
