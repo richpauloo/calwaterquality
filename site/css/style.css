@@ -573,6 +573,22 @@ html, body {
   text-decoration: none;
 }
 
+.feedback-link {
+  margin-top: 12px;
+}
+
+.feedback-link a,
+.feedback-footer {
+  font-size: 13px;
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.feedback-link a:hover,
+.feedback-footer:hover {
+  text-decoration: underline;
+}
+
 /* === Map popup === */
 .maplibregl-popup-content {
   padding: 10px 14px;
