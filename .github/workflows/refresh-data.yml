@@ -23,6 +23,11 @@ jobs:
         with:
           r-version: '4.3'
 
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-openssl-dev
+
       - name: Install R packages
         run: |
           Rscript -e 'install.packages(c("data.table", "jsonlite", "curl"), repos = "https://cloud.r-project.org")'
