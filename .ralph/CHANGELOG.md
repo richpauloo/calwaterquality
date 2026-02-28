@@ -1,5 +1,15 @@
 # Ralph Changelog
 
+## Iteration 18 — 2026-02-28
+- What: Fixed unit abbreviation display for unitless water quality indices. Changed `fmtUnits()` to use `in` check instead of `||` so empty-string mappings (AGGR, LANG, TON) are respected — these now display with no unit suffix instead of showing raw abbreviations like "AGGR" or "TON". Also added conditional spacing so values with empty units don't get trailing whitespace. All other units (μg/L, mg/L, NTU, pH, etc.) were already correctly mapped.
+- Why: Priority #3 from the iteration 15 reflection. Seeing "Average: 12.3 AGGR" is meaningless to consumers. Aggressive Index, Langelier Index, and Threshold Odor Number are unitless calculated values — showing no unit suffix is cleaner and more honest than displaying opaque abbreviations.
+- Result: JS syntax valid, JSON valid. Three display locations updated (tooltip, detail average, detail limit). CLAUDE.md updated to remove stale "unmapped units" note.
+
+## Iteration 17 — 2026-02-28
+- What: Added "reset view" button that appears when the user zooms past level 7. Clicking it flies back to the statewide California view (zoom 5.5, centered on California), closes the detail panel, and removes any active popup. Button is positioned bottom-left above the legend, styled to match the legend's frosted-glass aesthetic. Hides on mobile when the panel is open (same as legend). Keyboard accessible with `:focus-visible` outline.
+- Why: Priority #2 from the iteration 15 reflection. After drilling into a specific water system, users had no easy way to zoom back to see all of California. They had to manually pinch-zoom or use the +/- controls. This one-tap reset is especially important on mobile where manual zooming is awkward.
+- Result: JS syntax valid, HTML tags balanced. Button hidden at default zoom, appears at zoom ≥ 7, smoothly animates back to statewide view. No new dependencies.
+
 ## Iteration 16 — 2026-02-28
 - What: Added favicon (SVG + ICO + apple-touch-icon), OG social card image (1200x630), and complete meta tags (Open Graph, Twitter Card, theme-color). Water drop icon in site blue (#1565c0). Social card shows site name, tagline, and URL.
 - Why: Priority #1 from the iteration 15 reflection. The site had no favicon (shows generic browser icon) and no social card (sharing links on Twitter/iMessage/Slack shows a plain text link instead of a rich preview with image). These are quick wins for professional appearance and shareability.

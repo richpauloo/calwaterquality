@@ -23,6 +23,6 @@
 - "Find My Water System" button uses geolocation + Haversine nearest-neighbor over all 2,816 systems
 - Panel states: closed (default) → peek (summary visible) → open (full scroll) — driven by setPanel()
 - deriveStatus() in frontend + pipeline overrides "Not Assessed" using MCL exceedance data — only 3 of 2,816 systems truly unassessed
-- Unit abbreviations still unmapped: AGGR, TON, LANG, UMHO/CM, NTU, PH, C — add to _units in contaminant_dict.json
+- All unit abbreviations mapped in contaminant_dict.json `_units`: μg/L, mg/L, ng/L, pCi/L, MFL, NTU, pH, μmhos/cm, °C. Unitless indices (AGGR, LANG, TON) display with no unit suffix. fmtUnits() uses `in` check to respect empty-string mappings.
 - Accessibility: ARIA landmarks (banner/search/complementary/region/application), keyboard nav (Escape closes panel, Enter/Space on drag handle), focus management, `:focus-visible` outlines
 - GitHub Actions `refresh-data.yml` runs on 1st and 15th for data refresh — hasn't been validated in production yet

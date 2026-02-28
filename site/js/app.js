@@ -87,7 +87,8 @@
   }
 
   function fmtUnits(rawUnits) {
-    return unitLabels[rawUnits] || rawUnits;
+    if (rawUnits in unitLabels) return unitLabels[rawUnits];
+    return rawUnits;
   }
 
   // --- Data loading ---
@@ -285,12 +286,17 @@
       }, 100);
     }
 
-    // Hide legend and find button when panel is visible on mobile
+    // Hide legend, reset button, and find button when panel is visible on mobile
     var legend = document.getElementById('legend');
+    var resetBtn = document.getElementById('reset-view');
     var findWrap = document.getElementById('find-my-water-wrap');
     if (window.innerWidth < 768) {
       legend.style.opacity = state === 'closed' ? '1' : '0';
       legend.style.pointerEvents = state === 'closed' ? 'auto' : 'none';
+      if (resetBtn) {
+        resetBtn.style.opacity = state === 'closed' ? '' : '0';
+        resetBtn.style.pointerEvents = state === 'closed' ? '' : 'none';
+      }
     }
     // Hide find button when any system is shown
     if (findWrap) {
@@ -511,7 +517,8 @@
       html += '<div class="detected-list">';
       other.forEach(function (c) {
         var info = contaminantInfo(c.name);
-        var tipParts = ['Avg: ' + fmtVal(c.avg) + ' ' + fmtUnits(c.units)];
+        var u = fmtUnits(c.units);
+        var tipParts = ['Avg: ' + fmtVal(c.avg) + (u ? ' ' + u : '')];
         if (info && info.desc) tipParts.push(info.desc);
         html += '<span class="detected-chip" title="' + tipParts.join(' — ') + '">' + contaminantName(c.name) + '</span>';
       });
@@ -569,8 +576,8 @@
     var html = '<div class="contaminant-card' + (exceeds ? ' exceeds' : '') + '">';
     html += '<div class="contaminant-name">' + contaminantName(c.name) + '</div>';
     html += '<div class="contaminant-detail">';
-    html += 'Average: ' + fmtVal(c.avg) + ' ' + units;
-    html += ' &middot; Limit: ' + fmtVal(c.mcl) + ' ' + units;
+    html += 'Average: ' + fmtVal(c.avg) + (units ? ' ' + units : '');
+    html += ' &middot; Limit: ' + fmtVal(c.mcl) + (units ? ' ' + units : '');
     html += ' &middot; ' + c.n_detects + ' of ' + c.n_samples + ' samples';
     html += '</div>';
 
@@ -858,6 +865,30 @@
     }
   }
 
+  // --- Reset view ---
+  var CA_CENTER = [-119.5, 37.2];
+  var CA_ZOOM = 5.5;
+
+  function initResetView() {
+    var btn = document.getElementById('reset-view');
+    if (!btn) return;
+
+    function updateVisibility() {
+      var zoom = map.getZoom();
+      btn.classList.toggle('hidden', zoom < 7);
+    }
+
+    map.on('zoomend', updateVisibility);
+    map.on('moveend', updateVisibility);
+
+    btn.addEventListener('click', function () {
+      map.flyTo({ center: CA_CENTER, zoom: CA_ZOOM, duration: 1200 });
+      // Close panel and popup
+      if (panelState !== 'closed') setPanel('closed');
+      if (activePopup) { activePopup.remove(); activePopup = null; }
+    });
+  }
+
   // --- Data freshness ---
   function showDataFreshness() {
     if (!meta || !meta.updated) return;
@@ -887,6 +918,9 @@
 
         // Initialize "Find My Water" button now that systems are loaded
         initFindMyWater();
+
+        // Initialize reset-view button
+        initResetView();
 
         // Check for deep link after data is loaded
         openDeepLink();
