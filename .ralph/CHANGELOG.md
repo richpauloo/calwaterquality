@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 88 — 2026-02-28
+- What: **Color-coded map clusters by water quality.** Clusters now reflect the proportion of failing systems they contain: green (<10% failing), amber (10–24%), orange (25–44%), red (45%+). Uses MapLibre's `clusterProperties` to aggregate a `fail_count` across clustered features, then divides by `point_count` to compute the fail ratio. Same status colors as the rest of the app (green/amber/orange/red).
+- Why: Iteration 87 added clustering, but all clusters were uniform blue — they showed *how many* systems existed in a region but nothing about *water quality*. Now users landing on the statewide map immediately see regional water quality patterns: green clusters = safe areas, red/orange clusters = areas with many failing systems. This is the "weather map for water quality" vision in action.
+- Result: JS syntax valid. One file changed: `js/app.js` (added `clusterProperties` to source, replaced blue step-by-count color expression with status-colored step-by-fail-ratio). Pushed to deploy.
+
 ## Iteration 87 — 2026-02-28
 - What: **Added map clustering.** At the default statewide zoom, nearby systems are now grouped into numbered blue clusters (sized by count). Clicking a cluster zooms in to reveal individual systems. Unclustered systems retain their status-colored dots at zoom 12+. Updated the first-visit hint text from "Each dot is a community water system" to "Tap a cluster to zoom in, or search above to find your water system."
 - Why: At zoom 5.5, 2,816 dots overlapped heavily in urban areas like LA, SF, and Sacramento — the map was an unreadable blob. Clustering makes the statewide view immediately navigable and gives users a sense of how many systems exist in each region. This is the biggest remaining map UX improvement.
