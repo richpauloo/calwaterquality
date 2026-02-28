@@ -529,7 +529,10 @@
     html += '<div class="panel-footer">';
     html += 'System ID: ' + d.system_id + '<br>';
     html += 'Data from <a href="https://www.waterboards.ca.gov/drinking_water/certlic/drinkingwater/EDTlibrary.html" target="_blank">CA Water Boards</a>.';
-    if (meta && meta.updated) {
+    var days = daysSinceUpdate();
+    if (days !== null && days > 45) {
+      html += ' <span class="stale-warning">⚠ Data may be outdated — last updated ' + fmtDate(meta.updated) + '.</span>';
+    } else if (meta && meta.updated) {
       html += ' Updated ' + fmtDate(meta.updated) + '.';
     } else {
       html += ' Last 2 years of testing results.';
@@ -890,13 +893,26 @@
   }
 
   // --- Data freshness ---
+  function daysSinceUpdate() {
+    if (!meta || !meta.updated) return null;
+    var parts = meta.updated.split('-');
+    var updated = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+    var now = new Date();
+    return Math.floor((now - updated) / (1000 * 60 * 60 * 24));
+  }
+
   function showDataFreshness() {
     if (!meta || !meta.updated) return;
     var el = document.getElementById('data-freshness');
-    if (el) {
+    if (!el) return;
+    var days = daysSinceUpdate();
+    if (days !== null && days > 45) {
+      el.innerHTML = '⚠ Data may be outdated — last updated ' + fmtDate(meta.updated);
+      el.classList.add('data-freshness-stale');
+    } else {
       el.textContent = 'Data updated ' + fmtDate(meta.updated);
-      el.classList.remove('hidden');
     }
+    el.classList.remove('hidden');
   }
 
   // --- Init ---

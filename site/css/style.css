@@ -245,6 +245,14 @@ html, body {
   color: var(--text-muted);
   white-space: nowrap;
 }
+.data-freshness-stale {
+  color: var(--orange);
+  font-weight: 600;
+}
+.stale-warning {
+  color: var(--orange);
+  font-weight: 600;
+}
 
 /* === Panel (bottom sheet) === */
 .panel {
