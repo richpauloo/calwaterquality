@@ -40,6 +40,14 @@
     return 'Not yet assessed';
   }
 
+  // Derive status from MCL data when SAFER assessment is missing
+  function deriveStatus(status, nExceed, nTested) {
+    if (status !== 'Not Assessed') return status;
+    if (nExceed > 0) return 'Failing';
+    if (nTested > 0) return 'In Compliance';
+    return 'Not Assessed';
+  }
+
   // --- Format helpers ---
   function fmtPop(n) {
     if (!n) return 'N/A';
@@ -132,6 +140,7 @@
       features: data
         .filter(function (s) { return s.lat && s.lon; })
         .map(function (s) {
+          var status = deriveStatus(s.status, s.n_exceed || 0, s.n_tested || 0);
           return {
             type: 'Feature',
             geometry: { type: 'Point', coordinates: [s.lon, s.lat] },
@@ -140,10 +149,10 @@
               name: s.name,
               county: s.county,
               pop: s.pop || 0,
-              status: s.status,
+              status: status,
               n_exceed: s.n_exceed || 0,
               n_tested: s.n_tested || 0,
-              color: statusColor(s.status),
+              color: statusColor(status),
             },
           };
         }),
@@ -324,17 +333,19 @@
   }
 
   function renderSystemDetail(d) {
-    var status = d.status || 'Not Assessed';
+    var detected = (d.contaminants || []).filter(function (c) { return c.n_detects > 0; });
+    var nExceed = detected.filter(function (c) { return c.exceeds_mcl; }).length;
+    var nTested = d.contaminants ? d.contaminants.length : 0;
+    var status = deriveStatus(d.status || 'Not Assessed', nExceed, nTested);
     var sClass = statusClass(status);
 
     // Separate contaminants with detections that have MCLs
-    var detected = (d.contaminants || []).filter(function (c) { return c.n_detects > 0; });
     var exceeding = detected.filter(function (c) { return c.exceeds_mcl; });
     var regulated = detected.filter(function (c) { return c.mcl && !c.exceeds_mcl; });
     var other = detected.filter(function (c) { return !c.mcl; });
 
     var exceedCount = exceeding.length;
-    var testedCount = d.contaminants ? d.contaminants.length : 0;
+    var testedCount = nTested;
     var detectedCount = detected.length;
 
     // Build summary sentence

@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 12 — 2026-02-28
+- What: Derive compliance status from MCL data for 148 systems previously marked "Not Assessed" (including LADWP, serving 7.7M people). Added `deriveStatus()` to frontend JS that overrides "Not Assessed" using existing n_exceed/n_tested data — 87 systems now show as "Failing", 58 as "In Compliance", only 3 truly unassessed remain. Also fixed the R pipeline so future data refreshes compute this server-side.
+- Why: The biggest data quality gap: LADWP and 147 other systems showed "Not yet assessed" even though we had full MCL test data. Users seeing gray dots for the largest water system in California erodes trust.
+- Result: Both frontend (immediate) and pipeline (next refresh) fixed. 145 of 148 systems reclassified. No broken code — frontend derives status client-side from existing JSON.
+
 ## Iteration 11 — 2026-02-28
 - What: Added "data last updated" indicator to the UI. Fetches meta.json (produced by the R pipeline) and displays the processing date in two places: the map legend (subtle text below the color dots) and the system detail panel footer (replaces generic "last 2 years" text with the actual date). Graceful fallback — if meta.json is missing, original text displays. Added placeholder meta.json for local development.
 - Why: The #1 gap from the Iteration 10 reflection: without a "last updated" date, users can't tell if the data is current. For a product built on trust ("is my water safe?"), data freshness is a critical signal. This was flagged as the quickest win with the highest trust impact.

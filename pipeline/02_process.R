@@ -152,6 +152,7 @@ map_data <- merge(map_data, analytes_tested, by = "system_id", all.x = TRUE)
 map_data[is.na(n_analytes_tested), n_analytes_tested := 0L]
 
 # Determine display status for map coloring
+# Start with SAFER assessment, then derive status from MCL data for unassessed systems
 map_data[, display_status := fcase(
   currently_failing == "Failing", "Failing",
   safer_status == "At-Risk", "At-Risk",
@@ -159,6 +160,16 @@ map_data[, display_status := fcase(
   safer_status == "Not At-Risk", "In Compliance",
   default = "Not Assessed"
 )]
+
+# Override "Not Assessed" using actual MCL exceedance data from SDWIS4
+n_before <- sum(map_data$display_status == "Not Assessed")
+map_data[display_status == "Not Assessed" & n_exceedances > 0,
+         display_status := "Failing"]
+map_data[display_status == "Not Assessed" & n_exceedances == 0 & n_analytes_tested > 0,
+         display_status := "In Compliance"]
+n_after <- sum(map_data$display_status == "Not Assessed")
+cat("  Derived status for", n_before - n_after, "of", n_before,
+    "previously unassessed systems\n")
 
 cat("  Map status distribution:\n")
 print(table(map_data$display_status))
