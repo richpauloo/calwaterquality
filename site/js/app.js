@@ -617,7 +617,14 @@
     var units = fmtUnits(c.units);
 
     var html = '<div class="contaminant-card' + (exceeds ? ' exceeds' : '') + '">';
-    html += '<div class="contaminant-name">' + contaminantName(c.name) + '</div>';
+    html += '<div class="contaminant-name">' + contaminantName(c.name);
+    if (exceeds) {
+      var ratioLabel = ratio >= 10 ? Math.round(ratio) + 'x' : ratio.toFixed(1) + 'x';
+      html += ' <span class="severity-badge">' + ratioLabel + ' above limit</span>';
+    } else if (ratio > 0.8) {
+      html += ' <span class="severity-badge approaching">' + Math.round(ratio * 100) + '% of limit</span>';
+    }
+    html += '</div>';
     html += '<div class="contaminant-detail">';
     html += 'Average: ' + fmtVal(c.avg) + (units ? ' ' + units : '');
     if (c.max !== null && c.max !== undefined && c.max !== 'NA') {

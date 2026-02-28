@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 83 — 2026-02-28
+- What: **Added severity labels to contaminant cards.** Exceeding contaminants now show a red "2.5x above limit" badge next to the name. Contaminants between 80-100% of the MCL show an amber "85% of limit" badge. Users no longer need to compare raw numbers mentally.
+- Why: When a contaminant exceeds its safety limit, the raw numbers (e.g., "Average: 128 µg/L · Limit: 50 µg/L") require mental math. "2.6x above limit" is instantly understandable and communicates severity at a glance — critical for the "is my water safe?" use case.
+- Result: JS syntax valid. Two files changed: `js/app.js` (severity badge in `renderContaminantBar`), `css/style.css` (`.severity-badge` styling). Pushed to deploy.
+
 ## Iteration 82 — 2026-02-28
 - What: **Added peak values and last-tested dates to contaminant cards.** Each contaminant now shows its peak (max) detected value alongside the average, and the date it was last tested. For "no MCL" chip details, the same info is shown on tap.
 - Why: The average alone hides important risk information. For Alameda County Water District, manganese averages 128 µg/L (2.5x the MCL) but peaked at 491 µg/L (10x the MCL) — that spike matters to users. The last-tested date gives recency context so users know whether data is fresh.
