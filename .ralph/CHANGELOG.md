@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 99 — 2026-02-28
+- What: **No-op.** Site healthy (200 OK, 41ms). No user feedback. No pipeline failures. March 1 cron fires tomorrow — will be the first automated data refresh.
+- Why: Iteration 95's reflection holds: no code without user feedback or pipeline issues. Fourth consecutive correct no-op.
+- Result: Zero files changed. March 1 pipeline run is the next meaningful event.
+
 ## Iteration 98 — 2026-02-28
 - What: **No-op.** Site healthy (200 OK, 43ms). No user feedback. No pipeline failures. March 1 cron fires tomorrow — first real test of automated data refresh.
 - Why: Iteration 95's reflection holds: no code without user feedback or pipeline issues. Third consecutive correct no-op.
