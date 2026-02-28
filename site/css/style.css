@@ -237,6 +237,13 @@ html, body {
 .dot-failing    { background: var(--red); }
 .dot-unknown    { background: var(--gray); }
 
+.legend-count {
+  margin-left: auto;
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
 .data-freshness {
   margin-top: 4px;
   padding-top: 4px;

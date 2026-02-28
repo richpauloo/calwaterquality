@@ -936,6 +936,28 @@
     return Math.floor((now - updated) / (1000 * 60 * 60 * 24));
   }
 
+  function showStatusCounts(data) {
+    var counts = { compliance: 0, atRisk: 0, failing: 0, unknown: 0 };
+    data.forEach(function (s) {
+      var status = deriveStatus(s.status || 'Not Assessed', s.n_exceed || 0, s.n_tested || 0);
+      if (status === 'In Compliance') counts.compliance++;
+      else if (status === 'Failing') counts.failing++;
+      else if (status === 'At-Risk' || status === 'Potentially At-Risk') counts.atRisk++;
+      else counts.unknown++;
+    });
+
+    var items = document.querySelectorAll('#legend .legend-item');
+    var map = [counts.compliance, counts.atRisk, counts.failing, counts.unknown];
+    items.forEach(function (item, i) {
+      if (map[i] !== undefined) {
+        var countEl = document.createElement('span');
+        countEl.className = 'legend-count';
+        countEl.textContent = map[i].toLocaleString();
+        item.appendChild(countEl);
+      }
+    });
+  }
+
   function showDataFreshness() {
     if (!meta || !meta.updated) return;
     var el = document.getElementById('data-freshness');
@@ -961,7 +983,8 @@
         var geojson = systemsToGeoJSON(systems);
         addSystemsLayer(geojson);
 
-        // Show data freshness in legend
+        // Show status counts and data freshness in legend
+        showStatusCounts(systems);
         showDataFreshness();
 
         // Hide loading overlay
