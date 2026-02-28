@@ -657,7 +657,7 @@
   });
 
   searchInput.addEventListener('keydown', function (e) {
-    var items = searchResults.querySelectorAll('li');
+    var items = searchResults.querySelectorAll('li:not(.search-truncated)');
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       selectedIdx = Math.min(selectedIdx + 1, items.length - 1);
@@ -706,13 +706,16 @@
 
   function doSearch(query) {
     var q = query.toLowerCase();
-    var matches = systems.filter(function (s) {
+    var allMatches = systems.filter(function (s) {
       return (s.name && s.name.toLowerCase().indexOf(q) !== -1) ||
              (s.county && s.county.toLowerCase().indexOf(q) !== -1) ||
              (s.id && s.id.toLowerCase().indexOf(q) !== -1);
     }).sort(function (a, b) {
       return (b.pop || 0) - (a.pop || 0);
-    }).slice(0, 20);
+    });
+
+    var totalMatches = allMatches.length;
+    var matches = allMatches.slice(0, 20);
 
     selectedIdx = -1;
 
@@ -722,6 +725,8 @@
       searchInput.setAttribute('aria-expanded', 'true');
       return;
     }
+
+    var truncated = totalMatches > 20;
 
     searchResults.innerHTML = matches.map(function (s, idx) {
       var st = deriveStatus(s.status || 'Not Assessed', s.n_exceed || 0, s.n_tested || 0);
@@ -736,7 +741,12 @@
 
     searchInput.setAttribute('aria-expanded', 'true');
 
-    searchResults.querySelectorAll('li').forEach(function (li) {
+    // Add truncation indicator
+    if (truncated) {
+      searchResults.innerHTML += '<li class="search-truncated" aria-hidden="true">Showing 20 of ' + totalMatches.toLocaleString() + ' results — refine your search</li>';
+    }
+
+    searchResults.querySelectorAll('li:not(.search-truncated)').forEach(function (li) {
       li.addEventListener('click', function () {
         var id = this.dataset.id;
         var lat = parseFloat(this.dataset.lat);

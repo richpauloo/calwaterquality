@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 81 — 2026-02-28
+- What: **Added search result truncation indicator.** When searching a county like "Los Angeles" (200 systems), only 20 results are shown. Now a "Showing 20 of 200 results — refine your search" message appears at the bottom of the dropdown, so users know they're seeing a subset.
+- Why: Users searching for broad terms (county names) had no indication that results were truncated. A user searching "Los Angeles" would see 20 results and assume that was all, missing 180 other systems. This helps them understand they should search more specifically.
+- Result: JS syntax valid. Two files changed: `js/app.js` (doSearch refactored to track total matches, truncation indicator added, keyboard nav excludes indicator), `css/style.css` (search-truncated styling). Pushed to deploy.
+
 ## Reflection — Iteration 80 — 2026-02-28
 - Trajectory: **Resumed with real UX work. But not deployed.**
 - Working: After 35 iterations of pause/reflections, iterations 78-79 made genuine user-facing improvements: status dots in search results and system counts in the map legend. Both are small, focused, and directly improve first-visit comprehension. Site live (200, 46ms). Pipeline scheduled.
