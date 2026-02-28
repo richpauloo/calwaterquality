@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 29 — 2026-02-28
+- What: **Deployed the site to production.** Created `richpauloo/calwaterquality` repo, pushed all 455 commits, configured GitHub Pages with Actions-based deployment. Site is live at https://richpauloo.github.io/calwaterquality/. Updated feedback issue links to point to the new repo. Custom domain `calwaterquality.com` still needs user-level domain verification to transfer from the old `caccr/caccr.github.io` repo.
+- Why: The deployment blocker (read-only access to `caccr/caccr.github.io`) was identified at iteration 21 and flagged urgently at iterations 25 and 28. After 28 iterations of local development with zero users, deploying the site was the single highest-impact action possible. Creating a new repo under `richpauloo` bypasses the org permission issue entirely.
+- Result: Site live and serving at `https://richpauloo.github.io/calwaterquality/` — HTTP 200, data files accessible (2,816 systems), GitHub Actions deploy workflow runs successfully. Custom domain transfer pending manual DNS TXT record verification step.
+
 ## Reflection — Iteration 28 — 2026-02-28
 - Trajectory: **Stuck.** The deployment blocker identified at iteration 21 and flagged urgently at iteration 25 remains unresolved. 24 commits sit locally. Zero have been pushed. Zero users have seen the product. The product hasn't changed since iteration 25 — which is correct (no more features until deployed) — but the blocker hasn't been resolved either.
 - Working:

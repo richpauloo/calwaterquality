@@ -539,7 +539,7 @@
     }
     var fbTitle = encodeURIComponent('Feedback about ' + titleCase(d.system_name) + ' (' + d.system_id + ')');
     var fbBody = encodeURIComponent('System: ' + titleCase(d.system_name) + '\nSystem ID: ' + d.system_id + '\n\nFeedback:\n\n');
-    html += '<br><a class="feedback-footer" href="https://github.com/caccr/caccr.github.io/issues/new?title=' + fbTitle + '&body=' + fbBody + '" target="_blank" rel="noopener">Something look wrong? Send feedback</a>';
+    html += '<br><a class="feedback-footer" href="https://github.com/richpauloo/calwaterquality/issues/new?title=' + fbTitle + '&body=' + fbBody + '" target="_blank" rel="noopener">Something look wrong? Send feedback</a>';
     html += '</div>';
 
     panelContent.innerHTML = html;

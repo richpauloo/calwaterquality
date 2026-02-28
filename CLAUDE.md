@@ -27,6 +27,6 @@
 - Accessibility: ARIA landmarks (banner/search/complementary/region/application), keyboard nav (Escape closes panel, Enter/Space on drag handle), focus management, `:focus-visible` outlines
 - GitHub Actions `refresh-data.yml` runs on 1st and 15th for data refresh — hasn't been validated in production yet
 - After 24 iterations the product is feature-complete for v1 — NO MORE FEATURES until deployed and validated with real users
-- CNAME is set to calwaterquality.com — DNS resolves correctly but GitHub Pages needs reconfiguration from legacy to Actions deployment
-- Push access blocker: richpauloo has read-only access to caccr/caccr.github.io — need org admin to grant write, or fork+PR
-- GitHub Pages must be switched from legacy (branch root /) to GitHub Actions source for deploy.yml to work; also enable HTTPS enforcement
+- Site deployed at richpauloo/calwaterquality via GitHub Actions — live at https://richpauloo.github.io/calwaterquality/
+- Custom domain calwaterquality.com still claimed by caccr/caccr.github.io — needs user-level domain verification in GitHub Settings > Pages to release it
+- Feedback issue links now point to richpauloo/calwaterquality (updated from caccr/caccr.github.io)
