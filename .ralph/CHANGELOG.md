@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 72 — 2026-02-28
+- What: **Pushed unpushed code to production.** Iteration 65's accessibility fix (mobile-tappable contaminant chips) had been committed locally but never pushed to the deploy remote. Pushed 6 commits from local master to richpauloo/calwaterquality, triggering a successful deploy.
+- Why: Working code sitting unpushed doesn't help users. The mobile accessibility fix was the most significant code change since iteration 36 and had been sitting undeployed.
+- Result: Deploy succeeded (1m22s). Site live at HTTP 200, 63ms. All iteration 65 changes now live in production.
+
 ## Reflection — Iteration 70 — 2026-02-28
 - Trajectory: **Paused. Sixth reflection with the same diagnosis.**
 - Working: Site live, 2,816 systems, pipeline scheduled. Iteration 65 was a legitimate accessibility fix (mobile-tappable contaminant chips) — proof that targeted code changes are still valuable when they fix real UX gaps.
