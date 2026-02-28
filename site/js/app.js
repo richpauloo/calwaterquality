@@ -575,7 +575,12 @@
           var info = contaminantInfo(c.name);
           var u = fmtUnits(c.units);
           var dHtml = '<div class="chip-detail-name">' + contaminantName(c.name) + '</div>';
-          dHtml += '<div class="chip-detail-value">Average detected: ' + fmtVal(c.avg) + (u ? ' ' + u : '') + '</div>';
+          dHtml += '<div class="chip-detail-value">Average detected: ' + fmtVal(c.avg) + (u ? ' ' + u : '');
+          if (c.max !== null && c.max !== undefined && c.max !== 'NA') {
+            dHtml += ' &middot; Peak: ' + fmtVal(c.max) + (u ? ' ' + u : '');
+          }
+          dHtml += '</div>';
+          if (c.latest) dHtml += '<div class="chip-detail-tested">Last tested ' + fmtDate(c.latest) + '</div>';
           if (info && info.desc) dHtml += '<div class="chip-detail-desc">' + info.desc + '</div>';
           if (info && info.source) dHtml += '<div class="chip-detail-source">Common sources: ' + info.source + '</div>';
           chipDetail.innerHTML = dHtml;
@@ -615,8 +620,14 @@
     html += '<div class="contaminant-name">' + contaminantName(c.name) + '</div>';
     html += '<div class="contaminant-detail">';
     html += 'Average: ' + fmtVal(c.avg) + (units ? ' ' + units : '');
+    if (c.max !== null && c.max !== undefined && c.max !== 'NA') {
+      html += ' &middot; Peak: ' + fmtVal(c.max) + (units ? ' ' + units : '');
+    }
     html += ' &middot; Limit: ' + fmtVal(c.mcl) + (units ? ' ' + units : '');
-    html += ' &middot; ' + c.n_detects + ' of ' + c.n_samples + ' samples';
+    html += '</div>';
+    html += '<div class="contaminant-samples">';
+    html += c.n_detects + ' of ' + c.n_samples + ' samples';
+    if (c.latest) html += ' &middot; Last tested ' + fmtDate(c.latest);
     html += '</div>';
 
     // Health context from dictionary

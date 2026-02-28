@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 82 — 2026-02-28
+- What: **Added peak values and last-tested dates to contaminant cards.** Each contaminant now shows its peak (max) detected value alongside the average, and the date it was last tested. For "no MCL" chip details, the same info is shown on tap.
+- Why: The average alone hides important risk information. For Alameda County Water District, manganese averages 128 µg/L (2.5x the MCL) but peaked at 491 µg/L (10x the MCL) — that spike matters to users. The last-tested date gives recency context so users know whether data is fresh.
+- Result: JS syntax valid. Two files changed: `js/app.js` (peak value + last-tested in `renderContaminantBar` and chip detail handler), `css/style.css` (`.contaminant-samples` and `.chip-detail-tested` styles). Pushed to deploy.
+
 ## Iteration 81 — 2026-02-28
 - What: **Added search result truncation indicator.** When searching a county like "Los Angeles" (200 systems), only 20 results are shown. Now a "Showing 20 of 200 results — refine your search" message appears at the bottom of the dropdown, so users know they're seeing a subset.
 - Why: Users searching for broad terms (county names) had no indication that results were truncated. A user searching "Los Angeles" would see 20 results and assume that was all, missing 180 other systems. This helps them understand they should search more specifically.
