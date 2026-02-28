@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 94 — 2026-02-28
+- What: **City search.** Added `PL_ADDRESS_CITY_NAME` from SAFER data to the pipeline and frontend. Search now matches city names in addition to system name, county, and ID. Search results and detail panel show "Oakland, Alameda County" instead of just "Alameda County."
+- Why: The search placeholder promised "Search by name, city, or county" but didn't actually search by city. 63 large systems (>50k pop) were unfindable by city — e.g., searching "Oakland" couldn't find East Bay MUD (1.4M people), "San Francisco" couldn't find SFPUC. Now it can.
+- Result: Pipeline re-run, 2,815 of 2,816 systems have city data. Summary JSON grew 12 KB (504→516 KB). JS syntax valid. Pushed to deploy.
+
 ## Iteration 93 — 2026-02-28
 - What: **Contextual share messages for organic distribution.** Enhanced the Share button to include the water system's status in the share text. A failing system shares as "East Bay MUD — 2 contaminants exceed California safety limits. Check yours:" instead of just the name + URL. Works with Web Share API (mobile) and clipboard copy (desktop).
 - Why: The distribution bottleneck identified in iterations 85/90 reflections. When someone shares a link via text or WhatsApp, the message body is what their friend reads first. A status-rich share message is more compelling and informative than a bare link — it turns every share into a mini water quality alert.
