@@ -596,6 +596,158 @@ html, body {
   to { transform: rotate(360deg); }
 }
 
+/* === Loading overlay === */
+#loading-overlay {
+  position: fixed;
+  top: var(--header-h);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.4s;
+}
+
+#loading-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-content {
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--border);
+  border-top-color: var(--blue);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin: 0 auto 16px;
+}
+
+.loading-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.loading-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* === Error state === */
+.error-content {
+  text-align: center;
+  padding: 0 24px;
+}
+
+.error-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+
+.error-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.error-message {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.error-retry {
+  background: var(--blue);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.error-retry:hover {
+  background: #0d47a1;
+}
+
+/* === Find My Water button === */
+#find-my-water-wrap {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 60;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.find-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--blue);
+  color: white;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 28px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+  font-family: inherit;
+  box-shadow: 0 4px 16px rgba(21,101,192,0.35);
+  white-space: nowrap;
+}
+
+.find-btn:hover {
+  background: #0d47a1;
+  box-shadow: 0 6px 20px rgba(21,101,192,0.45);
+}
+
+.find-btn:active {
+  transform: scale(0.97);
+}
+
+.find-btn:disabled {
+  opacity: 0.8;
+  cursor: wait;
+}
+
+.find-icon {
+  flex-shrink: 0;
+}
+
+.btn-spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  vertical-align: middle;
+}
+
+@media (min-width: 768px) {
+  #find-my-water-wrap {
+    bottom: 32px;
+  }
+}
+
 /* === Close button (desktop) === */
 .panel-close {
   position: absolute;

@@ -16,3 +16,9 @@
 - data/raw/ holds downloaded files (gitignored, re-downloadable)
 - site/data/ holds processed JSON for frontend consumption
 - site/data/systems_summary.json (~512 KB) for map, site/data/systems/{id}.json for detail pages
+
+## Frontend UX
+- titleCase() has ABBR_KEEP list for abbreviations (DWP, EBMUD, PFOS etc.) — add new ones as needed
+- contaminant_dict.json (148 entries) maps raw chemical names → plain-language display, health info, sources
+- "Find My Water System" button uses geolocation + Haversine nearest-neighbor over all 2,816 systems
+- Panel states: closed (default) → peek (summary visible) → open (full scroll) — driven by setPanel()

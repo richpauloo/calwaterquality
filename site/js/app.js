@@ -238,11 +238,16 @@
       document.title = 'California Water Quality';
     }
 
-    // Move legend out of the way when panel is visible on mobile
+    // Hide legend and find button when panel is visible on mobile
     var legend = document.getElementById('legend');
+    var findWrap = document.getElementById('find-my-water-wrap');
     if (window.innerWidth < 768) {
       legend.style.opacity = state === 'closed' ? '1' : '0';
       legend.style.pointerEvents = state === 'closed' ? 'auto' : 'none';
+    }
+    // Hide find button when any system is shown
+    if (findWrap) {
+      findWrap.classList.toggle('hidden', state !== 'closed');
     }
   }
 
@@ -529,6 +534,8 @@
       return (s.name && s.name.toLowerCase().indexOf(q) !== -1) ||
              (s.county && s.county.toLowerCase().indexOf(q) !== -1) ||
              (s.id && s.id.toLowerCase().indexOf(q) !== -1);
+    }).sort(function (a, b) {
+      return (b.pop || 0) - (a.pop || 0);
     }).slice(0, 20);
 
     selectedIdx = -1;
@@ -540,9 +547,11 @@
     }
 
     searchResults.innerHTML = matches.map(function (s) {
+      var meta = titleCase(s.county);
+      if (s.pop) meta += ' · ' + fmtPop(s.pop) + ' served';
       return '<li data-id="' + s.id + '" data-lat="' + s.lat + '" data-lon="' + s.lon + '">' +
         '<span class="result-name">' + titleCase(s.name) + '</span>' +
-        '<span class="result-meta">' + titleCase(s.county) + '</span>' +
+        '<span class="result-meta">' + meta + '</span>' +
         '</li>';
     }).join('');
 
@@ -564,6 +573,83 @@
     });
 
     searchResults.classList.remove('hidden');
+  }
+
+  // --- Find My Water System (geolocation) ---
+  function findNearestSystem(lat, lon) {
+    var nearest = null;
+    var minDist = Infinity;
+    systems.forEach(function (s) {
+      if (!s.lat || !s.lon) return;
+      // Haversine approximation (good enough for nearest-neighbor)
+      var dLat = (s.lat - lat) * Math.PI / 180;
+      var dLon = (s.lon - lon) * Math.PI / 180;
+      var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(lat * Math.PI / 180) * Math.cos(s.lat * Math.PI / 180) *
+              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      var dist = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)) * 3959; // miles
+      if (dist < minDist) {
+        minDist = dist;
+        nearest = s;
+      }
+    });
+    return { system: nearest, miles: minDist };
+  }
+
+  function initFindMyWater() {
+    var wrap = document.getElementById('find-my-water-wrap');
+    var btn = document.getElementById('find-my-water');
+    if (!btn || !wrap) return;
+
+    // Show the button now that data is loaded
+    wrap.style.display = '';
+
+    btn.addEventListener('click', function () {
+      if (!navigator.geolocation) {
+        showToast('Location not supported by your browser');
+        return;
+      }
+
+      // Set loading state
+      btn.disabled = true;
+      btn.classList.add('loading');
+      var origHTML = btn.innerHTML;
+      btn.innerHTML = '<span class="btn-spinner"></span> Locating...';
+
+      navigator.geolocation.getCurrentPosition(
+        function (pos) {
+          var result = findNearestSystem(pos.coords.latitude, pos.coords.longitude);
+          btn.disabled = false;
+          btn.classList.remove('loading');
+          btn.innerHTML = origHTML;
+
+          if (!result.system) {
+            showToast('No water systems found nearby');
+            return;
+          }
+
+          // Fly to the system and show its details
+          map.flyTo({ center: [result.system.lon, result.system.lat], zoom: 12, duration: 1200 });
+          showSystem(result.system.id);
+
+          // Show a toast with context
+          var dist = result.miles < 1 ? 'less than a mile' : Math.round(result.miles) + ' mi';
+          showToast(titleCase(result.system.name) + ' · ' + dist + ' away');
+        },
+        function (err) {
+          btn.disabled = false;
+          btn.classList.remove('loading');
+          btn.innerHTML = origHTML;
+
+          if (err.code === 1) {
+            showToast('Location access denied — try searching instead');
+          } else {
+            showToast('Could not determine your location');
+          }
+        },
+        { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
+      );
+    });
   }
 
   // --- Share ---
@@ -613,6 +699,29 @@
     showSystem(id, true); // skipHash=true since hash is already set
   }
 
+  // --- Loading overlay ---
+  var loadingOverlay = document.getElementById('loading-overlay');
+
+  function hideLoading() {
+    if (loadingOverlay) {
+      loadingOverlay.classList.add('hidden');
+      // Remove from DOM after fade-out
+      setTimeout(function () { loadingOverlay.remove(); }, 400);
+    }
+  }
+
+  function showError() {
+    if (loadingOverlay) {
+      loadingOverlay.innerHTML =
+        '<div class="error-content">' +
+        '<div class="error-icon">&#9888;</div>' +
+        '<div class="error-title">Unable to load water quality data</div>' +
+        '<p class="error-message">This could be a network issue. Check your connection and try again.</p>' +
+        '<button class="error-retry" onclick="location.reload()">Try Again</button>' +
+        '</div>';
+    }
+  }
+
   // --- Init ---
   async function init() {
     initMap();
@@ -624,10 +733,17 @@
         var geojson = systemsToGeoJSON(systems);
         addSystemsLayer(geojson);
 
+        // Hide loading overlay
+        hideLoading();
+
+        // Initialize "Find My Water" button now that systems are loaded
+        initFindMyWater();
+
         // Check for deep link after data is loaded
         openDeepLink();
       } catch (err) {
         console.error('Failed to load water system data:', err);
+        showError();
       }
     });
 

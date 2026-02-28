@@ -28,6 +28,24 @@
 
   <div id="map"></div>
 
+  <div id="loading-overlay">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading water quality data...</p>
+      <p class="loading-sub">2,816 community water systems</p>
+    </div>
+  </div>
+
+  <div id="find-my-water-wrap" style="display:none">
+    <button id="find-my-water" class="find-btn" aria-label="Find my water system using my location">
+      <svg class="find-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+        <circle cx="12" cy="10" r="3"/>
+      </svg>
+      Find my water system
+    </button>
+  </div>
+
   <div id="legend">
     <div class="legend-item"><span class="dot dot-compliance"></span> Meets standards</div>
     <div class="legend-item"><span class="dot dot-at-risk"></span> At risk</div>
