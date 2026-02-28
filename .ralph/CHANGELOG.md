@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 87 — 2026-02-28
+- What: **Added map clustering.** At the default statewide zoom, nearby systems are now grouped into numbered blue clusters (sized by count). Clicking a cluster zooms in to reveal individual systems. Unclustered systems retain their status-colored dots at zoom 12+. Updated the first-visit hint text from "Each dot is a community water system" to "Tap a cluster to zoom in, or search above to find your water system."
+- Why: At zoom 5.5, 2,816 dots overlapped heavily in urban areas like LA, SF, and Sacramento — the map was an unreadable blob. Clustering makes the statewide view immediately navigable and gives users a sense of how many systems exist in each region. This is the biggest remaining map UX improvement.
+- Result: JS syntax valid. Two files changed: `js/app.js` (cluster source options, 3 new layers, cluster click/cursor handlers, glyphs URL), `index.html` (hint text). Pushed to deploy.
+
 ## Iteration 86 — 2026-02-28
 - What: **Added first-visit map hint.** A floating card appears above the "Find My Water System" button after data loads, reading "Each dot is a community water system. Tap one to check its water quality." Auto-dismisses after 8 seconds or on first interaction (map click, search focus, Find button press). Skipped for deep-link arrivals.
 - Why: First-time visitors landed on a map of colored dots with zero guidance — no explanation of what the dots represent or that they're tappable. The instruction text existed but was hidden in the off-screen panel. This bridges the gap between landing and first interaction.
