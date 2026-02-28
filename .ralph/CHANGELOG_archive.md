@@ -1,5 +1,33 @@
 # Ralph Changelog — Archive
 
+## Reflection — Iteration 35 — 2026-02-28
+- Trajectory: **On track, at a natural plateau.** The site is deployed, operationally sound, and pipeline-validated. Iterations 31–33 completed the operational TODO list from the iteration 30 reflection efficiently: pipeline fix → asset path fix → push to prod. The product is in a good state. But the remaining high-impact work (user feedback, domain transfer) requires human action, not code.
+- Working:
+  - **Operational validation arc was efficient.** Three iterations (31–33), three real problems solved (broken pipeline, broken asset paths, unpushed commits), zero wasted effort. Each directly fixed something user-facing.
+  - **Site is fully live and functional.** Deployment works, data refresh pipeline validated, social sharing previews correct, favicon loads. A person visiting today gets a complete experience.
+  - **Feature discipline held.** No new features since iteration 24. Every iteration since has been either a reflection or an operational fix. This is correct behavior for a newly-deployed product.
+  - **Data is fresh.** Last refresh ran successfully on 2026-02-28, processing 2,816 systems. Next scheduled run March 1st.
+- Not working:
+  - **Zero engagement.** 0 stars, 0 forks, 0 watchers, 0 issues on the repo. The site has not been shared with anyone. This is the same finding as the last 3 reflections.
+  - **Custom domain still not transferred.** `calwaterquality.com` remains claimed by `caccr/caccr.github.io`. The site is only reachable via the longer GitHub Pages URL.
+  - **No analytics.** We have no way to know if anyone visits the site. Even basic page view data would provide signal.
+- Missing:
+  - **Real user feedback** — top priority for 3 consecutive reflections. Cannot be solved with code.
+  - **Analytics** — lightweight, privacy-respecting analytics (GoatCounter, Plausible, or even a simple hit counter) would provide signal on whether anyone is visiting.
+  - **SEO basics** — no sitemap.xml, no robots.txt, no structured data. Search engines can't discover the site effectively.
+- Spiraling? **No — but approaching a hard stop.** The code is solid. The pipeline works. The product is deployed. Further code-only iterations without user input are diminishing returns. The project needs distribution, not more engineering.
+- User impact: **The site works well for anyone who visits.** The bottleneck is now discovery and distribution, not the product itself.
+- Next 5 iterations should focus on:
+  1. **Add lightweight analytics** (GoatCounter or similar) — this IS a code change worth making. Provides signal on whether the site has any traffic, which informs every other decision.
+  2. **SEO basics** — sitemap.xml, robots.txt, and JSON-LD structured data. Small code changes that improve organic discoverability.
+  3. **Share the site** — product owner should share with 3–5 people and collect feedback. This is a human action, not a code change.
+  4. **Transfer custom domain** — requires human action in GitHub Settings > Pages.
+  5. **Act on feedback** — if any arrives, it takes priority over everything else.
+- Adjustments:
+  - **If no user feedback arrives before iteration 40, pause development.** The product is "shipped and waiting for users." Further iterations without signal are waste.
+  - **Analytics is the one high-value code change remaining.** It provides signal even without active user outreach.
+  - **SEO is the other.** The site can't be found by search engines without basic discoverability metadata. This is low-effort, high-leverage.
+
 ## Iteration 33 — 2026-02-28
 - What: **Pushed unpushed fixes to production and removed stale CNAME.** Discovered iteration 32's asset-path and OG-tag fixes had been committed locally but never pushed to the `deploy` remote — the live site still had broken social sharing previews (OG image/URL pointed to non-functional `calwaterquality.com`) and potentially broken favicon paths. Removed the stale `site/CNAME` file claiming `calwaterquality.com`, since the custom domain is not configured on `richpauloo/calwaterquality`. Pushed both commits, verified deploy succeeded, and confirmed all fixes are live.
 - Why: Social sharing is a primary user acquisition channel. Broken OG tags meant anyone sharing the site on social media or messaging would see a broken preview with no image. The stale CNAME was misleading and could cause domain configuration issues later. These were the last blocking issues between the committed code and the user-facing site.

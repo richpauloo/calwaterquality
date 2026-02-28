@@ -515,14 +515,11 @@
     if (other.length > 0) {
       html += '<div class="section-title">Detected — No Safety Limit Set</div>';
       html += '<div class="detected-list">';
-      other.forEach(function (c) {
-        var info = contaminantInfo(c.name);
-        var u = fmtUnits(c.units);
-        var tipParts = ['Avg: ' + fmtVal(c.avg) + (u ? ' ' + u : '')];
-        if (info && info.desc) tipParts.push(info.desc);
-        html += '<span class="detected-chip" title="' + tipParts.join(' — ') + '">' + contaminantName(c.name) + '</span>';
+      other.forEach(function (c, i) {
+        html += '<button class="detected-chip" aria-expanded="false" data-idx="' + i + '">' + contaminantName(c.name) + '</button>';
       });
       html += '</div>';
+      html += '<div class="chip-detail hidden" role="region" aria-label="Contaminant detail"></div>';
     }
 
     // Footer
@@ -550,6 +547,41 @@
     var closeBtn = document.getElementById('panel-close-btn');
     if (closeBtn) {
       closeBtn.addEventListener('click', function () { setPanel('closed'); });
+    }
+
+    // Chip tap-to-expand for "no MCL" contaminants (replaces hover-only tooltips)
+    if (other.length > 0) {
+      var chipDetail = panelContent.querySelector('.chip-detail');
+      panelContent.querySelectorAll('.detected-chip').forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          var idx = parseInt(this.dataset.idx);
+          var wasActive = this.classList.contains('active');
+
+          // Deactivate all chips
+          panelContent.querySelectorAll('.detected-chip').forEach(function (c) {
+            c.classList.remove('active');
+            c.setAttribute('aria-expanded', 'false');
+          });
+
+          if (wasActive) {
+            chipDetail.classList.add('hidden');
+            return;
+          }
+
+          this.classList.add('active');
+          this.setAttribute('aria-expanded', 'true');
+
+          var c = other[idx];
+          var info = contaminantInfo(c.name);
+          var u = fmtUnits(c.units);
+          var dHtml = '<div class="chip-detail-name">' + contaminantName(c.name) + '</div>';
+          dHtml += '<div class="chip-detail-value">Average detected: ' + fmtVal(c.avg) + (u ? ' ' + u : '') + '</div>';
+          if (info && info.desc) dHtml += '<div class="chip-detail-desc">' + info.desc + '</div>';
+          if (info && info.source) dHtml += '<div class="chip-detail-source">Common sources: ' + info.source + '</div>';
+          chipDetail.innerHTML = dHtml;
+          chipDetail.classList.remove('hidden');
+        });
+      });
     }
   }
 

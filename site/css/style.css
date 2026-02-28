@@ -510,6 +510,48 @@ html, body {
   background: #eef2f7;
   border-radius: 12px;
   color: var(--text);
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  font-family: inherit;
+  line-height: 1.4;
+}
+.detected-chip:hover,
+.detected-chip:focus-visible {
+  background: #e2e8f0;
+}
+.detected-chip.active {
+  border-color: var(--primary);
+  background: #e8f0fe;
+}
+
+.chip-detail {
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.chip-detail.hidden {
+  display: none;
+}
+.chip-detail-name {
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.chip-detail-value {
+  color: #475569;
+}
+.chip-detail-desc {
+  margin-top: 4px;
+  color: #64748b;
+}
+.chip-detail-source {
+  margin-top: 2px;
+  font-size: 12px;
+  color: #94a3b8;
 }
 
 /* === System title row === */

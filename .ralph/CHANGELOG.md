@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 65 — 2026-02-28
+- What: **Fixed mobile-inaccessible "no MCL" contaminant details.** Replaced hover-only `title` tooltips on unregulated contaminant chips with tappable `<button>` elements that expand to show average detected value, health description, and common sources. Added ARIA `aria-expanded` attributes, keyboard focus styles, and a clean detail panel.
+- Why: On mobile (the primary platform), unregulated contaminant info was completely invisible — `title` tooltips don't appear on touch devices. This was the biggest accessibility gap in the system detail panel.
+- Result: JS syntax validates (balanced braces/parens). Two files changed: `js/app.js` (chip rendering + click handlers) and `css/style.css` (interactive chip styles + detail panel). Site is static, no build step.
+
 ## Reflection — Iteration 64 — 2026-02-28
 - Trajectory: **Paused. Fifth consecutive identical reflection. Stopping the loop.**
 - Working: Site live, pipeline scheduled, 2,816 systems served. Feature discipline held for 40 iterations.
@@ -95,30 +100,3 @@
 - Why: The iteration 35 reflection identified these as the two remaining high-value code changes. Analytics provides signal on whether anyone visits (currently zero visibility). SEO basics (sitemap, robots.txt, structured data) let search engines discover and index the site — organic search is the primary discovery channel for a free public utility.
 - Result: 4 files changed — index.html (GoatCounter script + JSON-LD), robots.txt (new), sitemap.xml (new). All deployed via the existing `site/` directory upload in deploy.yml. **Note:** GoatCounter requires a one-time account creation at goatcounter.com (subdomain: calwaterquality) to start recording pageviews.
 
-## Reflection — Iteration 35 — 2026-02-28
-- Trajectory: **On track, at a natural plateau.** The site is deployed, operationally sound, and pipeline-validated. Iterations 31–33 completed the operational TODO list from the iteration 30 reflection efficiently: pipeline fix → asset path fix → push to prod. The product is in a good state. But the remaining high-impact work (user feedback, domain transfer) requires human action, not code.
-- Working:
-  - **Operational validation arc was efficient.** Three iterations (31–33), three real problems solved (broken pipeline, broken asset paths, unpushed commits), zero wasted effort. Each directly fixed something user-facing.
-  - **Site is fully live and functional.** Deployment works, data refresh pipeline validated, social sharing previews correct, favicon loads. A person visiting today gets a complete experience.
-  - **Feature discipline held.** No new features since iteration 24. Every iteration since has been either a reflection or an operational fix. This is correct behavior for a newly-deployed product.
-  - **Data is fresh.** Last refresh ran successfully on 2026-02-28, processing 2,816 systems. Next scheduled run March 1st.
-- Not working:
-  - **Zero engagement.** 0 stars, 0 forks, 0 watchers, 0 issues on the repo. The site has not been shared with anyone. This is the same finding as the last 3 reflections.
-  - **Custom domain still not transferred.** `calwaterquality.com` remains claimed by `caccr/caccr.github.io`. The site is only reachable via the longer GitHub Pages URL.
-  - **No analytics.** We have no way to know if anyone visits the site. Even basic page view data would provide signal.
-- Missing:
-  - **Real user feedback** — top priority for 3 consecutive reflections. Cannot be solved with code.
-  - **Analytics** — lightweight, privacy-respecting analytics (GoatCounter, Plausible, or even a simple hit counter) would provide signal on whether anyone is visiting.
-  - **SEO basics** — no sitemap.xml, no robots.txt, no structured data. Search engines can't discover the site effectively.
-- Spiraling? **No — but approaching a hard stop.** The code is solid. The pipeline works. The product is deployed. Further code-only iterations without user input are diminishing returns. The project needs distribution, not more engineering.
-- User impact: **The site works well for anyone who visits.** The bottleneck is now discovery and distribution, not the product itself.
-- Next 5 iterations should focus on:
-  1. **Add lightweight analytics** (GoatCounter or similar) — this IS a code change worth making. Provides signal on whether the site has any traffic, which informs every other decision.
-  2. **SEO basics** — sitemap.xml, robots.txt, and JSON-LD structured data. Small code changes that improve organic discoverability.
-  3. **Share the site** — product owner should share with 3–5 people and collect feedback. This is a human action, not a code change.
-  4. **Transfer custom domain** — requires human action in GitHub Settings > Pages.
-  5. **Act on feedback** — if any arrives, it takes priority over everything else.
-- Adjustments:
-  - **If no user feedback arrives before iteration 40, pause development.** The product is "shipped and waiting for users." Further iterations without signal are waste.
-  - **Analytics is the one high-value code change remaining.** It provides signal even without active user outreach.
-  - **SEO is the other.** The site can't be found by search engines without basic discoverability metadata. This is low-effort, high-leverage.
