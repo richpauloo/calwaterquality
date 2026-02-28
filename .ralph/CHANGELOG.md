@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 19 — 2026-02-28
+- What: Performance optimization — added `<link rel="preload">` for systems_summary.json and contaminant_dict.json so they download in parallel with MapLibre GL (instead of waiting until after map loads). Added `<link rel="preconnect">` for unpkg.com and CARTO tile CDN. Compacted systems_summary.json by dropping unused `owner` field and reducing coordinate precision from 6 to 4 decimal places (11m resolution, more than enough for map dots). Updated R pipeline to match.
+- Why: Priority #4 from iteration 15 reflection. The critical path was: download MapLibre → init map → THEN fetch data JSONs. Preloading lets data download in parallel, saving 1-3 seconds on slow connections. The JSON compaction saves ~60 KB raw (12% smaller) and ~10 KB gzipped.
+- Result: systems_summary.json: 512 KB → 452 KB raw, 89 KB → 82 KB gzipped. All 2,816 records intact, JSON valid, HTML valid, JS syntax valid. R pipeline updated to produce compact output on future refreshes.
+
 ## Iteration 18 — 2026-02-28
 - What: Fixed unit abbreviation display for unitless water quality indices. Changed `fmtUnits()` to use `in` check instead of `||` so empty-string mappings (AGGR, LANG, TON) are respected — these now display with no unit suffix instead of showing raw abbreviations like "AGGR" or "TON". Also added conditional spacing so values with empty units don't get trailing whitespace. All other units (μg/L, mg/L, NTU, pH, etc.) were already correctly mapped.
 - Why: Priority #3 from the iteration 15 reflection. Seeing "Average: 12.3 AGGR" is meaningless to consumers. Aggressive Index, Langelier Index, and Threshold Odor Number are unitless calculated values — showing no unit suffix is cleaner and more honest than displaying opaque abbreviations.

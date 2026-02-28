@@ -180,18 +180,17 @@ summary_list <- lapply(seq_len(nrow(map_data)), function(i) {
   list(
     id   = row$system_id,
     name = row$system_name,
-    lat  = row$lat,
-    lon  = row$lon,
+    lat  = round(row$lat, 4),
+    lon  = round(row$lon, 4),
     county    = row$county,
     pop       = row$population,
     status    = row$display_status,
     n_exceed  = row$n_exceedances,
-    n_tested  = row$n_analytes_tested,
-    owner     = row$owner_type
+    n_tested  = row$n_analytes_tested
   )
 })
 
-summary_json <- toJSON(summary_list, auto_unbox = TRUE, digits = 6)
+summary_json <- toJSON(summary_list, auto_unbox = TRUE, digits = 4)
 writeLines(summary_json, file.path(OUT_DIR, "systems_summary.json"))
 summary_size <- file.size(file.path(OUT_DIR, "systems_summary.json")) / 1024
 cat("  systems_summary.json:", round(summary_size), "KB\n")

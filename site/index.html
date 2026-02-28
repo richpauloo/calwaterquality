@@ -10,6 +10,13 @@
   <link rel="icon" href="/favicon.ico" sizes="48x48">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <meta name="theme-color" content="#1565c0">
+  <!-- Preconnect to CDN domains for faster resource loading -->
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://a.basemaps.cartocdn.com" crossorigin>
+  <link rel="preconnect" href="https://b.basemaps.cartocdn.com" crossorigin>
+  <!-- Preload data files so they download in parallel with MapLibre (not after) -->
+  <link rel="preload" href="data/systems_summary.json" as="fetch" crossorigin>
+  <link rel="preload" href="data/contaminant_dict.json" as="fetch" crossorigin>
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://calwaterquality.com/">
