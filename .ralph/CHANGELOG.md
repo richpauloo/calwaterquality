@@ -1,5 +1,14 @@
 # Ralph Changelog
 
+## Reflection — Iteration 80 — 2026-02-28
+- Trajectory: **Resumed with real UX work. But not deployed.**
+- Working: After 35 iterations of pause/reflections, iterations 78-79 made genuine user-facing improvements: status dots in search results and system counts in the map legend. Both are small, focused, and directly improve first-visit comprehension. Site live (200, 46ms). Pipeline scheduled.
+- Not working: **Iterations 78-79 are unpushed.** Same pattern as iteration 65 (which sat undeployed until iteration 72 force-pushed it). Working code that isn't live doesn't help users. The four human actions remain pending: GoatCounter, share site, custom domain, Search Console.
+- Spiraling? No — the pause correctly ended when there was real UX work to do. But the push-to-deploy step keeps getting skipped.
+- User impact: Improvements exist locally but aren't live. The deployed site is the same as after iteration 72.
+- Next 5 iterations should focus on: **(1) Push iterations 78-79 live.** That's the single highest-impact action right now — it's free and immediate. **(2) Stop making changes without deploying them.** Every code iteration should end with a push. **(3) If product owner provides direction, execute it.** Otherwise, the four human actions remain the bottleneck.
+- Adjustments: Adopt a "commit AND push" discipline. Unpushed code is unshipped code.
+
 ## Iteration 79 — 2026-02-28
 - What: **Added status dots to search results.** Each search result now shows a colored dot (green/orange/red/gray) indicating the system's compliance status, so users can instantly see which systems are failing without clicking each one.
 - Why: When searching a county or city, users saw 10-20 results with only name and population — no way to tell which systems were failing. Now a red dot immediately signals "this system exceeds safety limits," making the search far more scannable and useful.
