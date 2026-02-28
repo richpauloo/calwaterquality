@@ -35,3 +35,4 @@
 - Two remotes: `origin` (caccr/caccr.github.io, read-only) and `deploy` (richpauloo/calwaterquality, pushable) — always push to `deploy`
 - GoatCounter analytics at calwaterquality.goatcounter.com — free for open-source, privacy-friendly, no cookie banner needed. Requires one-time signup at goatcounter.com to activate.
 - SEO files: robots.txt, sitemap.xml, and JSON-LD (WebApplication schema) in site/ — all deployed automatically via the site/ directory upload
+- Development paused at iteration 40 (2026-02-28) — resume only on: (a) user feedback, (b) pipeline failure, or (c) product owner direction. Human actions pending: activate GoatCounter, share site, verify custom domain.

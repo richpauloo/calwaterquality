@@ -1,5 +1,28 @@
 # Ralph Changelog — Archive
 
+## Reflection — Iteration 28 — 2026-02-28
+- Trajectory: **Stuck.** The deployment blocker identified at iteration 21 and flagged urgently at iteration 25 remains unresolved. 24 commits sit locally. Zero have been pushed. Zero users have seen the product. The product hasn't changed since iteration 25 — which is correct (no more features until deployed) — but the blocker hasn't been resolved either.
+- Working:
+  - **Feature discipline held.** No new features were added after the iteration 25 reflection said to stop. This is good.
+  - **The product itself remains solid.** 2,816 water systems, clean architecture, accessible UI, ~36 KB code, no dependencies beyond MapLibre GL.
+  - **The reflection protocol correctly identified the problem.** Iterations 20, 25, and now 28 all agree: the only thing that matters is deployment.
+- Not working:
+  - **The deployment blocker is a human coordination problem that code can't solve.** `richpauloo` has read-only access to `caccr/caccr.github.io`. No amount of iteration will fix this. It requires one of: (a) org admin grants write access, (b) fork to personal account and deploy from there, (c) create a new repo entirely.
+  - **Continued iteration without resolving the blocker is pure waste.** Every reflection since iteration 20 has said the same thing. If this isn't resolved, iteration 30's reflection will say it too.
+- Missing:
+  - **A decision from the product owner** on how to resolve push access. This is not a technical question — it's an organizational one.
+- Spiraling? **Yes — but in a meta sense.** We're not spiraling on features (that stopped). We're spiraling on reflections about the same unresolved blocker. This reflection itself is part of the pattern.
+- User impact: **Still zero.** Unchanged from iteration 25.
+- Next 5 iterations should focus on:
+  1. **Product owner must resolve the push access problem.** Concrete options: (a) Fork `caccr/caccr.github.io` to `richpauloo/calwaterquality` and push there. (b) Get org admin to grant write access. (c) Create a fresh repo. Option (a) is the fastest — no permissions needed.
+  2. **Once push access exists: push all 24 commits, configure GitHub Pages (Actions deployment + HTTPS), verify calwaterquality.com loads.**
+  3. **Trigger the data refresh pipeline manually and verify it completes end-to-end.**
+  4. **Get 1-3 real humans to visit the site and give feedback.**
+  5. **Only then resume feature work — driven by real user feedback, not assumptions.**
+- Adjustments:
+  - **No more code iterations until the site is publicly accessible.** This is the third time this directive has been written. If it's not acted on, stop iterating entirely.
+  - **The next action is not a code change — it's a conversation with the product owner.** Surface the blocker clearly and wait for a decision.
+
 ## Reflection — Iteration 25 — 2026-02-28
 - Trajectory: **Drifting.** The product is locally excellent but publicly invisible. All 25 iterations happened in a single development session with zero deployments and zero users. The iteration 20 reflection correctly called for "shift from building to shipping," but iterations 22–24 went back to building (PWA manifest, staleness warnings, feedback links) — polish features for an undeployed product.
 - Working:
