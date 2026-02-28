@@ -246,6 +246,17 @@ for (sid in system_ids) {
 cat("  Exported", n_exported, "system detail files\n")
 
 # --- Summary ---
+# Write data freshness metadata
+meta <- list(
+  updated  = format(Sys.Date(), "%Y-%m-%d"),
+  systems  = nrow(map_data),
+  records  = nrow(sdwis),
+  cutoff   = as.character(CUTOFF_DATE)
+)
+write(toJSON(meta, auto_unbox = TRUE),
+      file.path(OUT_DIR, "meta.json"))
+cat("  meta.json written (updated:", meta$updated, ")\n")
+
 total_size_mb <- sum(file.size(list.files(OUT_DIR, recursive = TRUE, full.names = TRUE))) / 1024^2
 cat("\n=== Processing complete ===\n")
 cat("Total output size:", round(total_size_mb, 1), "MB\n")
