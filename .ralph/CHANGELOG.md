@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 97 — 2026-02-28
+- What: **No-op.** Site healthy (200 OK, 130ms). No user feedback. No pipeline failures. March 1 cron hasn't fired yet. Iteration 96 deploy completing.
+- Why: Iteration 95's reflection holds: no code without user feedback or pipeline issues. Nothing has changed.
+- Result: Zero files changed. Awaiting March 1 pipeline run and user feedback.
+
 ## Iteration 96 — 2026-02-28
 - What: **No-op. No engineering work needed.** Verified site health (200 OK, 71ms), checked for user feedback (none), confirmed no pipeline failures. March 1 cron hasn't fired yet. Deploy from iteration 95 in progress.
 - Why: Iteration 95's reflection directed: stop shipping code without user feedback or pipeline issues. Both conditions hold — this is correctly a no-op.
