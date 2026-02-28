@@ -26,7 +26,7 @@
 - All unit abbreviations mapped in contaminant_dict.json `_units`: μg/L, mg/L, ng/L, pCi/L, MFL, NTU, pH, μmhos/cm, °C. Unitless indices (AGGR, LANG, TON) display with no unit suffix. fmtUnits() uses `in` check to respect empty-string mappings.
 - Accessibility: ARIA landmarks (banner/search/complementary/region/application), keyboard nav (Escape closes panel, Enter/Space on drag handle), focus management, `:focus-visible` outlines
 - GitHub Actions `refresh-data.yml` runs on 1st and 15th for data refresh — hasn't been validated in production yet
-- After 24 iterations the product is feature-complete for v1 — NO MORE FEATURES until deployed and validated with real users
+- Product is feature-complete for v1 and deployed — future features should be driven by real user feedback, not assumptions
 - Site deployed at richpauloo/calwaterquality via GitHub Actions — live at https://richpauloo.github.io/calwaterquality/
 - Custom domain calwaterquality.com still claimed by caccr/caccr.github.io — needs user-level domain verification in GitHub Settings > Pages to release it
 - Feedback issue links now point to richpauloo/calwaterquality (updated from caccr/caccr.github.io)

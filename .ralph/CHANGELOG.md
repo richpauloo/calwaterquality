@@ -1,5 +1,33 @@
 # Ralph Changelog
 
+## Reflection — Iteration 30 — 2026-02-28
+- Trajectory: **Unblocked.** The deployment blocker that consumed iterations 21–28 was resolved at iteration 29. The site is live at https://richpauloo.github.io/calwaterquality/ — HTTP 200, data files accessible, 2,816 systems loaded, deploy workflow running. After 28 iterations of local-only development and zero users, the product is finally publicly visible. This is a genuine inflection point.
+- Working:
+  - **Deployment resolved decisively.** Creating `richpauloo/calwaterquality` bypassed the org permission problem entirely. The iteration 28 reflection identified "fork or create new repo" as option (a) — and that's exactly what happened.
+  - **Site is genuinely live and functional.** `curl` confirms HTTP 200 for both index.html and data/systems_summary.json. The deploy workflow completed successfully.
+  - **Data is fresh.** meta.json shows last update 2026-02-15 (13 days ago), well within the 45-day staleness threshold.
+  - **Feature discipline held.** No new features since iteration 24 — the product shipped exactly what was built, with no last-minute scope creep.
+- Not working:
+  - **Data refresh pipeline (`refresh-data.yml`) still unvalidated.** The deploy workflow works, but the scheduled data refresh (1st and 15th) has not been triggered or verified in the new repo. If it fails silently, data will go stale without warning.
+  - **Custom domain still not transferred.** `calwaterquality.com` remains claimed by `caccr/caccr.github.io`. Users can only reach the site via the longer GitHub Pages URL.
+  - **Zero real user feedback.** The site is live but hasn't been shared with anyone yet. All design decisions remain unvalidated assumptions.
+- Missing:
+  - **Data refresh pipeline validation** — trigger `refresh-data.yml` via workflow_dispatch and verify it downloads data, runs R scripts, commits, and deploys.
+  - **Real user testing** — share the URL with 3–5 real people and collect feedback.
+  - **Repo polish** — no homepage URL or description set on the GitHub repo; no README for the public-facing project.
+- Spiraling? **No.** For the first time in 10 iterations, the situation has materially changed. The site went from zero deployment to live and accessible. The reflection protocol worked: iterations 20, 25, and 28 all flagged the same blocker, and iteration 29 finally resolved it. No spiraling — just a long overdue step forward.
+- User impact: **Nonzero for the first time.** A real person visiting the URL today would see a functional, consumer-friendly water quality map for California. Whether anyone actually visits is the next question to answer.
+- Next 5 iterations should focus on:
+  1. **Validate the data refresh pipeline** — trigger manually, verify it completes, confirm fresh data deploys. This is the last piece of operational infrastructure to validate.
+  2. **Share the site with 3–5 real people** and collect qualitative feedback. What's confusing? What's missing? What's broken on their device?
+  3. **Transfer custom domain** — complete DNS TXT record verification in GitHub Settings to release `calwaterquality.com` from the old repo.
+  4. **Act on user feedback** — the first feature work in 6+ iterations should be driven by real user input, not assumptions.
+  5. **Set repo homepage URL and description** for discoverability.
+- Adjustments:
+  - **The "no features until deployed" moratorium is lifted.** The site is deployed. Future feature work should be driven by real user feedback.
+  - **Pipeline validation is the next operational risk.** Data freshness is the product's core value prop — if the refresh breaks, the site becomes a static snapshot that decays.
+  - **Keep changes small.** The temptation after a long deployment saga is to "celebrate" with a bunch of new features. Resist it. Validate what's live, then iterate on evidence.
+
 ## Iteration 29 — 2026-02-28
 - What: **Deployed the site to production.** Created `richpauloo/calwaterquality` repo, pushed all 455 commits, configured GitHub Pages with Actions-based deployment. Site is live at https://richpauloo.github.io/calwaterquality/. Updated feedback issue links to point to the new repo. Custom domain `calwaterquality.com` still needs user-level domain verification to transfer from the old `caccr/caccr.github.io` repo.
 - Why: The deployment blocker (read-only access to `caccr/caccr.github.io`) was identified at iteration 21 and flagged urgently at iterations 25 and 28. After 28 iterations of local development with zero users, deploying the site was the single highest-impact action possible. Creating a new repo under `richpauloo` bypasses the org permission issue entirely.
@@ -104,20 +132,3 @@
 - What: Performance optimization — added `<link rel="preload">` for systems_summary.json and contaminant_dict.json so they download in parallel with MapLibre GL (instead of waiting until after map loads). Added `<link rel="preconnect">` for unpkg.com and CARTO tile CDN. Compacted systems_summary.json by dropping unused `owner` field and reducing coordinate precision from 6 to 4 decimal places (11m resolution, more than enough for map dots). Updated R pipeline to match.
 - Why: Priority #4 from iteration 15 reflection. The critical path was: download MapLibre → init map → THEN fetch data JSONs. Preloading lets data download in parallel, saving 1-3 seconds on slow connections. The JSON compaction saves ~60 KB raw (12% smaller) and ~10 KB gzipped.
 - Result: systems_summary.json: 512 KB → 452 KB raw, 89 KB → 82 KB gzipped. All 2,816 records intact, JSON valid, HTML valid, JS syntax valid. R pipeline updated to produce compact output on future refreshes.
-
-## Iteration 18 — 2026-02-28
-- What: Fixed unit abbreviation display for unitless water quality indices. Changed `fmtUnits()` to use `in` check instead of `||` so empty-string mappings (AGGR, LANG, TON) are respected — these now display with no unit suffix instead of showing raw abbreviations like "AGGR" or "TON". Also added conditional spacing so values with empty units don't get trailing whitespace. All other units (μg/L, mg/L, NTU, pH, etc.) were already correctly mapped.
-- Why: Priority #3 from the iteration 15 reflection. Seeing "Average: 12.3 AGGR" is meaningless to consumers. Aggressive Index, Langelier Index, and Threshold Odor Number are unitless calculated values — showing no unit suffix is cleaner and more honest than displaying opaque abbreviations.
-- Result: JS syntax valid, JSON valid. Three display locations updated (tooltip, detail average, detail limit). CLAUDE.md updated to remove stale "unmapped units" note.
-
-## Iteration 17 — 2026-02-28
-- What: Added "reset view" button that appears when the user zooms past level 7. Clicking it flies back to the statewide California view (zoom 5.5, centered on California), closes the detail panel, and removes any active popup. Button is positioned bottom-left above the legend, styled to match the legend's frosted-glass aesthetic. Hides on mobile when the panel is open (same as legend). Keyboard accessible with `:focus-visible` outline.
-- Why: Priority #2 from the iteration 15 reflection. After drilling into a specific water system, users had no easy way to zoom back to see all of California. They had to manually pinch-zoom or use the +/- controls. This one-tap reset is especially important on mobile where manual zooming is awkward.
-- Result: JS syntax valid, HTML tags balanced. Button hidden at default zoom, appears at zoom ≥ 7, smoothly animates back to statewide view. No new dependencies.
-
-## Iteration 16 — 2026-02-28
-- What: Added favicon (SVG + ICO + apple-touch-icon), OG social card image (1200x630), and complete meta tags (Open Graph, Twitter Card, theme-color). Water drop icon in site blue (#1565c0). Social card shows site name, tagline, and URL.
-- Why: Priority #1 from the iteration 15 reflection. The site had no favicon (shows generic browser icon) and no social card (sharing links on Twitter/iMessage/Slack shows a plain text link instead of a rich preview with image). These are quick wins for professional appearance and shareability.
-- Result: 4 new files (favicon.svg, favicon.ico, apple-touch-icon.png, og-image.png — total ~36 KB). 13 new meta tags in index.html. HTML valid, all assets verified.
-
-
