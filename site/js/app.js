@@ -166,6 +166,7 @@
       container: 'map',
       style: {
         version: 8,
+        glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf',
         sources: {
           'carto': {
             type: 'raster',
@@ -196,13 +197,63 @@
   }
 
   function addSystemsLayer(geojson) {
-    map.addSource('systems', { type: 'geojson', data: geojson });
+    map.addSource('systems', {
+      type: 'geojson',
+      data: geojson,
+      cluster: true,
+      clusterMaxZoom: 11,
+      clusterRadius: 50,
+    });
 
-    // Circle layer — radius scales with population
+    // Clustered circles — group nearby systems at low zoom
+    map.addLayer({
+      id: 'clusters',
+      type: 'circle',
+      source: 'systems',
+      filter: ['has', 'point_count'],
+      paint: {
+        'circle-color': [
+          'step', ['get', 'point_count'],
+          '#64b5f6',
+          10, '#42a5f5',
+          50, '#1e88e5',
+          200, '#1565c0',
+        ],
+        'circle-radius': [
+          'step', ['get', 'point_count'],
+          15,
+          10, 20,
+          50, 25,
+          200, 32,
+        ],
+        'circle-opacity': 0.9,
+        'circle-stroke-color': '#ffffff',
+        'circle-stroke-width': 2,
+      },
+    });
+
+    // Cluster count labels
+    map.addLayer({
+      id: 'cluster-count',
+      type: 'symbol',
+      source: 'systems',
+      filter: ['has', 'point_count'],
+      layout: {
+        'text-field': '{point_count_abbreviated}',
+        'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+        'text-size': 12,
+      },
+      paint: {
+        'text-color': '#ffffff',
+      },
+    });
+
+    // Individual system circles (unclustered)
     map.addLayer({
       id: 'systems-circles',
       type: 'circle',
       source: 'systems',
+      filter: ['!', ['has', 'point_count']],
       paint: {
         'circle-color': ['get', 'color'],
         'circle-radius': [
@@ -244,6 +295,26 @@
           '<div class="popup-status" style="color:' + props.color + '">' + statusLabel(props.status) + '</div>'
         )
         .addTo(map);
+    });
+
+    // Click cluster → zoom into it
+    map.on('click', 'clusters', function (e) {
+      var features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
+      if (!features.length) return;
+      var clusterId = features[0].properties.cluster_id;
+      map.getSource('systems').getClusterExpansionZoom(clusterId).then(function (zoom) {
+        map.easeTo({
+          center: features[0].geometry.coordinates,
+          zoom: zoom,
+        });
+      });
+    });
+
+    map.on('mouseenter', 'clusters', function () {
+      map.getCanvas().style.cursor = 'pointer';
+    });
+    map.on('mouseleave', 'clusters', function () {
+      map.getCanvas().style.cursor = '';
     });
   }
 
