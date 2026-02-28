@@ -1,6 +1,35 @@
 /* === Reset & Base === */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* === Skip link === */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 8px;
+  z-index: 999;
+  background: var(--blue, #1565c0);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 0 0 8px 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: top 0.15s;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* === h1 in logo (no visual change) === */
+.logo-heading {
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  margin: 0;
+  line-height: inherit;
+}
+
 :root {
   --green: #1a8c3f;
   --yellow: #d4a017;
@@ -934,4 +963,37 @@ details[open] > .edu-toggle::before {
 
 .edu-action-list a:hover {
   text-decoration: underline;
+}
+
+/* === Focus-visible styles for keyboard navigation === */
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.panel-close:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+  background: #f1f5f9;
+}
+
+.find-btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--blue), 0 4px 16px rgba(21,101,192,0.35);
+}
+
+.share-btn:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+/* Hide focus ring for mouse/touch users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* System heading focused via JS (no visible ring) */
+.system-name:focus {
+  outline: none;
 }

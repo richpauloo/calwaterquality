@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 14 — 2026-02-28
+- What: Accessibility pass — added skip-to-content link, `<h1>` heading (visually styled same as logo), ARIA landmark roles (`banner`, `search`, `complementary`, `region`, `application`), ARIA combobox/listbox semantics on search with `aria-expanded`, `aria-activedescendant`, and `role="option"` on results. Changed panel `<div>` to `<aside>`. Added Escape key to close the panel, keyboard Enter/Space on the panel drag handle, focus management (focus moves to system heading when panel opens, returns to trigger element when closed), and `:focus-visible` outlines for keyboard users (hidden for mouse/touch). Loading overlay is `role="alert" aria-live="polite"`. Decorative icons get `aria-hidden="true"`.
+- Why: Priority #4 from the iteration 10 reflection. The site had no heading hierarchy, no landmark roles, no skip navigation, and no keyboard support for the panel. Screen reader users couldn't navigate or understand the page structure. Keyboard-only users couldn't close the panel or see focus indicators.
+- Result: JS syntax valid, all HTML checks pass. 13 accessibility attributes verified. No visual changes for sighted users — all improvements are in the accessibility layer.
+
 ## Iteration 13 — 2026-02-28
 - What: Added collapsible "What does this mean?" educational section to every system detail panel. Uses the native `<details>` element. Includes plain-language explanations of MCLs (safety limits), what each status category means (with matching color dots), and what contaminants with no limit means. Context-aware: failing systems get a prominent "What should I do?" action block with 5 concrete steps (don't panic, check mail, consider a filter, contact provider, CA Water Board hotline). Compliant systems get a reassuring "Good news" block.
 - Why: Priority #3 from the iteration 10 reflection. Users saw status badges and contaminant bars but had no way to understand what an MCL is, what "Failing" means practically, or what to do about it. This is the biggest remaining comprehensibility gap — the difference between showing data and making it useful.

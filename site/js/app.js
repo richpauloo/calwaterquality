@@ -231,6 +231,7 @@
       if (!e.features.length) return;
       var f = e.features[0];
       var props = f.properties;
+      panelTrigger = map.getCanvas();
       showSystem(props.id);
 
       // Brief popup
@@ -249,6 +250,7 @@
   var panel = document.getElementById('panel');
   var panelContent = document.getElementById('panel-content');
   var panelDrag = document.getElementById('panel-drag');
+  var panelTrigger = null; // element that opened the panel, for focus restoration
 
   function setPanel(state) {
     panel.classList.remove('peek', 'open');
@@ -262,6 +264,25 @@
         history.pushState(null, '', location.pathname + location.search);
       }
       document.title = 'California Water Quality';
+      // Restore focus to the element that opened the panel
+      if (panelTrigger && panelTrigger.focus) {
+        panelTrigger.focus();
+        panelTrigger = null;
+      }
+    }
+
+    // Move focus into panel when it opens
+    if (state === 'open') {
+      // Delay slightly to let transition start, then focus the panel content
+      setTimeout(function () {
+        var heading = panelContent.querySelector('.system-name');
+        if (heading) {
+          heading.setAttribute('tabindex', '-1');
+          heading.focus();
+        } else {
+          panelContent.focus();
+        }
+      }, 100);
     }
 
     // Hide legend and find button when panel is visible on mobile
@@ -276,6 +297,13 @@
       findWrap.classList.toggle('hidden', state !== 'closed');
     }
   }
+
+  // Escape key closes the panel
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && panelState !== 'closed') {
+      setPanel('closed');
+    }
+  });
 
   // Drag to open/close on mobile
   (function () {
@@ -308,6 +336,15 @@
     panelDrag.addEventListener('click', function () {
       if (panelState === 'peek') setPanel('open');
       else if (panelState === 'open') setPanel('peek');
+    });
+
+    // Keyboard: Enter/Space on drag handle toggles
+    panelDrag.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (panelState === 'peek') setPanel('open');
+        else if (panelState === 'open') setPanel('peek');
+      }
     });
   })();
 
@@ -568,6 +605,7 @@
     searchClear.classList.toggle('hidden', q.length === 0);
     if (q.length < 2) {
       searchResults.classList.add('hidden');
+      searchInput.setAttribute('aria-expanded', 'false');
       return;
     }
     searchTimeout = setTimeout(function () { doSearch(q); }, 150);
@@ -588,6 +626,7 @@
       items[selectedIdx].click();
     } else if (e.key === 'Escape') {
       searchResults.classList.add('hidden');
+      searchInput.setAttribute('aria-expanded', 'false');
       searchInput.blur();
     }
   });
@@ -603,15 +642,20 @@
   document.addEventListener('click', function (e) {
     if (!e.target.closest('#search-wrap')) {
       searchResults.classList.add('hidden');
+      searchInput.setAttribute('aria-expanded', 'false');
     }
   });
 
   function updateActiveResult(items) {
     items.forEach(function (li, i) {
       li.classList.toggle('active', i === selectedIdx);
+      li.setAttribute('aria-selected', i === selectedIdx ? 'true' : 'false');
     });
     if (items[selectedIdx]) {
       items[selectedIdx].scrollIntoView({ block: 'nearest' });
+      searchInput.setAttribute('aria-activedescendant', items[selectedIdx].id || '');
+    } else {
+      searchInput.removeAttribute('aria-activedescendant');
     }
   }
 
@@ -628,19 +672,22 @@
     selectedIdx = -1;
 
     if (matches.length === 0) {
-      searchResults.innerHTML = '<li class="no-results"><span class="result-name">No results found</span></li>';
+      searchResults.innerHTML = '<li class="no-results" role="option" aria-selected="false"><span class="result-name">No results found</span></li>';
       searchResults.classList.remove('hidden');
+      searchInput.setAttribute('aria-expanded', 'true');
       return;
     }
 
-    searchResults.innerHTML = matches.map(function (s) {
+    searchResults.innerHTML = matches.map(function (s, idx) {
       var meta = titleCase(s.county);
       if (s.pop) meta += ' · ' + fmtPop(s.pop) + ' served';
-      return '<li data-id="' + s.id + '" data-lat="' + s.lat + '" data-lon="' + s.lon + '">' +
+      return '<li id="search-opt-' + idx + '" role="option" aria-selected="false" data-id="' + s.id + '" data-lat="' + s.lat + '" data-lon="' + s.lon + '">' +
         '<span class="result-name">' + titleCase(s.name) + '</span>' +
         '<span class="result-meta">' + meta + '</span>' +
         '</li>';
     }).join('');
+
+    searchInput.setAttribute('aria-expanded', 'true');
 
     searchResults.querySelectorAll('li').forEach(function (li) {
       li.addEventListener('click', function () {
@@ -649,6 +696,8 @@
         var lon = parseFloat(this.dataset.lon);
 
         searchResults.classList.add('hidden');
+        searchInput.setAttribute('aria-expanded', 'false');
+        panelTrigger = searchInput;
         searchInput.value = titleCase(systems.find(function (s) { return s.id === id; }).name);
 
         if (lat && lon) {
