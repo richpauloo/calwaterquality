@@ -26,7 +26,7 @@
 - All unit abbreviations mapped in contaminant_dict.json `_units`: μg/L, mg/L, ng/L, pCi/L, MFL, NTU, pH, μmhos/cm, °C. Unitless indices (AGGR, LANG, TON) display with no unit suffix. fmtUnits() uses `in` check to respect empty-string mappings.
 - Accessibility: ARIA landmarks (banner/search/complementary/region/application), keyboard nav (Escape closes panel, Enter/Space on drag handle), focus management, `:focus-visible` outlines
 - GitHub Actions `refresh-data.yml` runs on 1st and 15th for data refresh — hasn't been validated in production yet
-- After 20 iterations the product is feature-complete for v1 — next priority is production validation (DNS, deployment, pipeline), not new features
+- After 24 iterations the product is feature-complete for v1 — NO MORE FEATURES until deployed and validated with real users
 - CNAME is set to calwaterquality.com — DNS resolves correctly but GitHub Pages needs reconfiguration from legacy to Actions deployment
 - Push access blocker: richpauloo has read-only access to caccr/caccr.github.io — need org admin to grant write, or fork+PR
 - GitHub Pages must be switched from legacy (branch root /) to GitHub Actions source for deploy.yml to work; also enable HTTPS enforcement

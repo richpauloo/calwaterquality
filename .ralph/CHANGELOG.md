@@ -1,5 +1,31 @@
 # Ralph Changelog
 
+## Reflection — Iteration 25 — 2026-02-28
+- Trajectory: **Drifting.** The product is locally excellent but publicly invisible. All 25 iterations happened in a single development session with zero deployments and zero users. The iteration 20 reflection correctly called for "shift from building to shipping," but iterations 22–24 went back to building (PWA manifest, staleness warnings, feedback links) — polish features for an undeployed product.
+- Working:
+  - **Product quality is genuinely high.** The code is clean (3 files, ~1060 lines total), well-structured, accessible, and consumer-friendly. A real person using this site would find it useful.
+  - **Reflection-driven planning works.** Every priority set in reflections at iterations 10, 15, and 20 was executed. Zero wasted iterations.
+  - **Architecture is robust and simple.** No framework, no build step, no dependencies beyond MapLibre GL. Nothing to break in deployment.
+- Not working:
+  - **The deployment blocker has not been resolved.** Identified in iteration 21, acknowledged in iterations 22–24, but never fixed. Four iterations of feature work happened after we knew the site couldn't be deployed.
+  - **Continued local feature development after "feature complete" declaration.** The iteration 20 reflection said "shift from building to shipping." Iterations 22–24 added more features anyway. This is the main anti-pattern.
+  - **No external validation of any kind.** No push, no deployment, no pipeline run, no real user, no feedback. The product exists only on one developer's laptop.
+- Missing:
+  - **Resolution of the push access blocker** — this is the #1 prerequisite for everything else. The developer (richpauloo) needs to either: (a) get write access from the caccr org admin, or (b) fork the repo and push there, or (c) create a new repo under their own account.
+  - **Production deployment and pipeline validation** — the GitHub Actions workflows look correct but have never executed.
+  - **Real user testing** — all design decisions are assumptions until validated by actual users.
+- Spiraling? **Yes, mildly.** We're adding features to a product nobody can see. The PWA manifest, staleness warnings, and feedback links are all good ideas — but they have zero impact until the site is live. Every iteration spent on local polish while the deployment blocker exists is an iteration wasted.
+- User impact: **Zero.** No one has ever visited this site. The product is invisible. This is the only metric that matters right now.
+- Next 5 iterations should focus on:
+  1. **STOP adding features.** The product is done. No more local development until deployment is resolved.
+  2. **Resolve the push/deployment blocker.** This requires human action: fork the repo, push to a personal account, or get org admin access. If this can't be resolved, nothing else matters.
+  3. **Push all 25 iterations of work and validate deployment.** Once push access exists, push to remote and verify the site loads at calwaterquality.com (or whatever domain is configured).
+  4. **Trigger the data refresh pipeline manually** via workflow_dispatch and verify it completes — downloads data, runs R scripts, commits, deploys.
+  5. **Get the site in front of 1–3 real people** and collect feedback. The feedback links in iteration 24 only work if anyone visits the site.
+- Adjustments:
+  - **Hard rule: no more feature iterations until the site is deployed and live.** Any code changes should be deployment fixes only.
+  - **The deployment blocker is a human problem, not a code problem.** If this iteration can't resolve it programmatically, surface it clearly to the product owner and wait for resolution.
+
 ## Iteration 24 — 2026-02-28
 - What: Added user feedback links in two locations: the default panel intro ("Send feedback or report an issue") and each system detail panel footer ("Something look wrong? Send feedback"). Both link to GitHub Issues (`caccr/caccr.github.io`) with pre-filled title and body. The system detail link includes the system name and ID so maintainers immediately know what the user was looking at.
 - Why: Priority #5 from the iteration 20 reflection. Without a feedback channel, there's no way for early visitors to report confusing data, broken features, or wrong information. This closes the loop between users and maintainers. GitHub Issues is free, requires no backend, and keeps feedback alongside the code.
@@ -65,51 +91,5 @@
 - What: Added favicon (SVG + ICO + apple-touch-icon), OG social card image (1200x630), and complete meta tags (Open Graph, Twitter Card, theme-color). Water drop icon in site blue (#1565c0). Social card shows site name, tagline, and URL.
 - Why: Priority #1 from the iteration 15 reflection. The site had no favicon (shows generic browser icon) and no social card (sharing links on Twitter/iMessage/Slack shows a plain text link instead of a rich preview with image). These are quick wins for professional appearance and shareability.
 - Result: 4 new files (favicon.svg, favicon.ico, apple-touch-icon.png, og-image.png — total ~36 KB). 13 new meta tags in index.html. HTML valid, all assets verified.
-
-## Reflection — Iteration 15 — 2026-02-28
-- Trajectory: **On track — v1 is effectively complete.** All 4 priorities from the iteration 10 reflection were shipped in sequence (data freshness → derived status → educational content → accessibility). The product now covers the full loop: automated data pipeline → consumer-friendly UI → accessibility → educational context. A real person visiting today can find their water system, understand what the results mean, and know what to do if something is wrong.
-- Working:
-  - **Reflection protocol as planning tool**: Setting 5 clear priorities at iteration 10 produced 4 focused, high-quality iterations with no wasted effort. Every iteration shipped exactly what was planned.
-  - **Architecture remains simple and fast**: Still 3 static files (36 KB), no build step, GitHub Pages. The simplicity is a feature — nothing to break, nothing to maintain.
-  - **Consumer comprehensibility is strong**: Contaminant dictionary (148 entries), educational "What does this mean?" section, derived compliance status, plain-language badges. The gap between "data dump" and "useful information" has been closed.
-  - **Accessibility baseline is solid**: Skip-link, ARIA landmarks, keyboard navigation, focus management, screen reader support. The site is usable by people who don't use a mouse.
-- Not working:
-  - **No remaining critical gaps**: The product has no major user-facing deficiencies. Remaining work is polish (favicon, reset button, unmapped units, social cards). This is a good problem to have.
-  - **All iterations are on the same date (2026-02-28)**: This is a single development session, not spaced iterations. The product hasn't been tested with real users or real data refreshes yet. The GitHub Actions pipeline hasn't run in production.
-- Missing:
-  - Favicon and PWA manifest (professional appearance, "add to home screen")
-  - Reset-view / zoom-to-statewide button on the map
-  - OG image / social card for link previews when sharing on social media
-  - Remaining unit abbreviation mappings (AGGR, TON, LANG, UMHO/CM, NTU, PH, C)
-  - Real-world validation: Has the GitHub Actions pipeline actually run? Does the CNAME/DNS work?
-- Spiraling? **No.** Each of the last 4 iterations touched different concerns (data display, data quality, education, accessibility). No file was over-modified. Good discipline maintained.
-- User impact: **A real person visiting today would find this genuinely useful.** They can find their water system (geolocation or search), see a clear compliance status, understand what contaminants were found and whether they exceed safety limits, read plain-language explanations of what it all means, and get actionable guidance if something is wrong. The site is accessible and shareable. The remaining gaps are cosmetic, not functional.
-- Next 5 iterations should focus on:
-  1. **Favicon + basic branding** — a water drop favicon and OG meta image for social sharing. Quick win for professional appearance.
-  2. **Reset-view button** — "zoom to California" button on the map for easier navigation after drilling into a system.
-  3. **Remaining unit abbreviations** — map AGGR, TON, LANG, UMHO/CM, NTU, PH, C to human-readable labels in the contaminant dictionary.
-  4. **Performance audit** — measure actual load times on mobile networks. The 512 KB initial load and 23 MB total data may need optimization (lazy loading, compression, CDN).
-  5. **Real-world validation** — verify the GitHub Actions pipeline runs successfully, DNS/CNAME resolves, and the site works end-to-end in production. Fix any issues found.
-- Adjustments: The product is past "build" and into "ship and validate." Iterations should be shorter and more targeted. If the next 5 iterations don't surface real user feedback or production issues, consider pausing development — the product may be done enough to ship and learn from real usage.
-
-## Iteration 14 — 2026-02-28
-- What: Accessibility pass — added skip-to-content link, `<h1>` heading (visually styled same as logo), ARIA landmark roles (`banner`, `search`, `complementary`, `region`, `application`), ARIA combobox/listbox semantics on search with `aria-expanded`, `aria-activedescendant`, and `role="option"` on results. Changed panel `<div>` to `<aside>`. Added Escape key to close the panel, keyboard Enter/Space on the panel drag handle, focus management (focus moves to system heading when panel opens, returns to trigger element when closed), and `:focus-visible` outlines for keyboard users (hidden for mouse/touch). Loading overlay is `role="alert" aria-live="polite"`. Decorative icons get `aria-hidden="true"`.
-- Why: Priority #4 from the iteration 10 reflection. The site had no heading hierarchy, no landmark roles, no skip navigation, and no keyboard support for the panel. Screen reader users couldn't navigate or understand the page structure. Keyboard-only users couldn't close the panel or see focus indicators.
-- Result: JS syntax valid, all HTML checks pass. 13 accessibility attributes verified. No visual changes for sighted users — all improvements are in the accessibility layer.
-
-## Iteration 13 — 2026-02-28
-- What: Added collapsible "What does this mean?" educational section to every system detail panel. Uses the native `<details>` element. Includes plain-language explanations of MCLs (safety limits), what each status category means (with matching color dots), and what contaminants with no limit means. Context-aware: failing systems get a prominent "What should I do?" action block with 5 concrete steps (don't panic, check mail, consider a filter, contact provider, CA Water Board hotline). Compliant systems get a reassuring "Good news" block.
-- Why: Priority #3 from the iteration 10 reflection. Users saw status badges and contaminant bars but had no way to understand what an MCL is, what "Failing" means practically, or what to do about it. This is the biggest remaining comprehensibility gap — the difference between showing data and making it useful.
-- Result: JS syntax valid, all files serve correctly. Educational section is collapsed by default (doesn't clutter the view), uses standard `<details>/<summary>` for accessibility, and adds ~60 lines of JS + ~130 lines of CSS with no external dependencies.
-
-## Iteration 12 — 2026-02-28
-- What: Derive compliance status from MCL data for 148 systems previously marked "Not Assessed" (including LADWP, serving 7.7M people). Added `deriveStatus()` to frontend JS that overrides "Not Assessed" using existing n_exceed/n_tested data — 87 systems now show as "Failing", 58 as "In Compliance", only 3 truly unassessed remain. Also fixed the R pipeline so future data refreshes compute this server-side.
-- Why: The biggest data quality gap: LADWP and 147 other systems showed "Not yet assessed" even though we had full MCL test data. Users seeing gray dots for the largest water system in California erodes trust.
-- Result: Both frontend (immediate) and pipeline (next refresh) fixed. 145 of 148 systems reclassified. No broken code — frontend derives status client-side from existing JSON.
-
-## Iteration 11 — 2026-02-28
-- What: Added "data last updated" indicator to the UI. Fetches meta.json (produced by the R pipeline) and displays the processing date in two places: the map legend (subtle text below the color dots) and the system detail panel footer (replaces generic "last 2 years" text with the actual date). Graceful fallback — if meta.json is missing, original text displays. Added placeholder meta.json for local development.
-- Why: The #1 gap from the Iteration 10 reflection: without a "last updated" date, users can't tell if the data is current. For a product built on trust ("is my water safe?"), data freshness is a critical signal. This was flagged as the quickest win with the highest trust impact.
-- Result: JS syntax valid, all files serve correctly. Legend shows "Data updated February 15, 2026" (from meta.json). Panel footer shows "Updated February 15, 2026" per system. Falls back gracefully if meta.json is absent.
 
 

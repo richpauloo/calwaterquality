@@ -1,5 +1,51 @@
 # Ralph Changelog — Archive
 
+## Reflection — Iteration 15 — 2026-02-28
+- Trajectory: **On track — v1 is effectively complete.** All 4 priorities from the iteration 10 reflection were shipped in sequence (data freshness → derived status → educational content → accessibility). The product now covers the full loop: automated data pipeline → consumer-friendly UI → accessibility → educational context. A real person visiting today can find their water system, understand what the results mean, and know what to do if something is wrong.
+- Working:
+  - **Reflection protocol as planning tool**: Setting 5 clear priorities at iteration 10 produced 4 focused, high-quality iterations with no wasted effort. Every iteration shipped exactly what was planned.
+  - **Architecture remains simple and fast**: Still 3 static files (36 KB), no build step, GitHub Pages. The simplicity is a feature — nothing to break, nothing to maintain.
+  - **Consumer comprehensibility is strong**: Contaminant dictionary (148 entries), educational "What does this mean?" section, derived compliance status, plain-language badges. The gap between "data dump" and "useful information" has been closed.
+  - **Accessibility baseline is solid**: Skip-link, ARIA landmarks, keyboard navigation, focus management, screen reader support. The site is usable by people who don't use a mouse.
+- Not working:
+  - **No remaining critical gaps**: The product has no major user-facing deficiencies. Remaining work is polish (favicon, reset button, unmapped units, social cards). This is a good problem to have.
+  - **All iterations are on the same date (2026-02-28)**: This is a single development session, not spaced iterations. The product hasn't been tested with real users or real data refreshes yet. The GitHub Actions pipeline hasn't run in production.
+- Missing:
+  - Favicon and PWA manifest (professional appearance, "add to home screen")
+  - Reset-view / zoom-to-statewide button on the map
+  - OG image / social card for link previews when sharing on social media
+  - Remaining unit abbreviation mappings (AGGR, TON, LANG, UMHO/CM, NTU, PH, C)
+  - Real-world validation: Has the GitHub Actions pipeline actually run? Does the CNAME/DNS work?
+- Spiraling? **No.** Each of the last 4 iterations touched different concerns (data display, data quality, education, accessibility). No file was over-modified. Good discipline maintained.
+- User impact: **A real person visiting today would find this genuinely useful.** They can find their water system (geolocation or search), see a clear compliance status, understand what contaminants were found and whether they exceed safety limits, read plain-language explanations of what it all means, and get actionable guidance if something is wrong. The site is accessible and shareable. The remaining gaps are cosmetic, not functional.
+- Next 5 iterations should focus on:
+  1. **Favicon + basic branding** — a water drop favicon and OG meta image for social sharing. Quick win for professional appearance.
+  2. **Reset-view button** — "zoom to California" button on the map for easier navigation after drilling into a system.
+  3. **Remaining unit abbreviations** — map AGGR, TON, LANG, UMHO/CM, NTU, PH, C to human-readable labels in the contaminant dictionary.
+  4. **Performance audit** — measure actual load times on mobile networks. The 512 KB initial load and 23 MB total data may need optimization (lazy loading, compression, CDN).
+  5. **Real-world validation** — verify the GitHub Actions pipeline runs successfully, DNS/CNAME resolves, and the site works end-to-end in production. Fix any issues found.
+- Adjustments: The product is past "build" and into "ship and validate." Iterations should be shorter and more targeted. If the next 5 iterations don't surface real user feedback or production issues, consider pausing development — the product may be done enough to ship and learn from real usage.
+
+## Iteration 14 — 2026-02-28
+- What: Accessibility pass — added skip-to-content link, `<h1>` heading (visually styled same as logo), ARIA landmark roles (`banner`, `search`, `complementary`, `region`, `application`), ARIA combobox/listbox semantics on search with `aria-expanded`, `aria-activedescendant`, and `role="option"` on results. Changed panel `<div>` to `<aside>`. Added Escape key to close the panel, keyboard Enter/Space on the panel drag handle, focus management (focus moves to system heading when panel opens, returns to trigger element when closed), and `:focus-visible` outlines for keyboard users (hidden for mouse/touch). Loading overlay is `role="alert" aria-live="polite"`. Decorative icons get `aria-hidden="true"`.
+- Why: Priority #4 from the iteration 10 reflection. The site had no heading hierarchy, no landmark roles, no skip navigation, and no keyboard support for the panel. Screen reader users couldn't navigate or understand the page structure. Keyboard-only users couldn't close the panel or see focus indicators.
+- Result: JS syntax valid, all HTML checks pass. 13 accessibility attributes verified. No visual changes for sighted users — all improvements are in the accessibility layer.
+
+## Iteration 13 — 2026-02-28
+- What: Added collapsible "What does this mean?" educational section to every system detail panel. Uses the native `<details>` element. Includes plain-language explanations of MCLs (safety limits), what each status category means (with matching color dots), and what contaminants with no limit means. Context-aware: failing systems get a prominent "What should I do?" action block with 5 concrete steps (don't panic, check mail, consider a filter, contact provider, CA Water Board hotline). Compliant systems get a reassuring "Good news" block.
+- Why: Priority #3 from the iteration 10 reflection. Users saw status badges and contaminant bars but had no way to understand what an MCL is, what "Failing" means practically, or what to do about it. This is the biggest remaining comprehensibility gap — the difference between showing data and making it useful.
+- Result: JS syntax valid, all files serve correctly. Educational section is collapsed by default (doesn't clutter the view), uses standard `<details>/<summary>` for accessibility, and adds ~60 lines of JS + ~130 lines of CSS with no external dependencies.
+
+## Iteration 12 — 2026-02-28
+- What: Derive compliance status from MCL data for 148 systems previously marked "Not Assessed" (including LADWP, serving 7.7M people). Added `deriveStatus()` to frontend JS that overrides "Not Assessed" using existing n_exceed/n_tested data — 87 systems now show as "Failing", 58 as "In Compliance", only 3 truly unassessed remain. Also fixed the R pipeline so future data refreshes compute this server-side.
+- Why: The biggest data quality gap: LADWP and 147 other systems showed "Not yet assessed" even though we had full MCL test data. Users seeing gray dots for the largest water system in California erodes trust.
+- Result: Both frontend (immediate) and pipeline (next refresh) fixed. 145 of 148 systems reclassified. No broken code — frontend derives status client-side from existing JSON.
+
+## Iteration 11 — 2026-02-28
+- What: Added "data last updated" indicator to the UI. Fetches meta.json (produced by the R pipeline) and displays the processing date in two places: the map legend (subtle text below the color dots) and the system detail panel footer (replaces generic "last 2 years" text with the actual date). Graceful fallback — if meta.json is missing, original text displays. Added placeholder meta.json for local development.
+- Why: The #1 gap from the Iteration 10 reflection: without a "last updated" date, users can't tell if the data is current. For a product built on trust ("is my water safe?"), data freshness is a critical signal. This was flagged as the quickest win with the highest trust impact.
+- Result: JS syntax valid, all files serve correctly. Legend shows "Data updated February 15, 2026" (from meta.json). Panel footer shows "Updated February 15, 2026" per system. Falls back gracefully if meta.json is absent.
+
 ## Reflection — Iteration 10 — 2026-02-28
 - Trajectory: **On track — approaching v1 completeness.** The Iteration 5 reflection course-corrected toward consumer comprehensibility; iterations 6-8 delivered on that well (contaminant dictionary, loading states, geolocation). Iteration 9 closed the automation gap. The product is now functional end-to-end: pipeline → data → deployment → consumer-friendly UI.
 - Working:
