@@ -439,18 +439,30 @@
     var regulated = detected.filter(function (c) { return c.mcl && !c.exceeds_mcl; });
     var other = detected.filter(function (c) { return !c.mcl; });
 
+    // Sort exceeding by severity (worst first) before building summary
+    exceeding.sort(function (a, b) {
+      var ra = a.avg / a.mcl;
+      var rb = b.avg / b.mcl;
+      return rb - ra;
+    });
+
     var exceedCount = exceeding.length;
     var testedCount = nTested;
     var detectedCount = detected.length;
 
-    // Build summary sentence
+    // Build summary sentence — name the exceeding contaminants so users know what's wrong at a glance
     var summaryText;
     if (exceedCount === 0) {
       summaryText = 'All ' + detectedCount + ' detected contaminants are within California safety limits.';
-    } else if (exceedCount === 1) {
-      summaryText = '1 contaminant exceeds California safety limits in recent testing.';
     } else {
-      summaryText = exceedCount + ' contaminants exceed California safety limits in recent testing.';
+      var exceedNames = exceeding.map(function (c) { return contaminantName(c.name); });
+      if (exceedCount === 1) {
+        summaryText = '<strong>' + exceedNames[0] + '</strong> exceeds California safety limits in recent testing.';
+      } else if (exceedCount === 2) {
+        summaryText = '<strong>' + exceedNames[0] + '</strong> and <strong>' + exceedNames[1] + '</strong> exceed California safety limits in recent testing.';
+      } else {
+        summaryText = exceedCount + ' contaminants — <strong>' + exceedNames.slice(0, 3).join('</strong>, <strong>') + '</strong>' + (exceedCount > 3 ? ', and others' : '') + ' — exceed California safety limits.';
+      }
     }
 
     var html = '';
@@ -488,11 +500,6 @@
     // Exceeding MCL section
     if (exceeding.length > 0) {
       html += '<div class="section-title">Exceeding Safety Limits</div>';
-      exceeding.sort(function (a, b) {
-        var ra = a.avg / a.mcl;
-        var rb = b.avg / b.mcl;
-        return rb - ra;
-      });
       exceeding.forEach(function (c) {
         html += renderContaminantBar(c, true);
       });
