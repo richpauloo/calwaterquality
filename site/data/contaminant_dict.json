@@ -1,0 +1,757 @@
+{
+  "_units": {
+    "UG/L": "μg/L",
+    "MG/L": "mg/L",
+    "NG/L": "ng/L",
+    "PCI/L": "pCi/L",
+    "MFL": "MFL",
+    "NTU": "NTU",
+    "PH": "pH",
+    "UMHO/CM": "μmhos/cm",
+    "AGGR": "",
+    "LANG": "",
+    "UNITS": "units",
+    "TON": "TON",
+    "C": "°C"
+  },
+  "IRON": {
+    "display": "Iron",
+    "desc": "A naturally occurring metal. High levels can cause rusty-colored water, metallic taste, and staining of laundry and fixtures.",
+    "source": "Natural deposits, industrial waste, corroding pipes"
+  },
+  "NITRATE": {
+    "display": "Nitrate",
+    "desc": "A nutrient that is dangerous at high levels, especially for infants. Can cause \"blue baby syndrome,\" which reduces the blood's ability to carry oxygen.",
+    "source": "Fertilizer runoff, septic systems, animal waste, natural deposits"
+  },
+  "NITRATE-NITRITE": {
+    "display": "Nitrate + Nitrite",
+    "desc": "Combined measure of nitrate and nitrite, both of which can be harmful at high levels, especially for infants.",
+    "source": "Fertilizer runoff, septic systems, animal waste"
+  },
+  "NITRITE": {
+    "display": "Nitrite",
+    "desc": "Dangerous at high levels, especially for infants. Can interfere with the blood's ability to carry oxygen.",
+    "source": "Fertilizer runoff, septic systems, water treatment"
+  },
+  "ARSENIC": {
+    "display": "Arsenic",
+    "desc": "A toxic element linked to increased risk of cancer, skin damage, and circulatory problems with long-term exposure.",
+    "source": "Natural deposits, mining runoff, industrial waste"
+  },
+  "LEAD": {
+    "display": "Lead",
+    "desc": "A toxic metal that accumulates in the body. Even low levels can harm brain development in children and cause kidney and blood pressure problems in adults.",
+    "source": "Old plumbing, lead service lines, solder, fixtures"
+  },
+  "COPPER, FREE": {
+    "display": "Copper",
+    "desc": "An essential nutrient in small amounts, but high levels can cause stomach discomfort, nausea, and liver or kidney damage with long-term exposure.",
+    "source": "Corroding copper pipes, natural deposits"
+  },
+  "CHROMIUM": {
+    "display": "Chromium (Total)",
+    "desc": "A metal found in natural deposits. Some forms are essential nutrients; others may increase cancer risk at high levels.",
+    "source": "Natural deposits, industrial discharge"
+  },
+  "CHROMIUM, HEX": {
+    "display": "Chromium-6 (Hexavalent)",
+    "desc": "A form of chromium linked to increased cancer risk when consumed over many years, even at low levels. The subject of the Erin Brockovich case.",
+    "source": "Natural deposits, industrial discharge, power plants"
+  },
+  "FLUORIDE": {
+    "display": "Fluoride",
+    "desc": "Added to water to prevent tooth decay. At levels above the safety limit, long-term exposure can cause bone disease and mottled teeth in children.",
+    "source": "Water treatment additive, natural deposits, fertilizer discharge"
+  },
+  "TTHM": {
+    "display": "Total Trihalomethanes (TTHM)",
+    "desc": "Byproducts formed when chlorine used for disinfection reacts with organic matter. Long-term exposure may increase cancer risk.",
+    "source": "Byproduct of water disinfection (chlorination)"
+  },
+  "TOTAL HALOACETIC ACIDS (HAA5)": {
+    "display": "Haloacetic Acids (HAA5)",
+    "desc": "A group of disinfection byproducts. Long-term exposure may increase cancer risk.",
+    "source": "Byproduct of water disinfection (chlorination)"
+  },
+  "CHLOROFORM": {
+    "display": "Chloroform",
+    "desc": "A disinfection byproduct and one of the four trihalomethanes. May increase cancer risk with long-term exposure.",
+    "source": "Byproduct of water chlorination"
+  },
+  "BROMODICHLOROMETHANE": {
+    "display": "Bromodichloromethane",
+    "desc": "A disinfection byproduct and one of the four trihalomethanes. May increase cancer risk with long-term exposure.",
+    "source": "Byproduct of water chlorination"
+  },
+  "DIBROMOCHLOROMETHANE": {
+    "display": "Dibromochloromethane",
+    "desc": "A disinfection byproduct and one of the four trihalomethanes. May increase cancer risk with long-term exposure.",
+    "source": "Byproduct of water chlorination"
+  },
+  "BROMOFORM": {
+    "display": "Bromoform",
+    "desc": "A disinfection byproduct and one of the four trihalomethanes. May increase cancer risk with long-term exposure.",
+    "source": "Byproduct of water chlorination"
+  },
+  "DICHLOROACETIC ACID": {
+    "display": "Dichloroacetic Acid",
+    "desc": "A disinfection byproduct in the haloacetic acids group. May increase cancer risk with long-term exposure.",
+    "source": "Byproduct of water chlorination"
+  },
+  "TRICHLOROACETIC ACID": {
+    "display": "Trichloroacetic Acid",
+    "desc": "A disinfection byproduct in the haloacetic acids group. May increase cancer risk with long-term exposure.",
+    "source": "Byproduct of water chlorination"
+  },
+  "DIBROMOACETIC ACID": {
+    "display": "Dibromoacetic Acid",
+    "desc": "A disinfection byproduct in the haloacetic acids group. May increase cancer risk with long-term exposure.",
+    "source": "Byproduct of water chlorination"
+  },
+  "MONOBROMOACETIC ACID": {
+    "display": "Monobromoacetic Acid",
+    "desc": "A disinfection byproduct in the haloacetic acids group.",
+    "source": "Byproduct of water chlorination"
+  },
+  "MONOCHLOROACETIC ACID": {
+    "display": "Monochloroacetic Acid",
+    "desc": "A disinfection byproduct in the haloacetic acids group.",
+    "source": "Byproduct of water chlorination"
+  },
+  "MANGANESE": {
+    "display": "Manganese",
+    "desc": "A naturally occurring mineral. High levels can cause black or brown water discoloration and may affect the nervous system with long-term exposure.",
+    "source": "Natural deposits, mining"
+  },
+  "ALUMINUM": {
+    "display": "Aluminum",
+    "desc": "A common metal. High levels may cause discoloration of water. Research on health effects is ongoing.",
+    "source": "Natural deposits, water treatment chemicals"
+  },
+  "BARIUM": {
+    "display": "Barium",
+    "desc": "A metal that can cause difficulty breathing, increased blood pressure, and stomach irritation at high levels.",
+    "source": "Natural deposits, drilling waste, metal refining"
+  },
+  "SELENIUM": {
+    "display": "Selenium",
+    "desc": "An essential trace nutrient, but toxic at high levels. Can cause hair and nail loss, numbness, and circulatory problems.",
+    "source": "Natural deposits, mining, petroleum refining"
+  },
+  "MERCURY": {
+    "display": "Mercury",
+    "desc": "A highly toxic metal. Can damage the kidneys and nervous system even at low levels of exposure.",
+    "source": "Natural deposits, refineries, industrial discharge"
+  },
+  "CADMIUM": {
+    "display": "Cadmium",
+    "desc": "A toxic metal that can cause kidney damage with long-term exposure.",
+    "source": "Galvanized pipe corrosion, natural deposits, industrial discharge"
+  },
+  "NICKEL": {
+    "display": "Nickel",
+    "desc": "A metal that can cause stomach problems at high levels. Some people may have skin reactions.",
+    "source": "Natural deposits, industrial discharge, stainless steel"
+  },
+  "ZINC": {
+    "display": "Zinc",
+    "desc": "An essential trace mineral, but high levels can cause a metallic taste and stomach discomfort.",
+    "source": "Natural deposits, corroding galvanized pipes, industrial discharge"
+  },
+  "SILVER": {
+    "display": "Silver",
+    "desc": "A metal used in water treatment. High levels can cause permanent bluish-gray discoloration of the skin (argyria).",
+    "source": "Natural deposits, water treatment"
+  },
+  "ANTIMONY, TOTAL": {
+    "display": "Antimony",
+    "desc": "A metal that can cause nausea, vomiting, and diarrhea at high levels. Long-term exposure may increase cholesterol and decrease blood sugar.",
+    "source": "Natural deposits, fire retardants, ceramics, electronics"
+  },
+  "COMBINED URANIUM": {
+    "display": "Uranium",
+    "desc": "A radioactive metal that can cause kidney damage with long-term exposure. Also a radiation risk.",
+    "source": "Natural deposits (especially in granite-rich areas)"
+  },
+  "GROSS ALPHA PARTICLE ACTIVITY": {
+    "display": "Gross Alpha Radiation",
+    "desc": "A measure of total radioactivity in water. Elevated levels may indicate the presence of radium, uranium, or other radioactive materials and may increase cancer risk.",
+    "source": "Natural radioactive deposits"
+  },
+  "GROSS BETA PARTICLE ACTIVITY": {
+    "display": "Gross Beta Radiation",
+    "desc": "A measure of certain types of radioactivity in water. Elevated levels may increase cancer risk with long-term exposure.",
+    "source": "Natural deposits, nuclear industry"
+  },
+  "RADIUM-226": {
+    "display": "Radium-226",
+    "desc": "A naturally occurring radioactive element. Long-term exposure may increase the risk of bone cancer.",
+    "source": "Natural deposits"
+  },
+  "RADIUM-228": {
+    "display": "Radium-228",
+    "desc": "A naturally occurring radioactive element. Long-term exposure may increase the risk of bone cancer.",
+    "source": "Natural deposits"
+  },
+  "COMBINED RADIUM (-226 & -228)": {
+    "display": "Combined Radium",
+    "desc": "The sum of Radium-226 and Radium-228. Long-term exposure may increase the risk of bone cancer.",
+    "source": "Natural deposits"
+  },
+  "TRITIUM": {
+    "display": "Tritium",
+    "desc": "A radioactive form of hydrogen. At high levels, may increase cancer risk.",
+    "source": "Natural processes, nuclear industry"
+  },
+  "38-STRONTIUM-90": {
+    "display": "Strontium-90",
+    "desc": "A radioactive element that can accumulate in bones. Long-term exposure may increase the risk of bone cancer and leukemia.",
+    "source": "Nuclear fallout, nuclear industry"
+  },
+  "RADON": {
+    "display": "Radon",
+    "desc": "A naturally occurring radioactive gas. Mainly a risk when released from water during showering or cooking. Can increase lung cancer risk.",
+    "source": "Natural deposits (decay of uranium in soil and rock)"
+  },
+  "PERCHLORATE": {
+    "display": "Perchlorate",
+    "desc": "A chemical that can interfere with thyroid function, which is critical for growth and development. Especially concerning for pregnant women and infants.",
+    "source": "Rocket fuel manufacturing, fireworks, flares, natural deposits"
+  },
+  "PERFLUOROCTANOIC ACID (PFOA)": {
+    "display": "PFOA (\"Forever Chemical\")",
+    "desc": "A man-made \"forever chemical\" (PFAS) that doesn't break down in the environment. Linked to cancer, thyroid disease, immune effects, and developmental problems.",
+    "source": "Nonstick coatings (Teflon), firefighting foam, industrial discharge"
+  },
+  "PERFLUOROCTANE SULFONIC ACID (PFOS)": {
+    "display": "PFOS (\"Forever Chemical\")",
+    "desc": "A man-made \"forever chemical\" (PFAS) that persists in the body for years. Linked to cancer, immune system effects, thyroid problems, and developmental issues.",
+    "source": "Firefighting foam, stain-resistant products, industrial discharge"
+  },
+  "PERFLUOROBUTANE SULFONIC ACID (PFBS)": {
+    "display": "PFBS (PFAS Chemical)",
+    "desc": "A \"forever chemical\" (PFAS) that doesn't break down. May affect the thyroid, kidneys, and reproductive system.",
+    "source": "Industrial discharge, firefighting foam"
+  },
+  "PERFLUOROBUTANOIC ACID (PFBA)": {
+    "display": "PFBA (PFAS Chemical)",
+    "desc": "A shorter-chain \"forever chemical\" (PFAS). Health effects still being studied, but may affect the thyroid and liver.",
+    "source": "Industrial discharge, consumer products"
+  },
+  "PERFLUOROHEXANE SULFONIC ACID (PFHxS)": {
+    "display": "PFHxS (PFAS Chemical)",
+    "desc": "A \"forever chemical\" (PFAS) linked to thyroid disease and immune system effects.",
+    "source": "Firefighting foam, industrial discharge"
+  },
+  "PERFLUOROHEXANOIC ACID (PFHXA)": {
+    "display": "PFHxA (PFAS Chemical)",
+    "desc": "A shorter-chain \"forever chemical\" (PFAS). Health effects still being studied.",
+    "source": "Industrial discharge, consumer products"
+  },
+  "PERFLUOROPENTANOIC ACID (PFPEA)": {
+    "display": "PFPeA (PFAS Chemical)",
+    "desc": "A shorter-chain \"forever chemical\" (PFAS). Health effects still being studied.",
+    "source": "Industrial discharge"
+  },
+  "PERFLUOROPENTANESULFONIC ACID (PFPES)": {
+    "display": "PFPeS (PFAS Chemical)",
+    "desc": "A \"forever chemical\" (PFAS). Health effects still being studied.",
+    "source": "Industrial discharge"
+  },
+  "PERFLUORONONANOIC ACID (PFNA)": {
+    "display": "PFNA (PFAS Chemical)",
+    "desc": "A long-chain \"forever chemical\" (PFAS) linked to immune effects and possible cancer risk.",
+    "source": "Industrial discharge, consumer products"
+  },
+  "PERFLUORODECANOIC ACID (PFDA)": {
+    "display": "PFDA (PFAS Chemical)",
+    "desc": "A long-chain \"forever chemical\" (PFAS). May affect the liver and immune system.",
+    "source": "Industrial discharge"
+  },
+  "PERFLUOROHEPTANOIC ACID (PFHPA)": {
+    "display": "PFHpA (PFAS Chemical)",
+    "desc": "A \"forever chemical\" (PFAS). Health effects still being studied.",
+    "source": "Industrial discharge"
+  },
+  "PERFLUOROHEPTANESULFONIC ACID (PFHPS)": {
+    "display": "PFHpS (PFAS Chemical)",
+    "desc": "A \"forever chemical\" (PFAS). Health effects still being studied.",
+    "source": "Industrial discharge"
+  },
+  "PERFLUORODECANE SULFONIC ACID 8:2 FTS": {
+    "display": "8:2 FTS (PFAS Chemical)",
+    "desc": "A \"forever chemical\" (PFAS) precursor. Can break down into other PFAS in the body.",
+    "source": "Firefighting foam, industrial discharge"
+  },
+  "PERFLUOROOCTANE SULFONIC ACID 6:2 FTS": {
+    "display": "6:2 FTS (PFAS Chemical)",
+    "desc": "A \"forever chemical\" (PFAS) precursor. Can break down into other PFAS in the body.",
+    "source": "Firefighting foam, industrial discharge"
+  },
+  "PERFLUOROHEXANE SULFONIC ACID 4:2 FTS": {
+    "display": "4:2 FTS (PFAS Chemical)",
+    "desc": "A \"forever chemical\" (PFAS) precursor. Can break down into other PFAS in the body.",
+    "source": "Firefighting foam, industrial discharge"
+  },
+  "PERFLUORODODECANOIC ACID (PFDOA)": {
+    "display": "PFDoA (PFAS Chemical)",
+    "desc": "A long-chain \"forever chemical\" (PFAS). May affect the liver.",
+    "source": "Industrial discharge"
+  },
+  "PERFLUOROUNDECANOIC ACID (PFUNA)": {
+    "display": "PFUnA (PFAS Chemical)",
+    "desc": "A long-chain \"forever chemical\" (PFAS). Health effects still being studied.",
+    "source": "Industrial discharge"
+  },
+  "HFPO-DA": {
+    "display": "GenX (HFPO-DA)",
+    "desc": "A replacement for PFOA, but itself a \"forever chemical\" (PFAS). May affect the liver, kidneys, and immune system.",
+    "source": "Industrial discharge (PFOA replacement)"
+  },
+  "ADONA": {
+    "display": "ADONA (PFAS Chemical)",
+    "desc": "A \"forever chemical\" (PFAS) used as a processing aid. Health effects still being studied.",
+    "source": "Industrial discharge"
+  },
+  "PERFLUORO PFEESA": {
+    "display": "PFEESA (PFAS Chemical)",
+    "desc": "A \"forever chemical\" (PFAS). Health effects still being studied.",
+    "source": "Industrial discharge"
+  },
+  "PERFLUORO PFMBA": {
+    "display": "PFMBA (PFAS Chemical)",
+    "desc": "A \"forever chemical\" (PFAS). Health effects still being studied.",
+    "source": "Industrial discharge"
+  },
+  "11CL-PF3OUDS": {
+    "display": "11Cl-PF3OUdS (PFAS Chemical)",
+    "desc": "A \"forever chemical\" (PFAS). Health effects still being studied.",
+    "source": "Industrial discharge"
+  },
+  "9CL-PF3ONS": {
+    "display": "9Cl-PF3ONS (PFAS Chemical)",
+    "desc": "A \"forever chemical\" (PFAS). Health effects still being studied.",
+    "source": "Industrial discharge"
+  },
+  "ADSORBABLE ORGANIC FLUORINE": {
+    "display": "Total Organic Fluorine",
+    "desc": "A screening measure for the total amount of PFAS and related fluorine-containing chemicals in water.",
+    "source": "Industrial discharge, consumer products"
+  },
+  "TETRACHLOROETHYLENE": {
+    "display": "Tetrachloroethylene (PCE)",
+    "desc": "An industrial solvent linked to increased cancer risk and liver problems with long-term exposure.",
+    "source": "Dry cleaners, metal degreasing, industrial discharge"
+  },
+  "TRICHLOROETHYLENE": {
+    "display": "Trichloroethylene (TCE)",
+    "desc": "An industrial solvent and known carcinogen. Can damage the liver, kidneys, and nervous system.",
+    "source": "Metal degreasing, industrial discharge, waste sites"
+  },
+  "1,2-DIBROMO-3-CHLOROPROPANE": {
+    "display": "DBCP",
+    "desc": "A banned pesticide that persists in groundwater. Linked to increased cancer risk and male reproductive problems.",
+    "source": "Historical pesticide use (banned in 1979)"
+  },
+  "1,2,3-TRICHLOROPROPANE": {
+    "display": "1,2,3-TCP",
+    "desc": "A toxic industrial chemical and contaminant from soil fumigants. A probable human carcinogen.",
+    "source": "Historical pesticide manufacturing, industrial solvent"
+  },
+  "CARBON TETRACHLORIDE": {
+    "display": "Carbon Tetrachloride",
+    "desc": "An industrial chemical linked to liver damage and cancer with long-term exposure.",
+    "source": "Industrial discharge, older cleaning solvents"
+  },
+  "DICHLOROMETHANE": {
+    "display": "Methylene Chloride",
+    "desc": "An industrial solvent that may increase cancer risk with long-term exposure.",
+    "source": "Paint strippers, industrial discharge"
+  },
+  "1,1-DICHLOROETHYLENE": {
+    "display": "1,1-Dichloroethylene",
+    "desc": "An industrial chemical that can cause liver and kidney damage at high levels.",
+    "source": "Breakdown of industrial solvents"
+  },
+  "1,1-DICHLOROETHANE": {
+    "display": "1,1-Dichloroethane",
+    "desc": "An industrial solvent that may affect the liver and nervous system.",
+    "source": "Industrial discharge"
+  },
+  "1,2-DICHLOROETHANE": {
+    "display": "1,2-Dichloroethane",
+    "desc": "An industrial chemical linked to increased cancer risk with long-term exposure.",
+    "source": "Industrial discharge, leaded gasoline additives"
+  },
+  "1,2-DICHLOROPROPANE": {
+    "display": "1,2-Dichloropropane",
+    "desc": "An industrial chemical linked to increased cancer risk.",
+    "source": "Soil fumigants, industrial discharge"
+  },
+  "CIS-1,2-DICHLOROETHYLENE": {
+    "display": "cis-1,2-Dichloroethylene",
+    "desc": "A breakdown product of industrial solvents. Can cause liver and nervous system effects at high levels.",
+    "source": "Breakdown of TCE and PCE"
+  },
+  "TRANS-1,2-DICHLOROETHYLENE": {
+    "display": "trans-1,2-Dichloroethylene",
+    "desc": "A breakdown product of industrial solvents. Can cause liver effects at high levels.",
+    "source": "Breakdown of TCE and PCE"
+  },
+  "1,1,1-TRICHLOROETHANE": {
+    "display": "1,1,1-Trichloroethane",
+    "desc": "A former solvent now banned. Can affect the liver and nervous system at high levels.",
+    "source": "Historical solvent use, industrial discharge"
+  },
+  "1,1,2-TRICHLOROETHANE": {
+    "display": "1,1,2-Trichloroethane",
+    "desc": "An industrial chemical that may increase cancer risk with long-term exposure.",
+    "source": "Industrial solvent, chemical manufacturing"
+  },
+  "1,1,1,2-TETRACHLOROETHANE": {
+    "display": "1,1,1,2-Tetrachloroethane",
+    "desc": "An industrial solvent that may damage the liver.",
+    "source": "Industrial discharge"
+  },
+  "BENZENE": {
+    "display": "Benzene",
+    "desc": "A known human carcinogen. Long-term exposure increases risk of leukemia.",
+    "source": "Gasoline, industrial discharge, natural deposits"
+  },
+  "TOLUENE": {
+    "display": "Toluene",
+    "desc": "An industrial solvent that can affect the nervous system and kidneys at high levels.",
+    "source": "Gasoline, industrial discharge"
+  },
+  "XYLENES, TOTAL": {
+    "display": "Xylenes",
+    "desc": "Industrial solvents that can damage the liver and nervous system at high levels.",
+    "source": "Gasoline, industrial discharge"
+  },
+  "STYRENE": {
+    "display": "Styrene",
+    "desc": "A chemical used in plastics manufacturing. May affect the liver and nervous system at high levels.",
+    "source": "Plastics manufacturing, industrial discharge"
+  },
+  "1,2,4-TRIMETHYLBENZENE": {
+    "display": "1,2,4-Trimethylbenzene",
+    "desc": "A petroleum-derived chemical. May cause dizziness and nervous system effects at high levels.",
+    "source": "Petroleum products, industrial discharge"
+  },
+  "1,4-DIOXANE": {
+    "display": "1,4-Dioxane",
+    "desc": "A likely human carcinogen that can contaminate groundwater. Difficult to remove with conventional treatment.",
+    "source": "Industrial solvent, manufacturing contaminant"
+  },
+  "METHYL TERT-BUTYL ETHER": {
+    "display": "MTBE",
+    "desc": "A gasoline additive that can make water taste and smell bad at very low concentrations. Possible carcinogen.",
+    "source": "Gasoline (fuel oxygenate), leaking underground storage tanks"
+  },
+  "ETHYLENE DIBROMIDE": {
+    "display": "Ethylene Dibromide (EDB)",
+    "desc": "A banned pesticide and gasoline additive. A probable carcinogen that can damage the liver, stomach, and reproductive system.",
+    "source": "Historical pesticide use, leaded gasoline"
+  },
+  "CHLOROMETHANE": {
+    "display": "Chloromethane",
+    "desc": "A chemical that can affect the nervous system at high levels.",
+    "source": "Industrial discharge, natural sources"
+  },
+  "BROMOCHLOROMETHANE": {
+    "display": "Bromochloromethane",
+    "desc": "An industrial chemical and disinfection byproduct.",
+    "source": "Fire extinguishers, industrial discharge"
+  },
+  "DICHLORODIFLUOROMETHANE": {
+    "display": "Dichlorodifluoromethane (Freon-12)",
+    "desc": "A refrigerant chemical. May affect the heart and nervous system at high levels.",
+    "source": "Refrigerants, industrial discharge"
+  },
+  "TRICHLOROFLUOROMETHANE": {
+    "display": "Trichlorofluoromethane (Freon-11)",
+    "desc": "A refrigerant chemical. May affect the nervous system at high levels.",
+    "source": "Refrigerants, aerosol propellants"
+  },
+  "TRICHLOROTRIFLUOROETHANE": {
+    "display": "Trichlorotrifluoroethane (Freon-113)",
+    "desc": "A refrigerant and industrial solvent.",
+    "source": "Refrigerants, electronics cleaning"
+  },
+  "ACETONE": {
+    "display": "Acetone",
+    "desc": "A common solvent. Generally low toxicity but may indicate industrial contamination at high levels.",
+    "source": "Industrial discharge, natural processes"
+  },
+  "METHYL ETHYL KETONE": {
+    "display": "Methyl Ethyl Ketone (MEK)",
+    "desc": "An industrial solvent that can affect the nervous system at high levels.",
+    "source": "Industrial discharge, manufacturing"
+  },
+  "DI(2-ETHYLHEXYL) PHTHALATE": {
+    "display": "DEHP (Phthalate)",
+    "desc": "A plasticizer that may cause liver problems and reproductive issues. A probable carcinogen.",
+    "source": "PVC pipes and fittings, industrial discharge"
+  },
+  "DI-N-BUTYL PHTHALATE": {
+    "display": "Di-n-butyl Phthalate",
+    "desc": "A plasticizer that may affect the reproductive system.",
+    "source": "Plastics manufacturing, industrial discharge"
+  },
+  "ASBESTOS": {
+    "display": "Asbestos",
+    "desc": "A mineral fiber that increases the risk of certain cancers when inhaled or ingested over long periods.",
+    "source": "Decay of asbestos cement water mains, natural deposits"
+  },
+  "CYANIDE": {
+    "display": "Cyanide",
+    "desc": "A fast-acting toxic chemical that can cause nerve damage and thyroid problems at low chronic levels.",
+    "source": "Mining operations, industrial discharge"
+  },
+  "BROMATE": {
+    "display": "Bromate",
+    "desc": "A disinfection byproduct that may increase cancer risk with long-term exposure.",
+    "source": "Byproduct of ozone disinfection"
+  },
+  "CHLORATE": {
+    "display": "Chlorate",
+    "desc": "A disinfection byproduct that may affect thyroid function and red blood cells at high levels.",
+    "source": "Byproduct of water disinfection, herbicides"
+  },
+  "N-NITROSODIMETHYLAMINE": {
+    "display": "NDMA",
+    "desc": "A potent carcinogen, even at very low concentrations. Can damage the liver.",
+    "source": "Byproduct of water treatment, rocket fuel, industrial discharge"
+  },
+  "N-NITROSODIETHYLAMINE (NDEA)": {
+    "display": "NDEA",
+    "desc": "A potent carcinogen related to NDMA. Can damage the liver.",
+    "source": "Byproduct of water treatment, industrial discharge"
+  },
+  "N-NITROSODI-N-BUTYLAMINE (NDBA)": {
+    "display": "NDBA",
+    "desc": "A nitrosamine compound and probable carcinogen.",
+    "source": "Byproduct of water treatment, industrial discharge"
+  },
+  "N-NITROSOMORPHOLINE (NMOR)": {
+    "display": "NMOR",
+    "desc": "A nitrosamine compound and probable carcinogen.",
+    "source": "Industrial discharge, rubber manufacturing"
+  },
+  "SIMAZINE": {
+    "display": "Simazine",
+    "desc": "A herbicide that may affect hormone levels and is a possible carcinogen.",
+    "source": "Herbicide runoff from farms and lawns"
+  },
+  "METOLACHLOR": {
+    "display": "Metolachlor",
+    "desc": "A widely used herbicide. Possible carcinogen with long-term exposure.",
+    "source": "Agricultural herbicide runoff"
+  },
+  "BROMACIL": {
+    "display": "Bromacil",
+    "desc": "A herbicide. Limited evidence of health effects at low levels.",
+    "source": "Herbicide runoff"
+  },
+  "PARAQUAT": {
+    "display": "Paraquat",
+    "desc": "A highly toxic herbicide. Extremely dangerous if ingested in concentrated form.",
+    "source": "Agricultural herbicide use"
+  },
+  "TDS": {
+    "display": "Total Dissolved Solids",
+    "desc": "A measure of all dissolved minerals in water. High levels can make water taste salty or bitter but aren't typically a health concern.",
+    "source": "Natural deposits, road salt, agricultural runoff"
+  },
+  "CHLORIDE": {
+    "display": "Chloride",
+    "desc": "A naturally occurring mineral. High levels can make water taste salty and may corrode pipes.",
+    "source": "Natural deposits, road salt, wastewater"
+  },
+  "SULFATE": {
+    "display": "Sulfate",
+    "desc": "A naturally occurring mineral. Very high levels can have a laxative effect, especially for new consumers.",
+    "source": "Natural deposits, industrial discharge"
+  },
+  "SODIUM": {
+    "display": "Sodium",
+    "desc": "A naturally occurring mineral. High sodium in drinking water may be a concern for people on sodium-restricted diets.",
+    "source": "Natural deposits, road salt, water softeners"
+  },
+  "CALCIUM": {
+    "display": "Calcium",
+    "desc": "A naturally occurring mineral that contributes to water hardness. Not a health concern at typical levels.",
+    "source": "Natural deposits (limestone, gypsum)"
+  },
+  "MAGNESIUM": {
+    "display": "Magnesium",
+    "desc": "A naturally occurring mineral that contributes to water hardness. Generally not a health concern.",
+    "source": "Natural deposits"
+  },
+  "POTASSIUM": {
+    "display": "Potassium",
+    "desc": "A naturally occurring mineral and essential nutrient. Not typically a health concern in drinking water.",
+    "source": "Natural deposits, fertilizer runoff"
+  },
+  "HARDNESS, TOTAL (AS CACO3)": {
+    "display": "Total Hardness",
+    "desc": "A measure of calcium and magnesium in water. Hard water isn't a health risk but can cause scale buildup in pipes and appliances.",
+    "source": "Natural mineral deposits"
+  },
+  "ALKALINITY, TOTAL": {
+    "display": "Total Alkalinity",
+    "desc": "A measure of water's ability to neutralize acids. Affects taste and how well water treatment works. Not a direct health concern.",
+    "source": "Natural mineral deposits"
+  },
+  "ALKALINITY, BICARBONATE": {
+    "display": "Bicarbonate Alkalinity",
+    "desc": "A component of water alkalinity. Affects taste and water chemistry. Not a direct health concern.",
+    "source": "Natural mineral deposits"
+  },
+  "ALKALINITY, CARBONATE": {
+    "display": "Carbonate Alkalinity",
+    "desc": "A component of water alkalinity. Affects water chemistry. Not a direct health concern.",
+    "source": "Natural mineral deposits"
+  },
+  "PH": {
+    "display": "pH Level",
+    "desc": "A measure of how acidic or basic water is (scale of 0-14, with 7 being neutral). Most drinking water is between 6.5 and 8.5.",
+    "source": "Natural water chemistry"
+  },
+  "PH, FIELD": {
+    "display": "pH (Field Measurement)",
+    "desc": "pH measured on-site at the water source, rather than in a lab.",
+    "source": "Natural water chemistry"
+  },
+  "CONDUCTIVITY @ 25 C UMHOS/CM": {
+    "display": "Conductivity",
+    "desc": "A measure of water's ability to conduct electricity, which indicates total dissolved minerals. Not a direct health concern.",
+    "source": "Dissolved minerals in water"
+  },
+  "TURBIDITY": {
+    "display": "Turbidity (Cloudiness)",
+    "desc": "A measure of water clarity. Cloudy water may indicate the presence of disease-causing organisms. Well-treated water should be clear.",
+    "source": "Soil runoff, algae, pipe sediment"
+  },
+  "TURBIDITY, FIELD": {
+    "display": "Turbidity (Field Measurement)",
+    "desc": "Cloudiness measured on-site at the water source.",
+    "source": "Soil runoff, algae, pipe sediment"
+  },
+  "COLOR": {
+    "display": "Color",
+    "desc": "A measure of water discoloration. Colored water is usually an aesthetic issue, not a health concern, but may indicate other problems.",
+    "source": "Natural organic matter, metals, industrial discharge"
+  },
+  "ODOR": {
+    "display": "Odor",
+    "desc": "A measure of how much water smells. Odorous water is usually an aesthetic issue but can indicate contamination.",
+    "source": "Algae, organic matter, chlorine, industrial discharge"
+  },
+  "FOAMING AGENTS (SURFACTANTS)": {
+    "display": "Foaming Agents",
+    "desc": "Chemicals that cause water to foam. Primarily an aesthetic concern.",
+    "source": "Detergents, wastewater, industrial discharge"
+  },
+  "AGGRESSIVE INDEX": {
+    "display": "Aggressive Index",
+    "desc": "A measure of water's tendency to corrode pipes. Not a direct health concern but affects lead and copper levels.",
+    "source": "Water chemistry (pH, alkalinity, hardness)"
+  },
+  "LANGELIER INDEX (PH(S))": {
+    "display": "Langelier Index",
+    "desc": "Predicts whether water will deposit scale or corrode pipes. Not a direct health concern but important for water infrastructure.",
+    "source": "Water chemistry"
+  },
+  "LANGELIER INDEX AT SOURCE TEMP.": {
+    "display": "Langelier Index (at Source Temp.)",
+    "desc": "Predicts whether water will deposit scale or corrode pipes, measured at the source temperature.",
+    "source": "Water chemistry"
+  },
+  "TEMPERATURE (CENTIGRADE)": {
+    "display": "Water Temperature",
+    "desc": "Temperature of the water sample. Not a health concern but affects taste and dissolved oxygen.",
+    "source": "Environmental conditions"
+  },
+  "BORON, TOTAL": {
+    "display": "Boron",
+    "desc": "A naturally occurring element. High levels may cause nausea and may affect reproductive health.",
+    "source": "Natural deposits, wastewater, cleaning products"
+  },
+  "BROMIDE": {
+    "display": "Bromide",
+    "desc": "A naturally occurring chemical. Not directly harmful, but can form harmful disinfection byproducts when water is chlorinated.",
+    "source": "Natural deposits, seawater intrusion"
+  },
+  "STRONTIUM": {
+    "display": "Strontium",
+    "desc": "A naturally occurring mineral related to calcium. Very high levels may affect bone health.",
+    "source": "Natural deposits"
+  },
+  "VANADIUM, TOTAL": {
+    "display": "Vanadium",
+    "desc": "A naturally occurring metal. Health effects at low levels are still being studied.",
+    "source": "Natural deposits, industrial discharge"
+  },
+  "COBALT, TOTAL": {
+    "display": "Cobalt",
+    "desc": "A trace metal and essential nutrient in very small amounts (as vitamin B12). Health effects of waterborne cobalt are still being studied.",
+    "source": "Natural deposits, industrial discharge"
+  },
+  "LITHIUM, TOTAL": {
+    "display": "Lithium",
+    "desc": "A naturally occurring metal. Health effects at typical drinking water levels are still being studied.",
+    "source": "Natural deposits"
+  },
+  "MOLYBDENUM, TOTAL": {
+    "display": "Molybdenum",
+    "desc": "A trace metal and essential nutrient. Very high levels may affect the liver and kidneys.",
+    "source": "Natural deposits, industrial discharge"
+  },
+  "SILICA": {
+    "display": "Silica",
+    "desc": "A naturally occurring mineral (silicon dioxide). Not a health concern in drinking water at typical levels.",
+    "source": "Natural deposits (sand, quartz)"
+  },
+  "ORTHOPHOSPHATE": {
+    "display": "Orthophosphate",
+    "desc": "A form of phosphorus sometimes added to water to prevent pipe corrosion. Not a health concern at treated levels.",
+    "source": "Water treatment additive, fertilizer runoff"
+  },
+  "PHOSPHATE, TOTAL": {
+    "display": "Total Phosphate",
+    "desc": "A nutrient that supports algae growth in surface water. Not a direct health concern in drinking water.",
+    "source": "Water treatment, fertilizer runoff, detergents"
+  },
+  "NITROGEN-AMMONIA AS (N)": {
+    "display": "Ammonia (as Nitrogen)",
+    "desc": "A form of nitrogen. Not a direct health concern at typical levels but may indicate sewage contamination.",
+    "source": "Sewage, fertilizer runoff, natural processes"
+  },
+  "TOTAL NITROGEN (AS N)": {
+    "display": "Total Nitrogen",
+    "desc": "A measure of all nitrogen forms in water. Elevated levels may indicate contamination from sewage or fertilizer.",
+    "source": "Fertilizer runoff, sewage, natural processes"
+  },
+  "CARBON, TOTAL": {
+    "display": "Total Carbon",
+    "desc": "A measure of organic and inorganic carbon in water. Not a direct health concern but indicates overall water quality.",
+    "source": "Natural organic matter, industrial discharge"
+  },
+  "CARBON DIOXIDE": {
+    "display": "Carbon Dioxide",
+    "desc": "A dissolved gas that affects water's pH and corrosiveness. Not a health concern.",
+    "source": "Natural processes, decomposition"
+  },
+  "SULFIDE": {
+    "display": "Sulfide",
+    "desc": "Can cause a \"rotten egg\" smell. Primarily an aesthetic concern at low levels.",
+    "source": "Natural deposits, bacterial action"
+  },
+  "RESIDUE, NON FILTERABLE (TSS)": {
+    "display": "Total Suspended Solids",
+    "desc": "A measure of particles in water. High levels make water appear cloudy and may indicate treatment issues.",
+    "source": "Soil runoff, pipe sediment"
+  }
+}

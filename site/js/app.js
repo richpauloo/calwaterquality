@@ -5,6 +5,8 @@
 
   // --- State ---
   let systems = [];       // all systems from summary JSON
+  let contaminantDict = {};  // plain-language contaminant info
+  let unitLabels = {};       // raw unit → readable unit
   let map = null;
   let activePopup = null;
   let panelState = 'closed';  // closed | peek | open
@@ -45,14 +47,54 @@
     return n.toLocaleString();
   }
 
+  // Words that should stay uppercase in system/county names
+  var ABBR_KEEP = ['CWD', 'CSD', 'MWC', 'MUD', 'PUD', 'WD', 'WC', 'ID', 'DWP', 'PWD', 'MWD', 'IID', 'IRWD', 'EBMUD', 'SFPUC', 'LADWP', 'HOA', 'LLC', 'LP', 'MHP', 'RV', 'II', 'III', 'IV'];
+  var abbrSet = {};
+  ABBR_KEEP.forEach(function (a) { abbrSet[a] = true; });
+
+  // Small words that stay lowercase (unless first word)
+  var SMALL_WORDS = { 'of': true, 'the': true, 'and': true, 'at': true, 'in': true, 'for': true, 'de': true, 'del': true, 'la': true, 'el': true, 'los': true, 'las': true };
+
   function titleCase(s) {
     if (!s) return '';
-    return s.replace(/\w\S*/g, function (t) {
+    return s.replace(/\w\S*/g, function (t, offset) {
+      var upper = t.toUpperCase();
+      if (abbrSet[upper]) return upper;
+      var lower = t.toLowerCase();
+      if (offset > 0 && SMALL_WORDS[lower]) return lower;
       return t.charAt(0).toUpperCase() + t.substr(1).toLowerCase();
     });
   }
 
+  // --- Contaminant display helpers ---
+  function contaminantName(rawName) {
+    var entry = contaminantDict[rawName];
+    if (entry && entry.display) return entry.display;
+    return titleCase(rawName);
+  }
+
+  function contaminantInfo(rawName) {
+    return contaminantDict[rawName] || null;
+  }
+
+  function fmtUnits(rawUnits) {
+    return unitLabels[rawUnits] || rawUnits;
+  }
+
   // --- Data loading ---
+  async function loadContaminantDict() {
+    try {
+      var resp = await fetch('data/contaminant_dict.json');
+      var data = await resp.json();
+      // Separate units from contaminant entries
+      unitLabels = data._units || {};
+      delete data._units;
+      contaminantDict = data;
+    } catch (err) {
+      console.warn('Contaminant dictionary not loaded:', err);
+    }
+  }
+
   async function loadSystems() {
     const resp = await fetch('data/systems_summary.json');
     systems = await resp.json();
@@ -340,10 +382,13 @@
 
     // Other detected (no MCL)
     if (other.length > 0) {
-      html += '<div class="section-title">Other Detected (No Limit Set)</div>';
+      html += '<div class="section-title">Detected — No Safety Limit Set</div>';
       html += '<div class="detected-list">';
       other.forEach(function (c) {
-        html += '<span class="detected-chip" title="Avg: ' + fmtVal(c.avg) + ' ' + c.units + '">' + titleCase(c.name) + '</span>';
+        var info = contaminantInfo(c.name);
+        var tipParts = ['Avg: ' + fmtVal(c.avg) + ' ' + fmtUnits(c.units)];
+        if (info && info.desc) tipParts.push(info.desc);
+        html += '<span class="detected-chip" title="' + tipParts.join(' — ') + '">' + contaminantName(c.name) + '</span>';
       });
       html += '</div>';
     }
@@ -389,13 +434,25 @@
     if (ratio > 1) barClass = 'danger';
     else if (ratio > 0.8) barClass = 'warning';
 
+    var info = contaminantInfo(c.name);
+    var units = fmtUnits(c.units);
+
     var html = '<div class="contaminant-card' + (exceeds ? ' exceeds' : '') + '">';
-    html += '<div class="contaminant-name">' + titleCase(c.name) + '</div>';
+    html += '<div class="contaminant-name">' + contaminantName(c.name) + '</div>';
     html += '<div class="contaminant-detail">';
-    html += 'Average: ' + fmtVal(c.avg) + ' ' + c.units;
-    html += ' &middot; Limit: ' + fmtVal(c.mcl) + ' ' + c.units;
+    html += 'Average: ' + fmtVal(c.avg) + ' ' + units;
+    html += ' &middot; Limit: ' + fmtVal(c.mcl) + ' ' + units;
     html += ' &middot; ' + c.n_detects + ' of ' + c.n_samples + ' samples';
     html += '</div>';
+
+    // Health context from dictionary
+    if (info) {
+      html += '<div class="contaminant-context">';
+      if (info.desc) html += '<span class="contaminant-desc">' + info.desc + '</span>';
+      if (info.source) html += '<span class="contaminant-source">Common sources: ' + info.source + '</span>';
+      html += '</div>';
+    }
+
     html += '<div class="bar-wrap">';
     html += '<div class="bar-fill ' + barClass + '" style="width:' + fillPct + '%"></div>';
     html += '<div class="bar-mcl" style="left:' + mclPct + '%" title="Safety limit"></div>';
@@ -562,7 +619,8 @@
 
     map.on('load', async function () {
       try {
-        await loadSystems();
+        // Load dictionary and systems in parallel
+        await Promise.all([loadContaminantDict(), loadSystems()]);
         var geojson = systemsToGeoJSON(systems);
         addSystemsLayer(geojson);
 
