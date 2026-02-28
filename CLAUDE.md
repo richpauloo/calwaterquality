@@ -31,3 +31,4 @@
 - Site deployed at richpauloo/calwaterquality via GitHub Actions — live at https://richpauloo.github.io/calwaterquality/
 - Custom domain calwaterquality.com still claimed by caccr/caccr.github.io — needs user-level domain verification in GitHub Settings > Pages to release it
 - Feedback issue links now point to richpauloo/calwaterquality (updated from caccr/caccr.github.io)
+- Site is at a subdirectory (`/calwaterquality/`) — all asset paths must be relative (no leading `/`), OG meta tags need full absolute URL

@@ -1,21 +1,38 @@
-# California Water Quality Portal
+# California Water Quality
 
-*Rich Pauloo, richpauloo@gmail.com, [website](http://richpauloo.com/)*
+Check drinking water quality for any community water system in California. Free, open-source, updated monthly.
 
-[![](example.gif)](https://caccr.github.io)
+**[View the live site](https://richpauloo.github.io/calwaterquality/)**
 
+## What this does
 
-This site is proudly built with [R](https://www.r-project.org/) & [Jekyll](https://jekyllrb.com/) (theme by [jmcglone](https://github.com/jmcglone/jmcglone.github.io)), and hosted on [Github Pages](https://pages.github.com/).  
+A consumer-friendly web app that helps Californians understand their drinking water quality. Search by name, city, or county — or use geolocation to find your nearest water system. See compliance status, detected contaminants with plain-language explanations, and how results compare to state and federal standards.
 
-© 2019 by [Rich Pauloo](https://www.richpauloo.com), under the [MIT License](https://github.com/caccr/caccr.github.io/blob/master/LICENSE).  
+Covers all **2,816 community water systems** in California.
 
-[View the project](https://caccr.github.io).   
+## How it works
 
-[Read about the project](https://caccr.github.io/about/index.html).  
+- **Data source**: California State Water Resources Control Board (SDWIS database), refreshed automatically on the 1st and 15th of each month via GitHub Actions
+- **Data processing**: R scripts download, clean, and transform raw water quality records into compact JSON
+- **Frontend**: Vanilla HTML/CSS/JS with MapLibre GL for the map. No framework, no build step
+- **Deployment**: GitHub Pages via GitHub Actions
 
+## Project structure
 
-***  
+```
+pipeline/          R scripts for data download and processing
+site/              Static site (HTML, CSS, JS, JSON data)
+  data/            Processed JSON files served to the frontend
+  js/app.js        Application logic
+  css/style.css    Styles
+  index.html       Single-page app entry point
+.github/workflows/ Automated data refresh and deploy pipelines
+```
 
-# Notes
+## License
 
-To configure an alternate URL, put a `CNAME` file (no-extension) in the root directory with one line indicating the URL.  
+MIT
+
+## Author
+
+Rich Pauloo — [richpauloo.com](https://richpauloo.com)

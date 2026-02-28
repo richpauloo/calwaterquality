@@ -1,5 +1,10 @@
 # Ralph Changelog
 
+## Iteration 32 — 2026-02-28
+- What: **Fixed broken asset paths for subdirectory deployment and polished repo for discoverability.** Changed all absolute `/` paths in index.html and manifest.json to relative paths (favicon, apple-touch-icon, manifest, logo link, PWA icons/start_url). Updated OG/Twitter meta image URLs from non-functional `calwaterquality.com` to the actual live URL `richpauloo.github.io/calwaterquality/`. Set repo homepage URL and topics (water-quality, california, open-data, public-health). Replaced the outdated 2019 Jekyll README with an accurate description of the current project.
+- Why: The site is deployed at `richpauloo.github.io/calwaterquality/` (a subdirectory), so absolute `/favicon.svg` paths resolved to `richpauloo.github.io/favicon.svg` (404). This meant no favicon in the browser tab, broken PWA install, and broken social sharing previews. The old README described a completely different (Jekyll-based, 2019) project. These are all user-facing issues that hurt first impressions when someone visits or shares the site.
+- Result: All asset paths now resolve correctly at the subdirectory URL. Social sharing previews will show the correct image. Repo page shows homepage link and discoverable topics. README accurately describes the project.
+
 ## Iteration 31 — 2026-02-28
 - What: **Validated and fixed the automated data refresh pipeline.** Fixed 3 issues: (1) workflow not registered by GitHub — pushed a change to force re-registration; (2) repo workflow permissions set to read-only — updated to read-write so the bot can commit; (3) R `curl` package failed to compile — added `libcurl4-openssl-dev` system dependency; (4) GITHUB_TOKEN pushes don't trigger other workflows — added explicit `gh workflow run deploy.yml` step after data commit. Ran the full pipeline 3 times: first failed (missing libcurl), second succeeded (downloaded 1.8 GB SDWIS data, processed 2,816 systems, committed fresh data), third correctly detected no changes and skipped commit/deploy.
 - Why: Data freshness is the core value prop. The scheduled pipeline (1st and 15th of each month) had never been validated in production. Without this fix, the first scheduled run on March 1st would have silently failed, and the site's data would have gone stale without warning.
@@ -102,38 +107,3 @@
 - Why: Priority #3 from the iteration 20 reflection. The "weather app for water quality" metaphor is best realized when users can install it to their home screen like a native app. The manifest enables this on both Android (Chrome install prompt) and iOS (Safari "Add to Home Screen"), giving the app a standalone appearance with the blue theme bar.
 - Result: manifest.json valid, 3 new files (manifest.json, icon-192.png, icon-512.png — total ~35 KB). HTML valid, 3 new tags added. Site structure intact.
 
-## Iteration 21 — 2026-02-28
-- What: Production deployment verification. Confirmed DNS for calwaterquality.com resolves correctly to GitHub Pages IPs (185.199.x.x) and returns HTTP 200. However, discovered two critical blockers: (1) All 16 commits from iterations 1-20 exist only locally — none have been pushed because `richpauloo` has read-only access to `caccr/caccr.github.io` (push: false). (2) GitHub Pages is configured in legacy mode (branch root `/`), not GitHub Actions deployment, so even after pushing, Pages config must be switched to use `deploy.yml`. HTTPS enforcement is also disabled.
-- Why: Priority #1 from the iteration 20 reflection. Without verifying deployment, all prior work is inaccessible to users. This was the most critical gap.
-- Result: Identified clear blockers. The site is feature-complete locally but not deployed. Next step: resolve push access (get org admin to grant write access, or fork and PR), then reconfigure GitHub Pages to Actions-based deployment.
-
-## Reflection — Iteration 20 — 2026-02-28
-- Trajectory: **On track — the product is feature-complete for v1.** All 5 priorities from the iteration 15 reflection were addressed: favicon/branding (16), reset-view button (17), unit abbreviations (18), performance optimization (19). The only remaining item — real-world validation — is the natural next focus.
-- Working:
-  - **Reflection-driven planning continues to be effective**: The 5 priorities set at iteration 15 were executed cleanly across 4 iterations with zero wasted effort. Each iteration touched a different concern (branding, navigation, display, performance). No file was over-modified.
-  - **Product completeness is high**: The site covers 2,816 community water systems, has a full data pipeline with automated refresh, consumer-friendly UI with geolocation/search/detail panels, educational content, accessibility, branding, social cards, performance optimizations, and shareable deep links. This is a functional product.
-  - **Architecture remains simple and proven**: 3 core files (HTML/CSS/JS), ~36 KB code, ~29 MB data (452 KB initial load), no build step, GitHub Pages. Nothing to break.
-- Not working:
-  - **Zero production validation**: All 20 iterations happened in a single development session. The GitHub Actions pipeline has never run. We don't know if calwaterquality.com resolves, if the CNAME is configured, or if the deployment actually works. The product is feature-complete but not verified to be live.
-  - **No real user feedback**: The product has been designed and built without any external validation. We're making assumptions about what consumers find useful and comprehensible. The "weather app for water quality" metaphor hasn't been tested with actual weather-app users.
-  - **Data may be stale**: The processed JSON was generated during this session. The automated refresh hasn't run yet. If the pipeline breaks in production (missing R packages, download timeout, changed data format), users won't see it until someone checks.
-- Missing:
-  - Production deployment verification (is the site live? does DNS resolve?)
-  - GitHub Actions pipeline validation (trigger a manual run, verify it completes)
-  - PWA manifest for "add to home screen" on mobile
-  - Error monitoring / alerting if the pipeline fails
-  - Real user testing and feedback collection
-- Spiraling? **No.** The last 5 iterations have been well-focused and each made a distinct contribution. But we're approaching a natural inflection point where continued local development has diminishing returns. The highest-impact work now is shipping, validating, and getting real user feedback — not adding more features.
-- User impact: **A real person visiting calwaterquality.com today would find this genuinely useful — IF the site is actually deployed.** The product answers the core question ("is my water safe?") clearly and accessibly. The biggest risk is that it's not actually live, or the data pipeline silently fails and shows stale data.
-- Next 5 iterations should focus on:
-  1. **Verify production deployment** — check if calwaterquality.com resolves, if GitHub Pages is configured correctly, if the CNAME/DNS works. Fix any deployment issues. This is prerequisite to everything else.
-  2. **Validate the GitHub Actions pipeline** — trigger a manual workflow_dispatch run, verify it downloads data, processes it, commits, and deploys. Fix any failures.
-  3. **Add a PWA manifest** — enable "Add to Home Screen" on mobile for the weather-app experience. Include the existing favicon and branding.
-  4. **Lightweight error monitoring** — add a simple check (even just a scheduled GitHub Action) that verifies the site is responding and data isn't older than 45 days. Surface staleness warnings in the UI.
-  5. **User feedback mechanism** — add a minimal "feedback" link or form so early visitors can report issues or confusion. Could be as simple as a mailto: link or a Google Form.
-- Adjustments: **Shift from building to shipping.** The product has been in "build" mode for 20 iterations. Further feature work without production validation is speculative. The next cycle must prioritize: (1) verify it's live, (2) verify the pipeline works, (3) then iterate based on real data. If the site isn't deployed, nothing else matters.
-
-## Iteration 19 — 2026-02-28
-- What: Performance optimization — added `<link rel="preload">` for systems_summary.json and contaminant_dict.json so they download in parallel with MapLibre GL (instead of waiting until after map loads). Added `<link rel="preconnect">` for unpkg.com and CARTO tile CDN. Compacted systems_summary.json by dropping unused `owner` field and reducing coordinate precision from 6 to 4 decimal places (11m resolution, more than enough for map dots). Updated R pipeline to match.
-- Why: Priority #4 from iteration 15 reflection. The critical path was: download MapLibre → init map → THEN fetch data JSONs. Preloading lets data download in parallel, saving 1-3 seconds on slow connections. The JSON compaction saves ~60 KB raw (12% smaller) and ~10 KB gzipped.
-- Result: systems_summary.json: 512 KB → 452 KB raw, 89 KB → 82 KB gzipped. All 2,816 records intact, JSON valid, HTML valid, JS syntax valid. R pipeline updated to produce compact output on future refreshes.

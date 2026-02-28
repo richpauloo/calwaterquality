@@ -1,5 +1,41 @@
 # Ralph Changelog — Archive
 
+## Iteration 21 — 2026-02-28
+- What: Production deployment verification. Confirmed DNS for calwaterquality.com resolves correctly to GitHub Pages IPs (185.199.x.x) and returns HTTP 200. However, discovered two critical blockers: (1) All 16 commits from iterations 1-20 exist only locally — none have been pushed because `richpauloo` has read-only access to `caccr/caccr.github.io` (push: false). (2) GitHub Pages is configured in legacy mode (branch root `/`), not GitHub Actions deployment, so even after pushing, Pages config must be switched to use `deploy.yml`. HTTPS enforcement is also disabled.
+- Why: Priority #1 from the iteration 20 reflection. Without verifying deployment, all prior work is inaccessible to users. This was the most critical gap.
+- Result: Identified clear blockers. The site is feature-complete locally but not deployed. Next step: resolve push access (get org admin to grant write access, or fork and PR), then reconfigure GitHub Pages to Actions-based deployment.
+
+## Reflection — Iteration 20 — 2026-02-28
+- Trajectory: **On track — the product is feature-complete for v1.** All 5 priorities from the iteration 15 reflection were addressed: favicon/branding (16), reset-view button (17), unit abbreviations (18), performance optimization (19). The only remaining item — real-world validation — is the natural next focus.
+- Working:
+  - **Reflection-driven planning continues to be effective**: The 5 priorities set at iteration 15 were executed cleanly across 4 iterations with zero wasted effort. Each iteration touched a different concern (branding, navigation, display, performance). No file was over-modified.
+  - **Product completeness is high**: The site covers 2,816 community water systems, has a full data pipeline with automated refresh, consumer-friendly UI with geolocation/search/detail panels, educational content, accessibility, branding, social cards, performance optimizations, and shareable deep links. This is a functional product.
+  - **Architecture remains simple and proven**: 3 core files (HTML/CSS/JS), ~36 KB code, ~29 MB data (452 KB initial load), no build step, GitHub Pages. Nothing to break.
+- Not working:
+  - **Zero production validation**: All 20 iterations happened in a single development session. The GitHub Actions pipeline has never run. We don't know if calwaterquality.com resolves, if the CNAME is configured, or if the deployment actually works. The product is feature-complete but not verified to be live.
+  - **No real user feedback**: The product has been designed and built without any external validation. We're making assumptions about what consumers find useful and comprehensible. The "weather app for water quality" metaphor hasn't been tested with actual weather-app users.
+  - **Data may be stale**: The processed JSON was generated during this session. The automated refresh hasn't run yet. If the pipeline breaks in production (missing R packages, download timeout, changed data format), users won't see it until someone checks.
+- Missing:
+  - Production deployment verification (is the site live? does DNS resolve?)
+  - GitHub Actions pipeline validation (trigger a manual run, verify it completes)
+  - PWA manifest for "add to home screen" on mobile
+  - Error monitoring / alerting if the pipeline fails
+  - Real user testing and feedback collection
+- Spiraling? **No.** The last 5 iterations have been well-focused and each made a distinct contribution. But we're approaching a natural inflection point where continued local development has diminishing returns. The highest-impact work now is shipping, validating, and getting real user feedback — not adding more features.
+- User impact: **A real person visiting calwaterquality.com today would find this genuinely useful — IF the site is actually deployed.** The product answers the core question ("is my water safe?") clearly and accessibly. The biggest risk is that it's not actually live, or the data pipeline silently fails and shows stale data.
+- Next 5 iterations should focus on:
+  1. **Verify production deployment** — check if calwaterquality.com resolves, if GitHub Pages is configured correctly, if the CNAME/DNS works. Fix any deployment issues. This is prerequisite to everything else.
+  2. **Validate the GitHub Actions pipeline** — trigger a manual workflow_dispatch run, verify it downloads data, processes it, commits, and deploys. Fix any failures.
+  3. **Add a PWA manifest** — enable "Add to Home Screen" on mobile for the weather-app experience. Include the existing favicon and branding.
+  4. **Lightweight error monitoring** — add a simple check (even just a scheduled GitHub Action) that verifies the site is responding and data isn't older than 45 days. Surface staleness warnings in the UI.
+  5. **User feedback mechanism** — add a minimal "feedback" link or form so early visitors can report issues or confusion. Could be as simple as a mailto: link or a Google Form.
+- Adjustments: **Shift from building to shipping.** The product has been in "build" mode for 20 iterations. Further feature work without production validation is speculative. The next cycle must prioritize: (1) verify it's live, (2) verify the pipeline works, (3) then iterate based on real data. If the site isn't deployed, nothing else matters.
+
+## Iteration 19 — 2026-02-28
+- What: Performance optimization — added `<link rel="preload">` for systems_summary.json and contaminant_dict.json so they download in parallel with MapLibre GL (instead of waiting until after map loads). Added `<link rel="preconnect">` for unpkg.com and CARTO tile CDN. Compacted systems_summary.json by dropping unused `owner` field and reducing coordinate precision from 6 to 4 decimal places (11m resolution, more than enough for map dots). Updated R pipeline to match.
+- Why: Priority #4 from iteration 15 reflection. The critical path was: download MapLibre → init map → THEN fetch data JSONs. Preloading lets data download in parallel, saving 1-3 seconds on slow connections. The JSON compaction saves ~60 KB raw (12% smaller) and ~10 KB gzipped.
+- Result: systems_summary.json: 512 KB → 452 KB raw, 89 KB → 82 KB gzipped. All 2,816 records intact, JSON valid, HTML valid, JS syntax valid. R pipeline updated to produce compact output on future refreshes.
+
 ## Iteration 18 — 2026-02-28
 - What: Fixed unit abbreviation display for unitless water quality indices. Changed `fmtUnits()` to use `in` check instead of `||` so empty-string mappings (AGGR, LANG, TON) are respected — these now display with no unit suffix instead of showing raw abbreviations like "AGGR" or "TON". Also added conditional spacing so values with empty units don't get trailing whitespace. All other units (μg/L, mg/L, NTU, pH, etc.) were already correctly mapped.
 - Why: Priority #3 from the iteration 15 reflection. Seeing "Average: 12.3 AGGR" is meaningless to consumers. Aggressive Index, Langelier Index, and Threshold Odor Number are unitless calculated values — showing no unit suffix is cleaner and more honest than displaying opaque abbreviations.
